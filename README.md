@@ -1,80 +1,106 @@
-# Concierge ConectaTel — Squad 4
+# Concierge ConectaTel
 
-> README temporário para o Hackathon final. Atualizar após a integração e executar do zero com um membro que não tenha escrito a configuração original.
+Assistente GenAI de atendimento para a operadora fictícia ConectaTel, com pipeline de dados, RAG sobre o corpus oficial, filtro determinístico de vigência, triagem, escalonamento com handoff e trilha de auditoria.
 
-Assistente GenAI de atendimento para a operadora fictícia ConectaTel, com RAG sobre corpus oficial, filtro determinístico de vigência, triagem, escalonamento com handoff e trilha de auditoria.
+Este README é um guia técnico de execução para avaliadores e pessoas externas à squad.
 
-## Escopo do desafio
+## 1. Arquitetura da solução
 
-- Parte 1: tratar o log CSV com Pandas, produzir 3 análises e usar um achado em uma decisão de design.
-- Parte 2: chunking, embeddings, índice vetorial e filtro `status=vigente` antes do score.
-- Parte 3: responder apenas pelo corpus, citar fonte e retornar “não sei” quando não houver fonte suficiente.
-- Parte 4: escalar conforme a política e gerar handoff completo.
-- Parte 5: registrar pergunta, fonte, decisão, guardrail e `trace_id`, localizável em até 60 segundos.
+![Arquitetura final do Concierge ConectaTel](docs/arquitetura/arquitetura_conectatel_final.jpg)
 
-## Estrutura planejada
+Arquivos editáveis: [JPG final](docs/arquitetura/arquitetura_conectatel_final.jpg), [SVG](docs/arquitetura/arquitetura_conectatel_final.svg) e [Mermaid](docs/arquitetura/architecture.mmd).
 
-```text
-.
-├── README.md
-├── architecture_concierge_conectatel.jpg
-├── data/                 # insumos fornecidos pelo desafio (não versionar segredos)
-├── src/
-│   ├── data_pipeline.py
-│   ├── rag_index.py
-│   ├── concierge.py
-│   ├── escalation.py
-│   └── audit.py
-├── tests/
-├── docs/
-│   ├── relatorio/
-│   ├── transcricoes/
-│   └── arquitetura/
-└── infra/                # IAM, Lambda, S3 e configuração AWS
-```
+Fluxo: log CSV → Pandas → achados de design; corpus → S3 → chunking/metadados → embeddings/índice; pergunta → Lambda → filtro `status=vigente` → busca → limiar → resposta grounded, “não sei” ou escalonamento → audit trail.
 
-## Pré-requisitos
+## 2. Pré-requisitos
 
-1. Python 3.11+ e ambiente virtual.
-2. AWS CLI configurado na região usada pela squad anteriormente.
-3. Permissões mínimas para S3 e `bedrock:InvokeModel` na conta de consolidação.
-4. Acesso ao Amazon Bedrock; cada integrante deve registrar uma chamada Anthropic bem-sucedida conforme o desafio.
-5. AWS Budget de baixo valor ativo em cada conta individual.
+- Python 3.11 ou superior.
+- AWS CLI configurado na conta de consolidação.
+- Região AWS usada pela squad nas sprints anteriores.
+- Permissões mínimas para S3 e Amazon Bedrock; para Lambda, role equivalente.
+- Acesso ao modelo aprovado no Bedrock e AWS Budget de baixo valor ativo.
+- Log CSV e corpus documental oficiais fornecidos no pacote do desafio.
 
-## Configuração do zero
+O projeto não usa API key externa. Use credenciais AWS padrão, profile ou role. Nunca grave chaves no repositório.
+
+## 3. Instalação
 
 ```bash
+git clone https://github.com/cleidyanne-castro/concierge-conectatel.git
+cd concierge-conectatel
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Preencher apenas variáveis não secretas no `.env`; usar credenciais AWS padrão, role Lambda ou profile local. Nunca commitar chaves.
+Edite `.env` com região, bucket, caminho do índice, limiar de recuperação e modelo Bedrock.
 
-## Ordem de execução
+## 4. Entrada de dados
+
+Coloque o log em `data/call_log.csv` e os documentos em `data/corpus/`. Para versões diferentes da mesma política, use nomes como `politica_fatura__vigente.txt` e `politica_fatura__revogado.txt`.
+
+Os metadados devem conter `doc_family_id`, `version_ordinal`, `effective_from`, `effective_to` e `status`. O corpus oficial do desafio é a única fonte autorizada para as respostas.
+
+## 5. Execução
+
+### Parte 1 — Pipeline de dados
 
 ```bash
 python -m src.data_pipeline --input data/call_log.csv --output artifacts/data
+```
+
+Gera `cleaned_calls.csv` e `analyses.json`. O documento principal deve explicar três análises e ligar pelo menos um achado a uma decisão de design.
+
+### Parte 2 — Base de conhecimento e RAG
+
+```bash
 python -m src.rag_index --corpus data/corpus --output artifacts/index.json
-python -m src.cli --question "<pergunta de teste>"
+```
+
+O filtro `status=vigente` ocorre antes da similaridade. Prompt sozinho não atende ao requisito de vigência.
+
+### Partes 3 e 4 — Agente e escalonamento
+
+```bash
+python -m src.cli --question "<pergunta do assinante>"
+```
+
+O resultado deve conter `trace_id` e uma decisão: `responder`, `nao_sei` ou `escalar`. O adaptador real do Bedrock está em `src/bedrock_client.py`; o modo local permite validar o fluxo sem credenciais.
+
+## 6. Testes e evidências
+
+```bash
 python -m pytest -q
 ```
 
-Após a configuração, a sequência é: dados → índice → `VECTOR_STORE_PATH=artifacts/index.json` → handler do agente → triagem/escalonamento → auditoria → testes. O handler pode ser invocado localmente ou adaptado para AWS Lambda.
+As evidências finais devem conter 10–15 transcrições textuais: duas respostas com fonte vigente, duas perguntas sobre versão revogada, duas sem fonte com “não sei” e dois escalonamentos distintos com handoff completo. Também devem cobrir perguntas não preparadas, consulta do `trace_id` em até 60 segundos e execução do README por membro diferente do autor da configuração.
 
-## Critérios de teste
+## 7. Auditoria e governança
 
-O conjunto final deve conter 10–15 transcrições: pelo menos 2 respostas com fonte vigente, 2 perguntas sobre versão revogada, 2 perguntas sem fonte e 2 escalonamentos distintos com handoff completo. Também testar perguntas não preparadas e medir a recuperação do `trace_id` em até 60 segundos.
+Cada resposta registra pergunta, fontes, decisão, guardrail e `trace_id`. O registro local fica em `artifacts/audit/audit.jsonl`; `find_by_trace_id()` localiza uma interação. A entrega final deve documentar IAM de menor privilégio, guardrails, riscos, AWS Budgets e limpeza de recursos contínuos.
 
-## Arquitetura
+## 8. Estrutura do repositório
 
-Ver [`docs/arquitetura/architecture.mmd`](docs/arquitetura/architecture.mmd) e [`docs/arquitetura/architecture_concierge_conectatel.jpg`](docs/arquitetura/architecture_concierge_conectatel.jpg). A decisão crítica é filtrar metadados `status=vigente` antes da similaridade; prompt sozinho não atende ao requisito.
+- `src/`: pipeline, RAG, agente, política e auditoria.
+- `tests/`: testes automatizados.
+- `data/`: entradas oficiais e exemplos de smoke test.
+- `docs/arquitetura/`: arquitetura final e fontes editáveis.
+- `docs/relatorio/`: documento principal.
+- `docs/transcricoes/`: registros dos testes.
+- `docs/qa/`: evidências e checklist.
+- `docs/apresentacao/`: slides da banca.
+- `infra/`: configuração e documentação AWS.
+- `artifacts/`: saídas locais; não versionar dados gerados.
 
-## Entrega e congelamento
+## 9. Troubleshooting
 
-Antes de 02/09 às 23h59: revisar documento, README, slides, código, vídeo plano B e transcrições; criar a tag `v1.0-entrega`; demonstrar na banca exatamente essa versão.
+- `AccessDenied` no Bedrock: valide região, role/profile e acesso ao modelo.
+- Índice ausente: execute a Parte 2 e confira `VECTOR_STORE_PATH`.
+- Tudo retorna “não sei”: confirme índice, limiar e documentos `vigente`.
+- Documento revogado aparece: corrija o filtro antes do score e repita os testes.
+- `trace_id` ausente: confira `AUDIT_LOG_PATH` e a execução do handler.
 
-## Limites e segurança
+## 10. Entrega
 
-O corpus é a única fonte de resposta. Não usar dados reais nem informações externas sobre operadoras. Registrar riscos, guardrails, permissões IAM de menor privilégio e desligar recursos gerenciados de custo contínuo ao fim das sessões.
+Valide este README do zero em uma conta de consolidação, revise documento, transcrições, slides, código e vídeo plano B. Crie a tag `v1.0-entrega` e demonstre exatamente essa versão congelada.
