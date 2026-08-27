@@ -8,7 +8,7 @@ Este README é um guia técnico de execução para avaliadores e pessoas externa
 
 ![Arquitetura final do Concierge ConectaTel](docs/arquitetura/arquitetura_conectatel_final.jpg)
 
-Arquivos editáveis: [JPG final](docs/arquitetura/arquitetura_conectatel_final.jpg), [SVG](docs/arquitetura/arquitetura_conectatel_final.svg) e [Mermaid](docs/arquitetura/architecture.mmd).
+Arquivo oficial da arquitetura: [JPG final](docs/arquitetura/arquitetura_conectatel_final.jpg).
 
 Fluxo: log CSV → Pandas → achados de design; corpus → S3 → chunking/metadados → embeddings/índice; pergunta → Lambda → filtro `status=vigente` → busca → limiar → resposta grounded, “não sei” ou escalonamento → audit trail.
 
@@ -85,7 +85,7 @@ Cada resposta registra pergunta, fontes, decisão, guardrail e `trace_id`. O reg
 - `src/`: pipeline, RAG, agente, política e auditoria.
 - `tests/`: testes automatizados.
 - `data/`: entradas oficiais e exemplos de smoke test.
-- `docs/arquitetura/`: arquitetura final e fontes editáveis.
+- `docs/arquitetura/`: arquitetura final aprovada pela squad.
 - `docs/relatorio/`: documento principal.
 - `docs/transcricoes/`: registros dos testes.
 - `docs/qa/`: evidências e checklist.
