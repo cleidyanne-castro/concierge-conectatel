@@ -49,6 +49,26 @@ Responsável: Natan Alencar Maia
 
 Escopo: audit trail, `trace_id`, guardrails, IAM, riscos conhecidos, consulta do registro e controles de custo.
 
+## Metodologia de trabalho
+
+A squad adotará um fluxo Kanban para acompanhar as atividades. Essa é uma escolha de organização interna e complementa a divisão de responsabilidades definida na Parte 0 do desafio.
+
+### Fluxo das atividades
+
+1. Backlog: tarefa identificada e descrita, ainda não iniciada.
+2. Em andamento: responsável trabalhando na implementação ou documentação.
+3. Em revisão: contribuição pronta, com testes e evidências anexados.
+4. Concluído: revisão realizada, testes aprovados e integração feita na branch principal.
+
+### Regras de acompanhamento
+
+- Cada tarefa deve ter um responsável, uma etapa do desafio e um critério de conclusão.
+- O responsável deve atualizar código, documentação e testes relacionados à sua etapa.
+- Toda contribuição deve ser revisada por pelo menos uma pessoa de outra frente.
+- A squad deve manter um fluxo mínimo funcionando de ponta a ponta desde os primeiros dias.
+- Alterações que afetem mais de uma etapa devem ser alinhadas com a pessoa responsável pela integração.
+- O quadro deve ser revisado nos encontros da squad para identificar bloqueios e dependências.
+
 ## Regra de colaboração
 
 Cada responsável deve atualizar o código, a documentação e os testes da própria etapa. Toda contribuição deve ser revisada por pelo menos uma pessoa de outra frente.
