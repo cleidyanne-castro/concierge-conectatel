@@ -1,28 +1,19 @@
 # Contribuições
 
-## Status atual
-
-Até o momento, a squad está na Parte 0 do desafio oficial, que corresponde à organização, definição de responsabilidades e preparação da estrutura de trabalho.
-
 ## Contribuições realizadas
 
 ### Cleidyanne Castro Pereira
 
 Responsável pela Parte 0 e pela coordenação técnica inicial.
 
-- Definição da estrutura inicial do repositório do Squad 4.
-- Criação e organização do repositório público no GitHub.
+- Definição, criação e organização da estrutura inicial do repositório do Squad 4.
 - Organização das pastas por etapa do desafio.
-- Criação da arquitetura visual final do Concierge ConectaTel.
-- Inclusão da arquitetura final em `docs/arquitetura/arquitetura_conectatel_final.jpg`.
+- Criação e inclusão da arquitetura visual final do Concierge ConectaTel.
 - Criação do README operacional para avaliadores e pessoas externas à squad.
 - Inclusão das instruções de instalação, configuração, execução, testes, auditoria e troubleshooting.
 - Criação da apresentação executiva inicial para stakeholders e banca técnica.
-- Criação do template do relatório final do hackathon com base no relatório anterior da squad.
-- Organização do template por Partes 0, 1, 2, 3, 4, 5 e Stretch.
+- Criação e organização do template do relatório final do hackathon.
 - Inclusão de placeholders para decisões técnicas, evidências, transcrições, riscos e reflexão coletiva.
-- Preparação do relatório final de contribuições em PDF.
-- Definição do fluxo inicial de colaboração, revisão e integração.
 
 ## Responsabilidades planejadas por etapa
 
