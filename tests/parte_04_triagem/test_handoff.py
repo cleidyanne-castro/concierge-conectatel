@@ -1,5 +1,5 @@
-from src.escalation import build_handoff
-from src.policy import should_escalate
+from src.parte_04_triagem.escalation import build_handoff
+from src.parte_04_triagem.policy import should_escalate
 
 def test_handoff_contains_continuation_context():
     handoff = build_handoff("sem sinal", ["reinício do modem"], "alta", "incidente técnico")

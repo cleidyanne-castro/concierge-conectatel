@@ -1,6 +1,7 @@
 """Parte 3 - agente Concierge: grounding, fonte e decisão segura de não sei."""
-from .config import Settings
-from .rag_index import DocumentChunk, filter_current
+from ..shared.config import Settings
+from ..shared.types import DocumentChunk
+from ..parte_02_rag.rag_index import filter_current
 
 def retrieve(question: str, chunks: list[DocumentChunk], threshold: float | None = None):
     """Implementar busca após filter_current; retornar evidência e score."""
@@ -13,4 +14,3 @@ def answer_or_decline(question: str, chunks: list[DocumentChunk], settings: Sett
     if score < settings.retrieval_score_threshold:
         return {"decision": "nao_sei", "answer": "Não sei com base no corpus fornecido.", "sources": []}
     return {"decision": "responder", "answer": "[gerar resposta grounded]", "sources": [x.source for x in evidence]}
-

@@ -1,6 +1,6 @@
 """Leitura e chunking do corpus documental."""
 from pathlib import Path
-from .rag_index import DocumentChunk
+from ..shared.types import DocumentChunk
 
 def load_corpus(corpus_dir: str | Path) -> list[DocumentChunk]:
     chunks = []
@@ -13,4 +13,3 @@ def load_corpus(corpus_dir: str | Path) -> list[DocumentChunk]:
         for ordinal, start in enumerate(range(0, len(text), 800), start=1):
             chunks.append(DocumentChunk(text=text[start:start+800], source=path.name, doc_family_id=family, version_ordinal=ordinal, status=status))
     return chunks
-

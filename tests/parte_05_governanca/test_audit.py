@@ -1,5 +1,5 @@
 import json
-from src.audit import append_audit, find_by_trace_id
+from src.parte_05_governanca.audit import append_audit, find_by_trace_id
 
 def test_audit_record_is_locatable_by_trace_id(tmp_path):
     path = tmp_path / "audit.jsonl"

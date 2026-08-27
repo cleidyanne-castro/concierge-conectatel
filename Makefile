@@ -5,5 +5,4 @@ test:
 \tpython -m pytest -q
 
 run:
-\tpython -m src.cli
-
+\tpython -m src.cli --question "teste local"

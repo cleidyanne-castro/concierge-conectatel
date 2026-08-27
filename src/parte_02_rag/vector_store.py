@@ -2,7 +2,8 @@
 import json
 from pathlib import Path
 from .embeddings import embed, cosine
-from .rag_index import DocumentChunk, filter_current
+from ..shared.types import DocumentChunk
+from .rag_index import filter_current
 
 def build_index(chunks: list[DocumentChunk], path: str | Path) -> None:
     target=Path(path); target.parent.mkdir(parents=True, exist_ok=True)
@@ -21,4 +22,3 @@ def search(question: str, path: str | Path, top_k: int = 5, current_only: bool =
         if c.source not in {x.source for x in allowed}: continue
         scored.append((cosine(q,v),c))
     return sorted(scored,key=lambda x:x[0],reverse=True)[:top_k]
-

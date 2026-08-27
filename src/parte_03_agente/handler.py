@@ -1,9 +1,9 @@
 """Handler ponta a ponta para Lambda ou execução local."""
-from .audit import append_audit, create_trace_id
-from .config import Settings
-from .escalation import build_handoff
-from .policy import should_escalate
-from .vector_store import search
+from ..parte_05_governanca.audit import append_audit, create_trace_id
+from ..shared.config import Settings
+from ..parte_04_triagem.escalation import build_handoff
+from ..parte_04_triagem.policy import should_escalate
+from ..parte_02_rag.vector_store import search
 
 def handle(question: str, settings: Settings, *, bedrock=None) -> dict:
     trace_id=create_trace_id(); matches=search(question, settings.vector_store_path)
@@ -19,4 +19,3 @@ def handle(question: str, settings: Settings, *, bedrock=None) -> dict:
         decision='responder'; result={'trace_id':trace_id,'decision':decision,'answer':answer,'sources':sources[:3]}
     append_audit(settings.audit_log_path, trace_id=trace_id, question=question, sources=result.get('sources',[]), decision=decision)
     return result
-
