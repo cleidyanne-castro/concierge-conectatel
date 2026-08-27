@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+.aws/
+*.pyc
+artifacts/index/
+artifacts/logs/
+data/raw/
+data/corpus/
+data/call_log.csv
+*.parquet
+*.faiss
+*.pkl
+*.secret
+

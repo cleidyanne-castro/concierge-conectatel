@@ -1,0 +1,25 @@
+flowchart LR
+  A["CSV de chamados sintéticos"] --> B["Parte 1 • Pandas\nlimpeza + 3 análises"]
+  B --> C["Achados orientam\ndecisões de design"]
+  D["Corpus ConectaTel\nplanos • políticas • FAQ • procedimentos"] --> E["S3 privado\nversionamento + SSE-S3"]
+  E --> F["Chunking + metadados\ndoc_family_id • status • vigência"]
+  F --> G["Embeddings + índice\nFAISS/Chroma persistido"]
+  Q["Pergunta do assinante"] --> H["Lambda / handler"]
+  H --> I["Filtro determinístico\nstatus = vigente"]
+  I --> J["Busca por similaridade\nscore de recuperação"]
+  J --> K{ "Score >= limiar?" }
+  K -- "não" --> L["Resposta segura: não sei"]
+  K -- "sim" --> M["Bedrock\nresposta grounded + fonte"]
+  M --> N{ "Política exige humano?" }
+  N -- "sim" --> O["Escalonamento + handoff\nproblema • verificações • urgência"]
+  N -- "não" --> P["Resposta ao cliente\nfonte + trace_id"]
+  L --> R["Audit trail consultável\npergunta • fonte • decisão • guardrail"]
+  O --> R
+  P --> R
+  S["Guardrails + riscos + IAM mínimo\nAWS Budgets + versão congelada"] -.-> H
+  classDef data fill:#EAF2F8,stroke:#1F5D8C,color:#102A43;
+  classDef decision fill:#FFF4CC,stroke:#B7791F,color:#5F370E;
+  classDef control fill:#E6FFFA,stroke:#13795B,color:#164E63;
+  class A,B,C,D,E,F,G,Q,H,J,L,M,O,P,R data;
+  class I,K,N decision;
+  class S control;

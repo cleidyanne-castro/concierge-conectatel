@@ -1,0 +1,45 @@
+digraph G {
+  graph [bgcolor="white", rankdir=LR, splines=ortho, nodesep=0.45, ranksep=0.8, pad=0.35, fontname="Arial", label="Concierge ConectaTel | Arquitetura da solução | Squad 4", labelloc=t, fontsize=24, fontcolor="#102A43"];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=14, color="#B7C9D6", penwidth=1.6, margin="0.20,0.12", fontcolor="#102A43"];
+  edge [color="#5B7183", penwidth=1.8, arrowsize=0.7, fontname="Arial", fontsize=11, fontcolor="#415A6B"];
+
+  subgraph cluster_data { label="1. DADOS E CONHECIMENTO"; color="#A8D5E5"; style="rounded,dashed"; fontcolor="#1F5D8C"; fontsize=16;
+    csv [label="Log de chamados\nCSV sintético", fillcolor="#EAF2F8"];
+    pandas [label="Pandas\nlimpeza + 3 análises", fillcolor="#D9F0FA"];
+    corpus [label="Corpus ConectaTel\nplanos | políticas | FAQ", fillcolor="#EAF2F8"];
+    s3 [label="Amazon S3 privado\nversionamento + SSE-S3", fillcolor="#D9F0FA"];
+    chunks [label="Chunking + metadados\ndoc_family_id | vigência", fillcolor="#EAF2F8"];
+    index [label="Embeddings + índice\nFAISS/Chroma persistido", fillcolor="#D9F0FA"];
+  }
+
+  subgraph cluster_runtime { label="2. RUNTIME DO CONCIERGE"; color="#8DD3C7"; style="rounded,dashed"; fontcolor="#13795B"; fontsize=16;
+    question [label="Pergunta do assinante", fillcolor="#FFF4CC", color="#D69E2E"];
+    lambda [label="AWS Lambda\nhandler/orquestração", fillcolor="#E6FFFA"];
+    filter [label="FILTRO DETERMINÍSTICO\nstatus = vigente\nantes do score", fillcolor="#BEE3F8", color="#1F5D8C", penwidth=2.8];
+    score [label="Busca por similaridade\nscore de recuperação", fillcolor="#E6FFFA"];
+    threshold [label="Score ≥ limiar?", shape=diamond, fillcolor="#FFF4CC", color="#D69E2E"];
+    bedrock [label="Amazon Bedrock\ngrounded generation", fillcolor="#D9F0FA"];
+    policy [label="Política exige humano?", shape=diamond, fillcolor="#FFF4CC", color="#D69E2E"];
+    answer [label="Resposta ao cliente\nfonte + trace_id", fillcolor="#C6F6D5", color="#2F855A"];
+    dontknow [label="Resposta segura\n‘não sei’ sem inventar", fillcolor="#FED7AA", color="#C05621"];
+    handoff [label="Escalonamento + handoff\nproblema | verificações | urgência", fillcolor="#FBD5E5", color="#B83280"];
+  }
+
+  subgraph cluster_governance { label="3. GOVERNANÇA E OPERAÇÃO"; color="#B8A1E3"; style="rounded,dashed"; fontcolor="#553C9A"; fontsize=16;
+    audit [label="Audit trail consultável\npergunta | fontes | decisão | guardrail", fillcolor="#E9D8FD", color="#805AD5", penwidth=2.0];
+    controls [label="IAM mínimo\nGuardrails | AWS Budgets\nversão congelada", fillcolor="#F0EAFE"];
+  }
+
+  csv -> pandas [label=" trata"];
+  pandas -> lambda [label=" orienta design"];
+  corpus -> s3 [label=" armazena"];
+  s3 -> chunks -> index;
+  question -> lambda -> filter -> score -> threshold;
+  threshold -> dontknow [label=" não", color="#C05621", fontcolor="#C05621"];
+  threshold -> bedrock [label=" sim", color="#2F855A", fontcolor="#2F855A"];
+  bedrock -> policy;
+  policy -> answer [label=" não", color="#2F855A", fontcolor="#2F855A"];
+  policy -> handoff [label=" sim", color="#B83280", fontcolor="#B83280"];
+  answer -> audit; dontknow -> audit; handoff -> audit;
+  controls -> lambda [style=dashed, arrowhead=none];
+}
