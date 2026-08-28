@@ -34,14 +34,18 @@
 
 ## Evidência visual
 
-![Dashboard da Gold](gold_dashboard_evidence.jpg)
+![Visão geral da dashboard](gold_dashboard_evidence.png)
 
-![Recorte do canal loja física](gold_dashboard_loja_fisica_evidence.jpg)
+![Indicadores operacionais da dashboard](gold_dashboard_operacao_evidence.png)
 
-O recorte de loja física documenta a leitura do canal presencial. A métrica
-exibida é uma contagem de resoluções no primeiro contato. Ela não deve ser
-interpretada como taxa de eficiência sem o total de chamados recebidos pelo
-canal.
+As capturas foram feitas manualmente na visualização publicada, sem o painel de
+conversa do Genie. A primeira evidencia os KPIs, filtros e volume por
+categoria. A segunda evidencia a tabela por estado, a resolução por canal, a
+duração mediana e a nota metodológica.
+
+O gráfico de resolução por canal mostra contagens de chamados resolvidos no
+primeiro contato. Ele não deve ser interpretado como taxa de eficiência sem o
+total de chamados recebidos por canal.
 
 ## Reprodutibilidade
 

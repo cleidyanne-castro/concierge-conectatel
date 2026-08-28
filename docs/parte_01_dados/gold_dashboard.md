@@ -71,4 +71,5 @@ esses fatores antes de criar uma regra específica por estado.
 
 ## Referências visuais
 
-- [Evidência do recorte de loja física](../../artifacts/audit/gold_dashboard_loja_fisica_evidence.jpg)
+- [Evidência da visão geral](../../artifacts/audit/gold_dashboard_evidence.png)
+- [Evidência dos indicadores operacionais](../../artifacts/audit/gold_dashboard_operacao_evidence.png)
