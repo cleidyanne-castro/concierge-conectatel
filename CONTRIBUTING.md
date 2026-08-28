@@ -18,11 +18,13 @@ Escopo: limpeza do CSV, análises descritivas e registro do achado utilizado par
 
 ### Parte 2. RAG e base vetorial
 
-Responsável pela estratégia de RAG: Kaique Silva
+Responsável pela estratégia de recuperação e pela tool `retrieve_kb`: Kaique Silva
 
 Responsável por chunking, embeddings e índice vetorial: Bruno Jordão das Neves Moura
 
-Escopo: chunking, metadados de vigência, embeddings, índice vetorial, filtro de documentos vigentes e avaliação da recuperação.
+Escopo do Bruno: chunking, metadados de vigência, embeddings e índice vetorial.
+Escopo do Kaique: filtro determinístico de documentos vigentes na busca,
+calibração do limiar de "não sei" e avaliação da recuperação.
 
 ### Parte 3. Agente Concierge
 

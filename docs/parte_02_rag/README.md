@@ -5,11 +5,19 @@ Chunking e Embeddings.
 
 ## Responsabilidades
 
+### Bruno: base de conhecimento
+
 - preparar o corpus oficial.
 - extrair e preservar metadados de vigência.
 - dividir documentos em chunks rastreáveis.
 - gerar embeddings e alimentar o índice vetorial.
-- avaliar a recuperação com filtro obrigatório de documentos vigentes.
+
+### Kaique: recuperação
+
+- implementar a tool `retrieve_kb`.
+- filtrar documentos com `status = vigente` antes da similaridade.
+- calibrar o limiar de "não sei".
+- avaliar a recuperação com perguntas de teste.
 
 ## Integração
 
