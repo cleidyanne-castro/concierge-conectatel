@@ -78,7 +78,7 @@ Entrega chamados com colunas conhecidas, tipos coerentes, textos normalizados, v
 
 ### Gold
 
-Entrega indicadores agregados, análises descritivas, síntese orientada à decisão e evidências que conectam os achados dos chamados a decisões do Concierge.
+Entrega três análises agregadas, KPIs com denominadores, síntese orientada à decisão, relatório de qualidade e manifesto de execução. Esses artefatos conectam os achados dos chamados a decisões do Concierge.
 
 ## Integração com as próximas partes
 
@@ -93,11 +93,13 @@ As equipes seguintes consomem contratos e artefatos versionados no GitHub. Elas 
 - [ ] Insumos identificados e preservados na Bronze.
 - [ ] Schema e qualidade registrados antes e depois da limpeza.
 - [ ] Silver reproduzível e coberta por testes.
-- [ ] Gold com indicadores, denominadores e interpretação.
+- [x] Gold com indicadores, denominadores e interpretação.
 - [ ] Decisões de produto rastreadas a achados específicos.
 - [ ] Metadados de vigência disponíveis para RAG.
 - [ ] Handoff documentado para Chunking e Embeddings.
-- [ ] Workflow com dependência Bronze → Silver → Gold descrito.
+- [x] Workflow com dependência Bronze → Silver → Gold descrito.
+- [ ] Workflow publicado e executado no workspace.
+- [ ] Dashboard criado e validado no workspace.
 - [ ] Evidências de execução e limitações registradas.
 
 ## Limites da solução
