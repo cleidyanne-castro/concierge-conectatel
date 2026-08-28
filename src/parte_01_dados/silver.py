@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from typing import Any
 
 import pandas as pd
 
@@ -66,7 +67,27 @@ def _to_boolean(series: pd.Series) -> pd.Series:
         "no": False,
     }
     normalized = series.astype("string").str.strip().str.lower().map(mapping)
+    normalized = normalized.astype("boolean")
     return normalized.fillna(False).astype(bool)
+
+
+def build_processing_metrics(
+    *,
+    input_rows: int,
+    output_rows: int,
+    started_at: Any,
+    finished_at: Any,
+) -> dict[str, Any]:
+    """Registra volume e duração da execução da Silver."""
+    duration_seconds = (finished_at - started_at).total_seconds()
+    return {
+        "input_rows": int(input_rows),
+        "output_rows": int(output_rows),
+        "rows_removed": int(input_rows - output_rows),
+        "duration_seconds": float(duration_seconds),
+        "started_at_utc": started_at.isoformat(),
+        "finished_at_utc": finished_at.isoformat(),
+    }
 
 
 def clean_calls(df: pd.DataFrame) -> pd.DataFrame:
@@ -79,10 +100,14 @@ def clean_calls(df: pd.DataFrame) -> pd.DataFrame:
         cleaned[column] = cleaned[column].map(normalize_text).fillna("unknown")
 
     cleaned["data_abertura"] = pd.to_datetime(
-        cleaned["data_abertura"], errors="coerce"
+        cleaned["data_abertura"], errors="coerce", format="mixed"
     )
     for column in NUMERIC_COLUMNS:
         cleaned[column] = pd.to_numeric(cleaned[column], errors="coerce")
+    cleaned["duracao_minutos"] = cleaned["duracao_minutos"].where(
+        cleaned["duracao_minutos"].ge(0)
+    )
+    cleaned["satisfacao_1_a_5"] = cleaned["satisfacao_1_a_5"].clip(1, 5)
     for column in BOOLEAN_COLUMNS:
         cleaned[column] = _to_boolean(cleaned[column])
 

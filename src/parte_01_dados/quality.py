@@ -36,6 +36,8 @@ def build_run_manifest(
 ) -> dict[str, Any]:
     """Monta um registro serializável da execução da camada."""
     duration_seconds = (finished_at - started_at).total_seconds()
+    if duration_seconds < 0:
+        raise ValueError("finished_at não pode ser anterior a started_at")
     return {
         "layer": layer,
         "source_path": str(source_path),
