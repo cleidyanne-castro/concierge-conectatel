@@ -36,6 +36,13 @@
 
 ![Dashboard da Gold](gold_dashboard_evidence.jpg)
 
+![Recorte do canal loja física](gold_dashboard_loja_fisica_evidence.jpg)
+
+O recorte de loja física documenta a leitura do canal presencial. A métrica
+exibida é uma contagem de resoluções no primeiro contato. Ela não deve ser
+interpretada como taxa de eficiência sem o total de chamados recebidos pelo
+canal.
+
 ## Reprodutibilidade
 
 O dashboard foi atualizado depois da execução do Workflow. A sequência confirmada foi Bronze, Silver e Gold. O arquivo visual desta evidência está versionado nesta mesma pasta.
