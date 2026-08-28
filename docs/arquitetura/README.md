@@ -26,15 +26,15 @@ entre as equipes e os pontos que dependem da configuração do ambiente.
 
 ## Planejado e executado
 
-| Área | Planejado | Executado | Evidência |
-|---|---|---|---|
-| Pipeline de dados | CSV de chamados e corpus tratados para consumo das etapas seguintes | Bronze, Silver e Gold implementadas com Pandas, CSV, JSON e Markdown | `docs/parte_01_dados/` |
-| Base de conhecimento | Limpeza de metadados, chunking e embeddings | Handoff documentado com vigência, versão, fonte e contrato de chunk | `docs/parte_02_rag/data_handoff.md` |
-| Índice e busca | Índice vetorial consumido pelo agente | Fluxo previsto no desenho final, com responsabilidades documentadas | `README.md` |
-| Agente | Orquestração de respostas com fonte vigente | Agente, busca, limiar e decisão documentados no escopo do projeto | `README.md` |
-| Escalonamento | Handoff para atendimento humano | Handoff e persistência da decisão previstos na arquitetura | `docs/parte_01_dados/engenharia_dados.md` |
-| Governança | Observabilidade, auditoria e consulta por `trace_id` | Trilha de auditoria, evidências e requisito de consulta em até 60 segundos | `docs/qa/` e `artifacts/audit/` |
-| Automação | Dependência Bronze, Silver e Gold | Workflow Job publicado e executado com tarefas dependentes | `infra/databricks_workflow_gold.json` |
+| Área | Planejado | Executado |
+|---|---|---|
+| Pipeline de dados | CSV de chamados e corpus tratados para consumo das etapas seguintes | Bronze, Silver e Gold implementadas com Pandas, CSV, JSON e Markdown |
+| Base de conhecimento | Limpeza de metadados, chunking e embeddings | Handoff documentado com vigência, versão, fonte e contrato de chunk |
+| Índice e busca | Índice vetorial consumido pelo agente | Fluxo previsto no desenho final, com responsabilidades documentadas |
+| Agente | Orquestração de respostas com fonte vigente | Agente, busca, limiar e decisão documentados no escopo do projeto |
+| Escalonamento | Handoff para atendimento humano | Handoff e persistência da decisão previstos na arquitetura |
+| Governança | Observabilidade, auditoria e consulta por `trace_id` | Trilha de auditoria, evidências e requisito de consulta em até 60 segundos |
+| Automação | Dependência Bronze, Silver e Gold | Workflow Job publicado e executado com tarefas dependentes |
 
 ## Leitura do fluxo
 
