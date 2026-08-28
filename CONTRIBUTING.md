@@ -4,16 +4,9 @@
 
 ### Cleidyanne Castro Pereira
 
-Responsável pela Parte 0 e pela coordenação técnica inicial.
-
-- Definição, criação e organização da estrutura inicial do repositório do Squad 4.
-- Organização das pastas por etapa do desafio.
-- Criação e inclusão da arquitetura visual final do Concierge ConectaTel.
-- Criação do README operacional para avaliadores e pessoas externas à squad.
-- Inclusão das instruções de instalação, configuração, execução, testes, auditoria e troubleshooting.
-- Criação da apresentação executiva inicial para stakeholders e banca técnica.
-- Criação e organização do template do relatório final do hackathon.
-- Inclusão de placeholders para decisões técnicas, evidências, transcrições, riscos e reflexão coletiva.
+Responsável pela Parte 0 e pela coordenação técnica inicial. O registro
+consolidado das contribuições está em
+ [`docs/registros_cleidyanne.md`](docs/registros_cleidyanne.md).
 
 ## Responsabilidades planejadas por etapa
 
