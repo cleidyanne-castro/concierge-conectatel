@@ -14,3 +14,7 @@ data/call_log.csv
 *.pkl
 *.secret
 
+!data/corpus/
+!data/corpus/.gitkeep
+!data/processed/
+!data/processed/.gitkeep
