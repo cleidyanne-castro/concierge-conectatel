@@ -91,16 +91,16 @@ As equipes seguintes consomem contratos e artefatos versionados no GitHub. Elas 
 
 ## Critério de pronto
 
-- [ ] Insumos identificados e preservados na Bronze.
-- [ ] Schema e qualidade registrados antes e depois da limpeza.
-- [ ] Silver reproduzível e coberta por testes.
+- [x] Insumos identificados e preservados na Bronze.
+- [x] Schema e qualidade registrados antes e depois da limpeza.
+- [x] Silver reproduzível e coberta por testes.
 - [x] Gold com indicadores, denominadores e interpretação.
-- [ ] Decisões de produto rastreadas a achados específicos.
-- [ ] Metadados de vigência disponíveis para RAG.
-- [ ] Handoff documentado para Chunking e Embeddings.
+- [x] Decisões de produto rastreadas a achados específicos.
+- [x] Metadados de vigência disponíveis para RAG.
+- [x] Handoff documentado para Chunking e Embeddings.
 - [x] Workflow com dependência Bronze → Silver → Gold descrito.
 - [x] Workflow publicado e executado no workspace.
-- [ ] Dashboard criado e validado no workspace.
+- [x] Dashboard criado e validado no workspace.
 - [x] Evidências de execução e limitações registradas.
 
 ## Limites da solução

@@ -72,7 +72,7 @@ def test_clean_calls_canonicalizes_state_aliases(raw_calls):
     raw_calls.loc[0, "estado"] = "Ceará"
     raw_calls.loc[1, "estado"] = "ce"
     cleaned = clean_calls(raw_calls)
-    assert cleaned["estado"].tolist() == ["ce"]
+    assert cleaned["estado"].tolist() == ["ce", "ce"]
 
 
 def test_clean_calls_preserves_unknown_boolean_as_missing(raw_calls):

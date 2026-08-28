@@ -71,6 +71,4 @@ esses fatores antes de criar uma regra específica por estado.
 
 ## Referências visuais
 
-- [Apresentação executiva no Canva](https://canva.link/lfr7afj1m8gnxgf)
-- [Documento de contribuição no Canva](https://canva.link/gubmha8kbmaz4y9)
 - [Evidência do recorte de loja física](../../artifacts/audit/gold_dashboard_loja_fisica_evidence.jpg)
