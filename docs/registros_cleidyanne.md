@@ -41,11 +41,11 @@ O contrato de integração está em [`docs/parte_02_rag/data_handoff.md`](parte_
 
 O quadro oficial é o [GitHub Projects da Squad 4](https://github.com/users/cleidyanne-castro/projects/1).
 
-![Evidência visual do GitHub Projects](arquitetura/github_projects_kanban.jpg)
+![Evidência visual do GitHub Projects](arquitetura/github_projects_kanban.png)
 
 A imagem registra as etapas, responsáveis e estados do fluxo Kanban no momento
 da documentação. O arquivo está em
-[`docs/arquitetura/github_projects_kanban.jpg`](arquitetura/github_projects_kanban.jpg).
+[`docs/arquitetura/github_projects_kanban.png`](arquitetura/github_projects_kanban.png).
 
 ## Apresentação e relatório
 
