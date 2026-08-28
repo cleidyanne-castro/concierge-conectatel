@@ -12,12 +12,12 @@ consumo pelas etapas seguintes do projeto, usando Pandas e arquivos CSV/JSON.
 - Textos categóricos são aparados, convertidos para minúsculas e normalizados
   sem acentos para evitar categorias artificialmente diferentes.
 - Valores textuais ausentes recebem `unknown` quando a coluna é categórica.
-- `data_abertura` é convertida para data; valores inválidos tornam-se nulos e
+- `data_abertura` é convertida para data. Valores inválidos tornam-se nulos e
   são contabilizados no relatório de qualidade.
 - `duracao_minutos` e `satisfacao_1_a_5` são convertidos para números.
-- A satisfação deve permanecer entre 1 e 5; durações negativas são inválidas.
+- A satisfação deve permanecer entre 1 e 5. Durações negativas são inválidas.
 - Campos booleanos aceitam representações como `sim/não`, `true/false` e
-  `1/0`; valores não reconhecidos são tratados como `False`.
+  `1/0`. Valores não reconhecidos são tratados como `False`.
 
 ## Relação com o projeto
 

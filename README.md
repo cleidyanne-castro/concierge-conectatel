@@ -4,20 +4,32 @@ Assistente GenAI de atendimento para a operadora fictícia ConectaTel, com pipel
 
 Este README é um guia técnico de execução para avaliadores e pessoas externas à squad.
 
+## Mapa rápido
+
+- [`src/`](src/): código executável, organizado pelas cinco partes da solução.
+- [`tests/`](tests/): testes espelhados por domínio funcional.
+- [`docs/`](docs/): contratos, decisões, arquitetura, QA e materiais de entrega.
+- [`data/`](data/): somente entradas e exemplos pequenos.
+- [`artifacts/`](artifacts/): evidências e saídas de execução.
+- [`infra/`](infra/): configurações reproduzíveis de infraestrutura, sem segredos.
+
+O conteúdo original dos notebooks, módulos, testes e imagens permanece nas
+pastas correspondentes; este mapa é a camada de navegação do repositório.
+
 ## 1. Arquitetura da solução
 
 ![Arquitetura final do Concierge ConectaTel](docs/arquitetura/arquitetura_conectatel_final.jpg)
 
-Arquivo oficial da arquitetura: [JPG final](docs/arquitetura/arquitetura_conectatel_final.jpg).
+Arquivos oficiais: [arquitetura original](docs/arquitetura/arquitetura_conectatel_planejada.jpg) e [arquitetura final](docs/arquitetura/arquitetura_conectatel_final.jpg). A comparação está em [planejado versus executado](docs/arquitetura/planejado_vs_executado.md).
 
-Fluxo: log CSV → Pandas → achados de design; corpus → S3 → chunking/metadados → embeddings/índice; pergunta → Lambda → filtro `status=vigente` → busca → limiar → resposta grounded, “não sei” ou escalonamento → audit trail.
+Fluxo: log CSV → Pandas → achados de design. Corpus → S3 → chunking/metadados → embeddings/índice. Pergunta → Lambda → filtro `status=vigente` → busca → limiar → resposta grounded, “não sei” ou escalonamento → audit trail.
 
 ## 2. Pré-requisitos
 
 - Python 3.11 ou superior.
 - AWS CLI configurado na conta de consolidação.
 - Região AWS usada pela squad nas sprints anteriores.
-- Permissões mínimas para S3 e Amazon Bedrock; para Lambda, role equivalente.
+- Permissões mínimas para S3 e Amazon Bedrock. Para Lambda, role equivalente.
 - Acesso ao modelo aprovado no Bedrock e AWS Budget de baixo valor ativo.
 - Log CSV e corpus documental oficiais fornecidos no pacote do desafio.
 
@@ -44,7 +56,7 @@ Os metadados devem conter `doc_family_id`, `version_ordinal`, `effective_from`, 
 
 ## 5. Execução
 
-### Parte 1 — Pipeline de dados
+### Parte 1: Pipeline de dados
 
 ```bash
 python -m src.parte_01_dados.pipeline --input data/call_log.csv --output artifacts/data
@@ -52,7 +64,7 @@ python -m src.parte_01_dados.pipeline --input data/call_log.csv --output artifac
 
 Gera `cleaned_calls.csv` e `analyses.json`. O documento principal deve explicar três análises e ligar pelo menos um achado a uma decisão de design.
 
-### Parte 2 — Base de conhecimento e RAG
+### Parte 2: Base de conhecimento e RAG
 
 ```bash
 python -m src.parte_02_rag.rag_index --corpus data/corpus --output artifacts/index.json
@@ -60,13 +72,13 @@ python -m src.parte_02_rag.rag_index --corpus data/corpus --output artifacts/ind
 
 O filtro `status=vigente` ocorre antes da similaridade. Prompt sozinho não atende ao requisito de vigência.
 
-### Partes 3 e 4 — Agente e escalonamento
+### Partes 3 e 4: Agente e escalonamento
 
 ```bash
 python -m src.cli --question "<pergunta do assinante>"
 ```
 
-O resultado deve conter `trace_id` e uma decisão: `responder`, `nao_sei` ou `escalar`. O adaptador real do Bedrock está em `src/bedrock_client.py`; o modo local permite validar o fluxo sem credenciais.
+O resultado deve conter `trace_id` e uma decisão: `responder`, `nao_sei` ou `escalar`. O adaptador real do Bedrock está em `src/parte_03_agente/bedrock_client.py`. O modo local permite validar o fluxo sem credenciais.
 
 ## 6. Testes e evidências
 
@@ -74,11 +86,11 @@ O resultado deve conter `trace_id` e uma decisão: `responder`, `nao_sei` ou `es
 python -m pytest -q
 ```
 
-As evidências finais devem conter 10–15 transcrições textuais: duas respostas com fonte vigente, duas perguntas sobre versão revogada, duas sem fonte com “não sei” e dois escalonamentos distintos com handoff completo. Também devem cobrir perguntas não preparadas, consulta do `trace_id` em até 60 segundos e execução do README por membro diferente do autor da configuração.
+As evidências finais devem conter 10 a 15 transcrições textuais. Devem incluir duas respostas com fonte vigente, duas perguntas sobre versão revogada, duas sem fonte com “não sei” e dois escalonamentos distintos com handoff completo. Também devem cobrir perguntas não preparadas, consulta do `trace_id` em até 60 segundos e execução do README por membro diferente do autor da configuração.
 
 ## 7. Auditoria e governança
 
-Cada resposta registra pergunta, fontes, decisão, guardrail e `trace_id`. O registro local fica em `artifacts/audit/audit.jsonl`; `find_by_trace_id()` localiza uma interação. A entrega final deve documentar IAM de menor privilégio, guardrails, riscos, AWS Budgets e limpeza de recursos contínuos.
+Cada resposta registra pergunta, fontes, decisão, guardrail e `trace_id`. O registro local fica em `artifacts/audit/audit.jsonl`. `find_by_trace_id()` localiza uma interação. A entrega final deve documentar IAM de menor privilégio, guardrails, riscos, AWS Budgets e limpeza de recursos contínuos.
 
 ## 8. Estrutura do repositório
 
@@ -91,7 +103,7 @@ Cada resposta registra pergunta, fontes, decisão, guardrail e `trace_id`. O reg
 - `docs/qa/`: evidências e checklist.
 - `docs/apresentacao/`: slides da banca.
 - `infra/`: configuração e documentação AWS.
-- `artifacts/`: saídas locais; não versionar dados gerados.
+- `artifacts/`: saídas locais. Não versionar dados gerados.
 
 ## 9. Troubleshooting
 
