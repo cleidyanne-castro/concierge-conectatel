@@ -4,6 +4,18 @@ Assistente GenAI de atendimento para a operadora fictícia ConectaTel, com pipel
 
 Este README é um guia técnico de execução para avaliadores e pessoas externas à squad.
 
+## Mapa rápido
+
+- [`src/`](src/): código executável, organizado pelas cinco partes da solução.
+- [`tests/`](tests/): testes espelhados por domínio funcional.
+- [`docs/`](docs/): contratos, decisões, arquitetura, QA e materiais de entrega.
+- [`data/`](data/): somente entradas e exemplos pequenos.
+- [`artifacts/`](artifacts/): evidências e saídas de execução.
+- [`infra/`](infra/): configurações reproduzíveis de infraestrutura, sem segredos.
+
+O conteúdo original dos notebooks, módulos, testes e imagens permanece nas
+pastas correspondentes; este mapa é a camada de navegação do repositório.
+
 ## 1. Arquitetura da solução
 
 ![Arquitetura final do Concierge ConectaTel](docs/arquitetura/arquitetura_conectatel_final.jpg)
@@ -66,7 +78,7 @@ O filtro `status=vigente` ocorre antes da similaridade. Prompt sozinho não aten
 python -m src.cli --question "<pergunta do assinante>"
 ```
 
-O resultado deve conter `trace_id` e uma decisão: `responder`, `nao_sei` ou `escalar`. O adaptador real do Bedrock está em `src/bedrock_client.py`. O modo local permite validar o fluxo sem credenciais.
+O resultado deve conter `trace_id` e uma decisão: `responder`, `nao_sei` ou `escalar`. O adaptador real do Bedrock está em `src/parte_03_agente/bedrock_client.py`. O modo local permite validar o fluxo sem credenciais.
 
 ## 6. Testes e evidências
 

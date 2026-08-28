@@ -50,9 +50,9 @@ da documentação. O arquivo está em
 ## Apresentação e relatório
 
 - criação da apresentação executiva
-- a apresentação executiva está em preparação em [`docs/apresentacao/PLACEHOLDER.md`](apresentacao/PLACEHOLDER.md).
+- a apresentação executiva está em preparação em [`docs/apresentacao/`](apresentacao/).
 - criação do relatório colaborativo considerando os entregáveis e escopo do projeto
-- o relatório colaborativo está em preparação em [`docs/relatorio/PLACEHOLDER.md`](relatorio/PLACEHOLDER.md).
+- o relatório colaborativo está em preparação em [`docs/relatorio/`](relatorio/).
 
 ## Rastreabilidade
 

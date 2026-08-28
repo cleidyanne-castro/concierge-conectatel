@@ -24,7 +24,7 @@ O desenho usa Python e Pandas, com CSV, JSON e Markdown como formatos de trabalh
 |---|---|---|---|---|
 | Bronze | CSV de chamados e corpus documental | snapshots, inventários, qualidade e metadados | preservar a origem e tornar os insumos rastreáveis | [`01_bronze_ingestao.ipynb`](../../src/parte_01_dados/01_bronze_ingestao.ipynb) |
 | Silver | saída tratada da Bronze | dataset limpo e validado | aplicar tipagem, normalização e regras de negócio | [`02_silver_limpeza.ipynb`](../../src/parte_01_dados/02_silver_limpeza.ipynb) |
-| Gold | Silver | análises e síntese executiva | transformar dados tratados em evidências úteis para o produto | [`03_gold_analise.ipynb`](../../src/parte_01_dados/03_gold_analise.ipynb) |
+| Gold | Silver | análises e síntese executiva | transformar dados tratados em evidências úteis para o produto | especificação em [`engenharia_dados.md`](engenharia_dados.md) |
 
 ## Conteúdo desta entrega
 
@@ -39,17 +39,14 @@ O desenho usa Python e Pandas, com CSV, JSON e Markdown como formatos de trabalh
 
 - [`01_bronze_ingestao.ipynb`](../../src/parte_01_dados/01_bronze_ingestao.ipynb): preservação da origem, diagnóstico e inventário.
 - [`02_silver_limpeza.ipynb`](../../src/parte_01_dados/02_silver_limpeza.ipynb): transformação do dataset para consumo analítico.
-- [`03_gold_analise.ipynb`](../../src/parte_01_dados/03_gold_analise.ipynb): indicadores, análises e recomendações.
+- Gold: indicadores, análises e recomendações documentados em [`engenharia_dados.md`](engenharia_dados.md) e na evidência de execução disponível em `artifacts/audit/`.
 - [`silver.py`](../../src/parte_01_dados/silver.py): lógica reutilizável da Silver.
-- [`gold.py`](../../src/parte_01_dados/gold.py): lógica reutilizável da Gold.
 
 ### Qualidade e operação
 
 - [`test_silver.py`](../../tests/parte_01_dados/test_silver.py): testes automatizados da Silver.
-- [`test_gold.py`](../../tests/parte_01_dados/test_gold.py): testes automatizados da Gold.
 - [`silver_execution_evidence.md`](../../artifacts/audit/silver_execution_evidence.md): evidência da execução real da Silver no Databricks.
 - [`gold_execution_evidence.md`](../../artifacts/audit/gold_execution_evidence.md): evidência da execução ponta a ponta e dos resultados da Gold.
-- [`databricks_workflow_gold.json`](../../infra/databricks_workflow_gold.json): definição do Workflow Job com dependências entre as camadas.
 
 ## Como reproduzir
 
@@ -65,7 +62,7 @@ O desenho usa Python e Pandas, com CSV, JSON e Markdown como formatos de trabalh
 
 6. Registre no GitHub os resultados relevantes, limitações e evidências de execução.
 
-O fluxo operacional sugerido está descrito em [`engenharia_dados.md`](engenharia_dados.md), e a automação planejada está representada em [`databricks_workflow_gold.json`](../../infra/databricks_workflow_gold.json).
+O fluxo operacional sugerido está descrito em [`engenharia_dados.md`](engenharia_dados.md). A automação do Workflow Job é dependente do ambiente Databricks e deve ser registrada em `infra/` quando o arquivo de configuração estiver disponível.
 
 ## Contratos de saída
 

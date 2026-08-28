@@ -4,9 +4,11 @@ Registrar aqui somente configuração reproduzível e sem segredos: S3 privado c
 
 ## Workflow Databricks
 
-[`databricks_workflow_gold.json`](databricks_workflow_gold.json) versiona o
-encadeamento `Bronze → Silver → Gold`. Os placeholders `workspace_path` e
-`compute_id` evitam registrar caminhos privados e identificadores do workspace.
+O encadeamento esperado é `Bronze → Silver → Gold`, conforme descrito em
+[`docs/parte_01_dados/engenharia_dados.md`](../docs/parte_01_dados/engenharia_dados.md).
+Quando a definição do Workflow Job for exportada do ambiente, ela deve ser
+versionada nesta pasta com placeholders para `workspace_path` e `compute_id`,
+sem caminhos privados ou identificadores do workspace.
 
 Antes da publicação, substitua os parâmetros pelo ambiente correto, confirme o
 acesso aos três notebooks e execute uma rodada completa. Registre horário,
