@@ -48,6 +48,7 @@ O desenho usa Python e Pandas, com CSV, JSON e Markdown como formatos de trabalh
 - [`test_silver.py`](../../tests/parte_01_dados/test_silver.py) — testes automatizados da Silver.
 - [`test_gold.py`](../../tests/parte_01_dados/test_gold.py) — testes automatizados da Gold.
 - [`silver_execution_evidence.md`](../../artifacts/audit/silver_execution_evidence.md) — evidência da execução real da Silver no Databricks.
+- [`gold_execution_evidence.md`](../../artifacts/audit/gold_execution_evidence.md) — evidência da execução ponta a ponta e dos resultados da Gold.
 - [`databricks_workflow_gold.json`](../../infra/databricks_workflow_gold.json) — definição do Workflow Job com dependências entre as camadas.
 
 ## Como reproduzir
@@ -98,9 +99,9 @@ As equipes seguintes consomem contratos e artefatos versionados no GitHub. Elas 
 - [ ] Metadados de vigência disponíveis para RAG.
 - [ ] Handoff documentado para Chunking e Embeddings.
 - [x] Workflow com dependência Bronze → Silver → Gold descrito.
-- [ ] Workflow publicado e executado no workspace.
+- [x] Workflow publicado e executado no workspace.
 - [ ] Dashboard criado e validado no workspace.
-- [ ] Evidências de execução e limitações registradas.
+- [x] Evidências de execução e limitações registradas.
 
 ## Limites da solução
 

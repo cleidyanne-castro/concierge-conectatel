@@ -88,8 +88,8 @@ as agregações reutilizáveis e testáveis.
 |---|---|---|---|
 | Bronze | preservar insumos, diagnosticar qualidade e mapear vigência | snapshots, análises, inventário, schema, qualidade e metadados do corpus | Concluído |
 | Silver | preparar um dataset confiável | normalização sem acentos, conversões, ausências, duplicatas, métricas e testes | Concluído |
-| Gold | transformar a Silver em evidência para decisões | três agregações, KPIs com denominadores, decisões, qualidade e manifesto | Implementado; falta execução no workspace |
-| Automação | encadear Bronze → Silver → Gold | definição do Workflow Job com dependências explícitas | Preparado; falta publicação e execução |
+| Gold | transformar a Silver em evidência para decisões | três agregações, KPIs com denominadores, decisões, qualidade e manifesto | Executado com sucesso |
+| Automação | encadear Bronze → Silver → Gold | Workflow Job publicado, com três tarefas dependentes e Serverless | Executado com sucesso |
 | Dashboard | comunicar os indicadores | especificação de fontes, visuais, filtros e critérios de leitura | Especificado; falta criação no workspace |
 | Integração | entregar insumos claros às próximas partes | handoff de vigência, campos de chunk e rastreabilidade | Documentado |
 
@@ -179,6 +179,10 @@ O arquivo de referência está em:
 
 `infra/databricks_workflow_gold.json`
 
+A execução realizada está registrada em:
+
+`artifacts/audit/gold_execution_evidence.md`
+
 Antes da demonstração, devem ser preenchidos os parâmetros do workspace e do
 compute e realizada uma execução completa para gerar a evidência do fluxo.
 
@@ -218,7 +222,6 @@ responsabilidades sejam executadas pelas partes seguintes.
 ## Limitações conhecidas
 
 - Os dados processados permanecem no Volume e não são versionados no GitHub.
-- O Workflow Job precisa ser configurado no workspace antes da demonstração.
 - O dashboard precisa ser criado e validado após a execução da Gold.
 - O status `WARNING` da Silver é esperado quando duplicatas são encontradas.
 - A execução local não substitui a evidência do Databricks.
