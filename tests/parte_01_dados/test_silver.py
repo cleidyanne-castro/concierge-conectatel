@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 from src.parte_01_dados.silver import (
     EXPECTED_COLUMNS,
+    QUALITY_COLUMNS,
     build_processing_metrics,
     clean_calls,
     validate_columns,
@@ -51,7 +52,8 @@ def raw_calls():
 
 def test_clean_calls_preserves_contract(raw_calls):
     cleaned = clean_calls(raw_calls)
-    assert cleaned.columns.tolist() == EXPECTED_COLUMNS
+    assert cleaned.columns[: len(EXPECTED_COLUMNS)].tolist() == EXPECTED_COLUMNS
+    assert set(QUALITY_COLUMNS).issubset(cleaned.columns)
     assert len(cleaned) == 1
 
 
@@ -64,6 +66,36 @@ def test_clean_calls_normalizes_text_and_types(raw_calls):
     assert cleaned["duracao_minutos"].dtype.kind in "fi"
     assert bool(row["resolvido_primeiro_contato"]) is True
     assert bool(row["encaminhado_humano"]) is False
+
+
+def test_clean_calls_canonicalizes_state_aliases(raw_calls):
+    raw_calls.loc[0, "estado"] = "Ceará"
+    raw_calls.loc[1, "estado"] = "ce"
+    cleaned = clean_calls(raw_calls)
+    assert cleaned["estado"].tolist() == ["ce"]
+
+
+def test_clean_calls_preserves_unknown_boolean_as_missing(raw_calls):
+    raw_calls.loc[0, "resolvido_primeiro_contato"] = "indisponivel"
+    cleaned = clean_calls(raw_calls)
+    assert pd.isna(cleaned.loc[0, "resolvido_primeiro_contato"])
+    assert bool(cleaned.loc[0, "has_unknown_boolean"]) is True
+
+
+def test_clean_calls_flags_future_date_and_negative_duration(raw_calls):
+    raw_calls.loc[0, "data_abertura"] = "2099-01-01"
+    raw_calls.loc[0, "duracao_minutos"] = "-4"
+    cleaned = clean_calls(raw_calls)
+    assert bool(cleaned.loc[0, "is_valid_date"]) is False
+    assert bool(cleaned.loc[0, "is_valid_duration"]) is False
+
+
+def test_clean_calls_flags_duration_outlier(raw_calls):
+    rows = pd.concat([raw_calls.iloc[[0]]] * 5, ignore_index=True)
+    rows["chamado_id"] = ["1", "2", "3", "4", "5"]
+    rows["duracao_minutos"] = [10, 11, 12, 13, 1000]
+    cleaned = clean_calls(rows)
+    assert bool(cleaned.loc[4, "is_outlier_duration"]) is True
 
 
 def test_validate_columns_rejects_incomplete_input(raw_calls):

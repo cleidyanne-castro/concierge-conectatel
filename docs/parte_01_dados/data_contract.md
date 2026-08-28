@@ -15,7 +15,7 @@ para análise e decisões do Concierge.
 | `canal` | string | lowercase, sem acentos, sem espaços externos | Gold/Agente |
 | `categoria` | string | lowercase, sem acentos, sem espaços externos | Gold/RAG |
 | `subcategoria` | string | lowercase, sem acentos, sem espaços externos | Gold/RAG |
-| `estado` | string | categoria normalizada | Gold |
+| `estado` | string | UF canônica em minúsculas | Gold |
 | `cidade` | string | categoria normalizada | Gold |
 | `duracao_minutos` | numeric | número não negativo | Gold |
 | `resolvido_primeiro_contato` | boolean | `sim/não`, `1/0`, `true/false` | Gold |
@@ -37,4 +37,11 @@ para análise e decisões do Concierge.
 
 - Bronze: snapshot, schema, inventário, qualidade e metadados do corpus.
 - Silver: `silver_calls_cleaned.csv` e relatório de qualidade.
+
+Estados são harmonizados na Silver. Siglas e nomes completos, como `ce` e
+`ceara`, convergem para a mesma UF antes das agregações geográficas.
+
+A Silver também entrega flags de qualidade para data, duração, satisfação,
+booleans desconhecidos e outliers de duração. Outliers são sinalizados pelo
+critério IQR e permanecem disponíveis para auditoria e análise.
 - Gold: KPIs, resumos por categoria/canal/geografia e decisões de design.
