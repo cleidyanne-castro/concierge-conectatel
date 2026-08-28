@@ -2,5 +2,4 @@
 
 | Data | Parte | Decisão | Alternativas consideradas | Evidência | Responsável |
 |---|---|---|---|---|---|
-| [dd/mm] | [0–5] | [decisão] | [alternativas] | [link/log] | [nome] |
-
+| [dd/mm] | [0 a 5] | [decisão] | [alternativas] | [link/log] | [nome] |
