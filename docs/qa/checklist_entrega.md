@@ -6,9 +6,8 @@
 - [ ] Parte 3: fonte, grounding, “não sei” por limiar e calibração.
 - [ ] Parte 4: escalonamento e handoff com problema, verificações e urgência.
 - [ ] Parte 5: pergunta, fonte, decisão, guardrail e `trace_id` consultável em até 60 s.
-- [ ] 10–15 transcrições cobrindo todos os casos obrigatórios.
+- [ ] 10 a 15 transcrições cobrindo todos os casos obrigatórios.
 - [ ] README executado do zero por um membro diferente do autor da configuração.
 - [ ] Slides para 15 minutos, vídeo plano B de até 3 minutos e transcrições impressas.
 - [ ] Tag `v1.0-entrega` criada antes do prazo e usada na demonstração.
 - [ ] AWS Budgets ativos e recursos contínuos desligados/revisados.
-

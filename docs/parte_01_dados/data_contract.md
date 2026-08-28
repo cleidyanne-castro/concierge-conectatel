@@ -3,7 +3,7 @@
 ## Escopo
 
 Este contrato define o formato comum entre Bronze, Silver e Gold. A Bronze
-preserva o CSV original; a Silver trata os dados; a Gold publica agregações
+preserva o CSV original. A Silver trata os dados. A Gold publica agregações
 para análise e decisões do Concierge.
 
 ## Colunas do log
@@ -22,14 +22,14 @@ para análise e decisões do Concierge.
 | `encaminhado_humano` | boolean | `sim/não`, `1/0`, `true/false` | Gold/Agente |
 | `satisfacao_1_a_5` | numeric | intervalo de 1 a 5 | Gold |
 | `plano_atual` | string | categoria normalizada | Gold |
-| `resumo_atendimento` | string | texto preservado; ausente vira `unknown` | RAG |
+| `resumo_atendimento` | string | texto preservado. Ausente vira `unknown` | RAG |
 
 ## Regras de qualidade
 
 - Colunas ausentes interrompem a execução (`FAIL`).
 - Saída sem linhas interrompe a execução (`FAIL`).
 - Nulos, valores inválidos e duplicatas devem ser contabilizados.
-- A Bronze não deduplica; a Silver remove duplicatas exatas mantendo a primeira
+- A Bronze não deduplica. A Silver remove duplicatas exatas mantendo a primeira
   ocorrência.
 - A Gold só deve publicar métricas acompanhadas de denominador e volume.
 
