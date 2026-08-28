@@ -8,28 +8,29 @@ ConectaTel.
 
 ## Fontes oficiais
 
-O corpus oficial está disponível no Volume do Databricks:
+No Databricks, a origem oficial do corpus é:
 
 ```text
 /Volumes/workspace/conectatel/raw_files/conectatel-dados/corpus/
 ```
 
-Os metadados produzidos pela Bronze devem ser consultados em:
+Como o Bruno não possui acesso ao Databricks, a Engenharia de Dados deve
+entregar a ele uma cópia local dos arquivos `.md` e do JSON de metadados. O
+fluxo local recomendado é:
 
 ```text
-/Volumes/workspace/conectatel/raw_files/bronze/bronze_corpus_metadata.json
+data/corpus/
+data/bronze/bronze_corpus_metadata.json
 ```
 
-A Silver mantém uma cópia para facilitar o consumo pelas etapas seguintes:
+O corpus e os dados gerados no Volume não são baixados automaticamente pelo
+clone do GitHub. Eles devem ser compartilhados pela squad como um pacote de
+entrada ou por outro canal combinado, sem incluir credenciais.
+
+O caminho do Databricks para referência da Silver é:
 
 ```text
 /Volumes/workspace/conectatel/raw_files/silver/silver_corpus_metadata.json
-```
-
-O log tratado de chamados fica disponível em:
-
-```text
-/Volumes/workspace/conectatel/raw_files/silver/silver_calls_cleaned.csv
 ```
 
 ## Contrato documental
@@ -61,6 +62,45 @@ status = vigente
 
 Documentos revogados podem permanecer armazenados para auditoria, mas não devem
 ser usados como fonte de resposta do Concierge.
+
+## Como executar localmente
+
+1. Clone o repositório e entre na pasta do projeto.
+
+   ```bash
+   git clone https://github.com/cleidyanne-castro/concierge-conectatel.git
+   cd concierge-conectatel
+   ```
+
+2. Crie um ambiente virtual e instale as dependências.
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+3. Crie as pastas de entrada e receba da Engenharia de Dados o pacote do
+   corpus. Copie os arquivos `.md` para `data/corpus/` e o
+   `bronze_corpus_metadata.json` para `data/bronze/`.
+
+   ```bash
+   mkdir -p data/corpus data/bronze
+   # copie ou extraia os arquivos recebidos nessas pastas
+   ```
+
+4. Confirme que cada documento possui `doc_family_id`, `version_ordinal`,
+   `effective_from`, `effective_to` e `status` no JSON. Confirme também a
+   presença de pelo menos uma família com versão `vigente` e `revogado`.
+
+5. Execute o código de chunking e embeddings desenvolvido pela Parte 2 usando
+   `data/corpus/` como entrada. Os resultados devem ser gravados fora de
+   `data/`, por exemplo em `artifacts/` ou em um diretório local ignorado pelo
+   Git.
+
+Este fluxo não depende de Databricks. O tamanho dos chunks, a estratégia de
+divisão, o modelo de embedding e o formato do índice são decisões da Parte 2
+e devem ser registrados junto com a justificativa.
 
 ## Insumos para chunking
 
@@ -151,3 +191,12 @@ A Engenharia de Dados não cria embeddings, respostas, prompts ou regras de
 roteamento. A Parte 2 é responsável pelo chunking e pela indexação; as partes
 seguintes são responsáveis pela geração da resposta, triagem, escalonamento e
 auditoria da interação.
+
+## Checklist de recebimento
+
+- [ ] O corpus local foi recebido e contém somente documentos da ConectaTel.
+- [ ] O JSON de metadados acompanha os arquivos do corpus.
+- [ ] Existe ao menos um par vigente e revogado da mesma família.
+- [ ] O filtro `status = vigente` será aplicado antes da similaridade.
+- [ ] Cada chunk preservará a fonte, a família, a versão, o status e o hash.
+- [ ] O processo local foi executado sem depender do Databricks.

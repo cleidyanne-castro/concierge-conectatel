@@ -1,0 +1,110 @@
+[
+  {
+    "source_path": "data/corpus/faq/faq_cobertura_rede.md",
+    "doc_family_id": "faq-cobertura-rede",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/faq/faq_geral.md",
+    "doc_family_id": "faq-geral",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/planos/plano_conecta_basico.md",
+    "doc_family_id": "plano-conecta-basico",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/planos/plano_conecta_familia.md",
+    "doc_family_id": "plano-conecta-familia",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/planos/plano_conecta_plus.md",
+    "doc_family_id": "plano-conecta-plus",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/politicas/politica_cancelamento.md",
+    "doc_family_id": "pol-cancelamento",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
+    "doc_family_id": "pol-reembolso",
+    "version_ordinal": 1,
+    "effective_from": "2025-01-10",
+    "effective_to": "2026-03-31",
+    "status": "revogado",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+    "doc_family_id": "pol-reembolso",
+    "version_ordinal": 2,
+    "effective_from": "2026-04-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
+    "doc_family_id": "pol-suporte-escalonamento",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/procedimentos/procedimento_desbloqueio_aparelho.md",
+    "doc_family_id": "proc-desbloqueio-aparelho",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/procedimentos/procedimento_portabilidade.md",
+    "doc_family_id": "proc-portabilidade",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  },
+  {
+    "source_path": "data/corpus/procedimentos/procedimento_troca_chip_esim.md",
+    "doc_family_id": "proc-troca-chip-esim",
+    "version_ordinal": 1,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "status": "vigente",
+    "heuristic": "frontmatter YAML explícito"
+  }
+]

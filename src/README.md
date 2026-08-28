@@ -5,7 +5,7 @@ A organização acompanha o fluxo funcional do Concierge:
 
 | Pacote | Responsabilidade | Ponto de entrada |
 |---|---|---|
-| `parte_01_dados/` | ingestão, limpeza e qualidade dos dados | `pipeline.py` |
+| `parte_01_dados/` | ingestão, limpeza e qualidade dos dados | notebooks Bronze, Silver e Gold |
 | `parte_02_rag/` | chunking, embeddings, índice e busca | `rag_index.py` |
 | `parte_03_agente/` | agente, handler e integração Bedrock | `handler.py` |
 | `parte_04_triagem/` | política de decisão e escalonamento | `policy.py` |

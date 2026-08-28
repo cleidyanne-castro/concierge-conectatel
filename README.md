@@ -58,19 +58,16 @@ Os metadados devem conter `doc_family_id`, `version_ordinal`, `effective_from`, 
 
 ### Parte 1: Pipeline de dados
 
-```bash
-python -m src.parte_01_dados.pipeline --input data/call_log.csv --output artifacts/data
-```
-
-Gera `cleaned_calls.csv` e `analyses.json`. O documento principal deve explicar três análises e ligar pelo menos um achado a uma decisão de design.
+Execute o notebook [`01_bronze_ingestao.ipynb`](src/parte_01_dados/01_bronze_ingestao.ipynb)
+no ambiente Databricks configurado pela squad. A execução gera os snapshots,
+relatórios, análises e metadados descritos em `docs/parte_01_dados/`.
 
 ### Parte 2: Base de conhecimento e RAG
 
-```bash
-python -m src.parte_02_rag.rag_index --corpus data/corpus --output artifacts/index.json
-```
-
-O filtro `status=vigente` ocorre antes da similaridade. Prompt sozinho não atende ao requisito de vigência.
+Use os arquivos locais entregues no handoff em
+`docs/parte_02_rag/data_handoff.md`. O código de chunking, embeddings e índice
+será executado pela Parte 2. O filtro `status=vigente` deve ocorrer antes da
+similaridade. Prompt sozinho não atende ao requisito de vigência.
 
 ### Partes 3 e 4: Agente e escalonamento
 
