@@ -1,8 +1,5 @@
 # Registros de Cleidyanne Castro Pereira
 
-Este documento é exclusivo para registrar as contribuições de Cleidyanne Castro Pereira na
-organização, documentação e integração do projeto Concierge ConectaTel.
-
 ## Fundação do projeto
 
 - criação e organização inicial do repositório GitHub da squad.
@@ -11,10 +8,9 @@ organização, documentação e integração do projeto Concierge ConectaTel.
 - criação do README operacional para avaliadores e pessoas externas à squad.
 - registro das regras para testes, evidências, auditoria e reprodução.
 
-## Arquitetura
+## Arquitetura inicial
 
 - criação da arquitetura inicial como base de discussão.
-- evolução do desenho para a arquitetura final da squad.
 - documentação da comparação entre planejado e executado.
 - registro da arquitetura Medallion com Bronze, Silver e Gold.
 - conexão entre pipeline de dados, RAG, agente, triagem e governança.
@@ -53,12 +49,12 @@ da documentação. O arquivo está em
 
 ## Apresentação e relatório
 
+- criação da apresentação executiva
 - a apresentação executiva está em preparação em [`docs/apresentacao/PLACEHOLDER.md`](apresentacao/PLACEHOLDER.md).
+- criação do relatório colaborativo considerando os entregáveis e escopo do projeto
 - o relatório colaborativo está em preparação em [`docs/relatorio/PLACEHOLDER.md`](relatorio/PLACEHOLDER.md).
-- os dois arquivos são marcadores de espaço e serão substituídos pela versão final da squad.
 
 ## Rastreabilidade
 
 Os commits e Pull Requests associados às contribuições ficam registrados no
-histórico do GitHub. Este documento resume a autoria e aponta para os artefatos
-que contêm o detalhamento, sem duplicar o conteúdo técnico de cada camada.
+histórico do GitHub. 
