@@ -1,0 +1,22 @@
+{
+  "models": [
+    {
+      "model_key": "multilingual_e5_small",
+      "model_name": "intfloat/multilingual-e5-small",
+      "total_questions": 12,
+      "hit_at_1": 0.3333,
+      "hit_at_3": 0.75,
+      "hit_at_5": 0.8333,
+      "mrr": 0.5444
+    },
+    {
+      "model_key": "multilingual_minilm",
+      "model_name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "total_questions": 12,
+      "hit_at_1": 0.25,
+      "hit_at_3": 0.6667,
+      "hit_at_5": 0.75,
+      "mrr": 0.4514
+    }
+  ]
+}
