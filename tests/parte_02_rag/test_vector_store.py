@@ -4,30 +4,36 @@ import faiss
 import numpy as np
 
 from src.parte_02_rag.vector_store import (
-    INDEX_PATH,
-    METADATA_PATH,
-    load_vector_store,
+    build_faiss_index,
+    build_metadata,
+    load_embeddings,
+    search,
 )
 
 
-def test_faiss_index_exists():
-    """Verifica se o índice FAISS existe."""
+def create_test_vector_store():
+    """
+    Cria o índice FAISS em memória a partir dos embeddings
+    versionados no repositório.
+    """
 
-    assert INDEX_PATH.exists()
+    embeddings_data = load_embeddings()
 
-
-def test_metadata_exists():
-    """Verifica se os metadados existem."""
-
-    assert METADATA_PATH.exists()
-
-
-def test_faiss_index_structure():
-    """Verifica a estrutura básica do índice."""
-
-    index = faiss.read_index(
-        str(INDEX_PATH)
+    index = build_faiss_index(
+        embeddings_data
     )
+
+    metadata = build_metadata(
+        embeddings_data
+    )
+
+    return index, metadata
+
+
+def test_faiss_index_can_be_built():
+    """Verifica se o índice FAISS pode ser construído."""
+
+    index, _ = create_test_vector_store()
 
     assert index.ntotal == 59
     assert index.d == 384
@@ -36,7 +42,7 @@ def test_faiss_index_structure():
 def test_metadata_matches_index():
     """Verifica se cada vetor possui metadata correspondente."""
 
-    index, metadata = load_vector_store()
+    index, metadata = create_test_vector_store()
 
     assert len(metadata["items"]) == index.ntotal
 
@@ -59,22 +65,21 @@ def test_search_returns_results():
     uma consulta vetorial.
     """
 
-    index, metadata = load_vector_store()
+    index, metadata = create_test_vector_store()
 
     query_vector = np.zeros(
         384,
         dtype=np.float32,
     )
 
-    results = index.search(
-        query_vector.reshape(1, -1),
-        5,
+    results = search(
+        index,
+        metadata,
+        query_vector,
+        top_k=5,
     )
 
-    scores, indices = results
+    assert len(results) == 5
 
-    assert scores.shape == (1, 5)
-    assert indices.shape == (1, 5)
-
-    for faiss_index in indices[0]:
-        assert 0 <= faiss_index < index.ntotal
+    for result in results:
+        assert 0 <= result["faiss_index"] < index.ntotal

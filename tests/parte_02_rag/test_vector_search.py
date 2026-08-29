@@ -1,12 +1,32 @@
 from sentence_transformers import SentenceTransformer
 
 from src.parte_02_rag.vector_store import (
-    load_vector_store,
+    build_faiss_index,
+    build_metadata,
+    load_embeddings,
     search,
 )
 
 
 MODEL_NAME = "intfloat/multilingual-e5-small"
+
+
+def create_test_vector_store():
+    """
+    Cria o índice FAISS em memória a partir dos embeddings.
+    """
+
+    embeddings_data = load_embeddings()
+
+    index = build_faiss_index(
+        embeddings_data
+    )
+
+    metadata = build_metadata(
+        embeddings_data
+    )
+
+    return index, metadata
 
 
 def test_real_query_retrieval():
@@ -15,7 +35,7 @@ def test_real_query_retrieval():
         MODEL_NAME
     )
 
-    index, metadata = load_vector_store()
+    index, metadata = create_test_vector_store()
 
     query = (
         "Como consultar meu consumo de dados?"
