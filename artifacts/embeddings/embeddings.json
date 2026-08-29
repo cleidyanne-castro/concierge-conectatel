@@ -399,6 +399,8 @@
       "doc_family_id": "faq-cobertura-rede",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/faq/faq_cobertura_rede.md",
       "section_title": "FAQ Cobertura e Rede — ConectaTel"
     },
@@ -793,6 +795,8 @@
       "doc_family_id": "faq-cobertura-rede",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/faq/faq_cobertura_rede.md",
       "section_title": "FAQ Cobertura e Rede — ConectaTel"
     },
@@ -1187,6 +1191,8 @@
       "doc_family_id": "faq-cobertura-rede",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/faq/faq_cobertura_rede.md",
       "section_title": "FAQ Cobertura e Rede — ConectaTel"
     },
@@ -1581,6 +1587,8 @@
       "doc_family_id": "faq-geral",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/faq/faq_geral.md",
       "section_title": "FAQ Geral — ConectaTel"
     },
@@ -1975,6 +1983,8 @@
       "doc_family_id": "faq-geral",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/faq/faq_geral.md",
       "section_title": "FAQ Geral — ConectaTel"
     },
@@ -2369,6 +2379,8 @@
       "doc_family_id": "faq-geral",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/faq/faq_geral.md",
       "section_title": "FAQ Geral — ConectaTel"
     },
@@ -2763,6 +2775,8 @@
       "doc_family_id": "plano-conecta-basico",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_basico.md",
       "section_title": "Plano Conecta Básico"
     },
@@ -3157,6 +3171,8 @@
       "doc_family_id": "plano-conecta-basico",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_basico.md",
       "section_title": "Franquia mensal"
     },
@@ -3551,6 +3567,8 @@
       "doc_family_id": "plano-conecta-basico",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_basico.md",
       "section_title": "Após o consumo da franquia de dados"
     },
@@ -3945,6 +3963,8 @@
       "doc_family_id": "plano-conecta-basico",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_basico.md",
       "section_title": "Valor mensal"
     },
@@ -4339,6 +4359,8 @@
       "doc_family_id": "plano-conecta-basico",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_basico.md",
       "section_title": "Benefícios inclusos"
     },
@@ -4733,6 +4755,8 @@
       "doc_family_id": "plano-conecta-basico",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_basico.md",
       "section_title": "Migração de plano"
     },
@@ -5127,6 +5151,8 @@
       "doc_family_id": "plano-conecta-familia",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_familia.md",
       "section_title": "Plano Conecta Família"
     },
@@ -5521,6 +5547,8 @@
       "doc_family_id": "plano-conecta-familia",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_familia.md",
       "section_title": "Franquia mensal"
     },
@@ -5915,6 +5943,8 @@
       "doc_family_id": "plano-conecta-familia",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_familia.md",
       "section_title": "Distribuição da franquia"
     },
@@ -6309,6 +6339,8 @@
       "doc_family_id": "plano-conecta-familia",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_familia.md",
       "section_title": "Valor mensal"
     },
@@ -6703,6 +6735,8 @@
       "doc_family_id": "plano-conecta-familia",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_familia.md",
       "section_title": "Benefícios inclusos"
     },
@@ -7097,6 +7131,8 @@
       "doc_family_id": "plano-conecta-familia",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_familia.md",
       "section_title": "Alterações no grupo familiar"
     },
@@ -7491,6 +7527,8 @@
       "doc_family_id": "plano-conecta-plus",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_plus.md",
       "section_title": "Plano Conecta Plus"
     },
@@ -7885,6 +7923,8 @@
       "doc_family_id": "plano-conecta-plus",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_plus.md",
       "section_title": "Franquia mensal"
     },
@@ -8279,6 +8319,8 @@
       "doc_family_id": "plano-conecta-plus",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_plus.md",
       "section_title": "Após o consumo da franquia de dados"
     },
@@ -8673,6 +8715,8 @@
       "doc_family_id": "plano-conecta-plus",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_plus.md",
       "section_title": "Valor mensal"
     },
@@ -9067,6 +9111,8 @@
       "doc_family_id": "plano-conecta-plus",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_plus.md",
       "section_title": "Benefícios inclusos"
     },
@@ -9461,6 +9507,8 @@
       "doc_family_id": "plano-conecta-plus",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/planos/plano_conecta_plus.md",
       "section_title": "Migração de plano"
     },
@@ -9855,6 +9903,8 @@
       "doc_family_id": "pol-cancelamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_cancelamento.md",
       "section_title": "Cancelamento sem período de fidelidade"
     },
@@ -10249,6 +10299,8 @@
       "doc_family_id": "pol-cancelamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_cancelamento.md",
       "section_title": "Cancelamento durante o período de fidelidade"
     },
@@ -10643,6 +10695,8 @@
       "doc_family_id": "pol-cancelamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_cancelamento.md",
       "section_title": "Casos que dispensam multa de fidelidade"
     },
@@ -11037,6 +11091,8 @@
       "doc_family_id": "pol-cancelamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_cancelamento.md",
       "section_title": "Processo de cancelamento"
     },
@@ -11431,6 +11487,8 @@
       "doc_family_id": "pol-cancelamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_cancelamento.md",
       "section_title": "Contestação da multa"
     },
@@ -11825,6 +11883,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "revogado",
       "version_ordinal": 1,
+      "effective_from": "2025-01-10",
+      "effective_to": "2026-03-31",
       "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
       "section_title": "Política de Reembolso e Contestação de Fatura (versão 1)"
     },
@@ -12219,6 +12279,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "revogado",
       "version_ordinal": 1,
+      "effective_from": "2025-01-10",
+      "effective_to": "2026-03-31",
       "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
       "section_title": "Prazo para contestação"
     },
@@ -12613,6 +12675,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "revogado",
       "version_ordinal": 1,
+      "effective_from": "2025-01-10",
+      "effective_to": "2026-03-31",
       "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
       "section_title": "Forma de reembolso"
     },
@@ -13007,6 +13071,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "revogado",
       "version_ordinal": 1,
+      "effective_from": "2025-01-10",
+      "effective_to": "2026-03-31",
       "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
       "section_title": "Análise da contestação"
     },
@@ -13401,6 +13467,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "revogado",
       "version_ordinal": 1,
+      "effective_from": "2025-01-10",
+      "effective_to": "2026-03-31",
       "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
       "section_title": "Registro"
     },
@@ -13795,6 +13863,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "vigente",
       "version_ordinal": 2,
+      "effective_from": "2026-04-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
       "section_title": "Política de Reembolso e Contestação de Fatura (versão 2)"
     },
@@ -14189,6 +14259,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "vigente",
       "version_ordinal": 2,
+      "effective_from": "2026-04-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
       "section_title": "Prazo para contestação"
     },
@@ -14583,6 +14655,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "vigente",
       "version_ordinal": 2,
+      "effective_from": "2026-04-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
       "section_title": "Forma de reembolso"
     },
@@ -14977,6 +15051,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "vigente",
       "version_ordinal": 2,
+      "effective_from": "2026-04-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
       "section_title": "Verificação antifraude"
     },
@@ -15371,6 +15447,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "vigente",
       "version_ordinal": 2,
+      "effective_from": "2026-04-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
       "section_title": "Análise da contestação"
     },
@@ -15765,6 +15843,8 @@
       "doc_family_id": "pol-reembolso",
       "status": "vigente",
       "version_ordinal": 2,
+      "effective_from": "2026-04-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
       "section_title": "Registro"
     },
@@ -16159,6 +16239,8 @@
       "doc_family_id": "pol-suporte-escalonamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
       "section_title": "Política de Suporte e Escalonamento"
     },
@@ -16553,6 +16635,8 @@
       "doc_family_id": "pol-suporte-escalonamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
       "section_title": "Casos de escalonamento obrigatório"
     },
@@ -16947,6 +17031,8 @@
       "doc_family_id": "pol-suporte-escalonamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
       "section_title": "Casos de escalonamento obrigatório"
     },
@@ -17341,6 +17427,8 @@
       "doc_family_id": "pol-suporte-escalonamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
       "section_title": "Casos de escalonamento obrigatório"
     },
@@ -17735,6 +17823,8 @@
       "doc_family_id": "pol-suporte-escalonamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
       "section_title": "Casos de escalonamento obrigatório"
     },
@@ -18129,6 +18219,8 @@
       "doc_family_id": "pol-suporte-escalonamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
       "section_title": "Campos mínimos do registro de escalonamento"
     },
@@ -18523,6 +18615,8 @@
       "doc_family_id": "pol-suporte-escalonamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
       "section_title": "Campos mínimos do registro de escalonamento"
     },
@@ -18917,6 +19011,8 @@
       "doc_family_id": "pol-suporte-escalonamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
       "section_title": "Campos mínimos do registro de escalonamento"
     },
@@ -19311,6 +19407,8 @@
       "doc_family_id": "pol-suporte-escalonamento",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
       "section_title": "Critério de qualidade do handoff"
     },
@@ -19705,6 +19803,8 @@
       "doc_family_id": "proc-desbloqueio-aparelho",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_desbloqueio_aparelho.md",
       "section_title": "Quando se aplica"
     },
@@ -20099,6 +20199,8 @@
       "doc_family_id": "proc-desbloqueio-aparelho",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_desbloqueio_aparelho.md",
       "section_title": "Passo a passo"
     },
@@ -20493,6 +20595,8 @@
       "doc_family_id": "proc-desbloqueio-aparelho",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_desbloqueio_aparelho.md",
       "section_title": "Observações"
     },
@@ -20887,6 +20991,8 @@
       "doc_family_id": "proc-portabilidade",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_portabilidade.md",
       "section_title": "Portabilidade de entrada (número vindo de outra operadora para a ConectaTel)"
     },
@@ -21281,6 +21387,8 @@
       "doc_family_id": "proc-portabilidade",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_portabilidade.md",
       "section_title": "Portabilidade de saída (número ConectaTel migrando para outra operadora)"
     },
@@ -21675,6 +21783,8 @@
       "doc_family_id": "proc-portabilidade",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_portabilidade.md",
       "section_title": "Casos que exigem escalonamento"
     },
@@ -22069,6 +22179,8 @@
       "doc_family_id": "proc-troca-chip-esim",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_troca_chip_esim.md",
       "section_title": "Quando se aplica"
     },
@@ -22463,6 +22575,8 @@
       "doc_family_id": "proc-troca-chip-esim",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_troca_chip_esim.md",
       "section_title": "Passo a passo — chip físico"
     },
@@ -22857,6 +22971,8 @@
       "doc_family_id": "proc-troca-chip-esim",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_troca_chip_esim.md",
       "section_title": "Passo a passo — eSIM"
     },
@@ -23251,6 +23367,8 @@
       "doc_family_id": "proc-troca-chip-esim",
       "status": "vigente",
       "version_ordinal": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": null,
       "source_path": "data/corpus/procedimentos/procedimento_troca_chip_esim.md",
       "section_title": "Observações"
     }

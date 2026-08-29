@@ -170,12 +170,15 @@ def build_output(chunks, embeddings, corpus_hash):
 
     for chunk, embedding in zip(chunks, embeddings):
 
+        
         item = {
             "chunk_id": chunk["chunk_id"],
             "embedding": embedding.tolist(),
             "doc_family_id": chunk["doc_family_id"],
             "status": chunk["status"],
             "version_ordinal": chunk["version_ordinal"],
+            "effective_from": chunk["effective_from"],
+            "effective_to": chunk["effective_to"],
             "source_path": chunk["source_path"],
             "section_title": chunk["section_title"],
         }
