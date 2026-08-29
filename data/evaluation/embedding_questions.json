@@ -1,0 +1,99 @@
+[
+  {
+    "question_id": "q01",
+    "question": "Como consulto meu consumo de dados?",
+    "expected_doc_family_id": "faq-geral",
+    "expected_chunk_ids": [
+      "chunk_323d5970f3728530"
+    ]
+  },
+  {
+    "question_id": "q02",
+    "question": "Qual é o valor mensal do plano Conecta Básico?",
+    "expected_doc_family_id": "plano-conecta-basico",
+    "expected_chunk_ids": [
+      "chunk_641b6dcb2a98cbbd"
+    ]
+  },
+  {
+    "question_id": "q03",
+    "question": "Qual é a velocidade da internet do plano Conecta Plus depois que a franquia acaba?",
+    "expected_doc_family_id": "plano-conecta-plus",
+    "expected_chunk_ids": [
+      "chunk_b98258e9fafca62d"
+    ]
+  },
+  {
+    "question_id": "q04",
+    "question": "Quais situações permitem cancelar o plano sem pagar multa de fidelidade?",
+    "expected_doc_family_id": "pol-cancelamento",
+    "expected_chunk_ids": [
+      "chunk_9f2b510c341836d3"
+    ]
+  },
+  {
+    "question_id": "q05",
+    "question": "Qual é o prazo atual para contestar uma cobrança da fatura?",
+    "expected_doc_family_id": "pol-reembolso",
+    "expected_chunk_ids": [
+      "chunk_72d3e7381e8d5669"
+    ]
+  },
+  {
+    "question_id": "q06",
+    "question": "Como funciona o reembolso quando a contestação é aceita?",
+    "expected_doc_family_id": "pol-reembolso",
+    "expected_chunk_ids": [
+      "chunk_3c943a4e1adaa3d8"
+    ]
+  },
+  {
+    "question_id": "q07",
+    "question": "Em quais casos uma contestação de fatura precisa passar por verificação antifraude?",
+    "expected_doc_family_id": "pol-reembolso",
+    "expected_chunk_ids": [
+      "chunk_9e515602f4067c2b"
+    ]
+  },
+  {
+    "question_id": "q08",
+    "question": "Qual é o prazo para concluir uma portabilidade de entrada?",
+    "expected_doc_family_id": "proc-portabilidade",
+    "expected_chunk_ids": [
+      "chunk_6996e3dc41480fd4"
+    ]
+  },
+  {
+    "question_id": "q09",
+    "question": "O que devo fazer se suspeitar que meu chip foi trocado sem minha autorização?",
+    "expected_doc_family_id": "proc-troca-chip-esim",
+    "expected_chunk_ids": [
+      "chunk_92ab111e7673f0b6"
+    ]
+  },
+  {
+    "question_id": "q10",
+    "question": "Como faço para desbloquear um aparelho comprado da ConectaTel?",
+    "expected_doc_family_id": "proc-desbloqueio-aparelho",
+    "expected_chunk_ids": [
+      "chunk_e15f022692df2b29"
+    ]
+  },
+  {
+    "question_id": "q11",
+    "question": "Quais situações exigem encaminhamento obrigatório para atendimento humano?",
+    "expected_doc_family_id": "pol-suporte-escalonamento",
+    "expected_chunk_ids": [
+      "chunk_985c42b47c866998",
+      "chunk_e59e365663f9a98c"
+    ]
+  },
+  {
+    "question_id": "q12",
+    "question": "Qual versão da política de reembolso deve ser usada atualmente?",
+    "expected_doc_family_id": "pol-reembolso",
+    "expected_chunk_ids": [
+      "chunk_ec998cd8fec67705"
+    ]
+  }
+]
