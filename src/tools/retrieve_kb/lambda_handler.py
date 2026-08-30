@@ -15,7 +15,7 @@ from tools.retrieve_kb.retrieval import load_kb, retrieve
 S3_BUCKET_NAME = os.environ["S3_BUCKET_NAME"]
 EMBEDDINGS_KEY = os.environ.get("EMBEDDINGS_KEY", "index/embeddings.json")
 CHUNKS_KEY = os.environ.get("CHUNKS_KEY", "processed/chunks.json")
-RETRIEVAL_SCORE_THRESHOLD = float(os.environ.get("RETRIEVAL_SCORE_THRESHOLD", "0.65"))
+RETRIEVAL_SCORE_THRESHOLD = float(os.environ.get("RETRIEVAL_SCORE_THRESHOLD", "0.85"))
 TOP_K = int(os.environ.get("RETRIEVAL_TOP_K", "3"))
 
 TMP_DIR = Path("/tmp/retrieve_kb")
@@ -41,26 +41,40 @@ def _get_s3_client():
 def _ensure_kb_loaded():
     """Baixa os artefatos do S3 pra /tmp e carrega em memória,
     apenas na primeira invocação de um container (cold start).
+
+    Instrumentado com checkpoints de tempo — em caso de timeout,
+    esses logs (via CloudWatch) mostram qual etapa é o gargalo real,
+    em vez de ficar adivinhando.
     """
     global _embeddings_data, _chunks_by_id
 
     if _embeddings_data is not None and _chunks_by_id is not None:
         return _embeddings_data, _chunks_by_id
 
+    t0 = time.time()
     TMP_DIR.mkdir(parents=True, exist_ok=True)
     s3 = _get_s3_client()
 
     if not EMBEDDINGS_PATH.exists():
         s3.download_file(S3_BUCKET_NAME, EMBEDDINGS_KEY, str(EMBEDDINGS_PATH))
+    t1 = time.time()
+    print(json.dumps({"checkpoint": "download_embeddings", "elapsed_s": round(t1 - t0, 2)}))
 
     if not CHUNKS_PATH.exists():
         s3.download_file(S3_BUCKET_NAME, CHUNKS_KEY, str(CHUNKS_PATH))
+    t2 = time.time()
+    print(json.dumps({"checkpoint": "download_chunks", "elapsed_s": round(t2 - t1, 2)}))
 
     _embeddings_data, _chunks_by_id = load_kb(EMBEDDINGS_PATH, CHUNKS_PATH)
+    t3 = time.time()
+    print(json.dumps({"checkpoint": "load_kb_json", "elapsed_s": round(t3 - t2, 2)}))
 
     # carrega o modelo de embedding já no cold start, não na 1ª pergunta
     from tools.retrieve_kb.retrieval import get_model
     get_model()
+    t4 = time.time()
+    print(json.dumps({"checkpoint": "load_sentence_transformer_model", "elapsed_s": round(t4 - t3, 2)}))
+    print(json.dumps({"checkpoint": "TOTAL_cold_start", "elapsed_s": round(t4 - t0, 2)}))
 
     return _embeddings_data, _chunks_by_id
 

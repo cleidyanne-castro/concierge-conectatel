@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Concierge ConectaTel - Tool de Busca (retrieve_kb)
+
+Resources:
+  RetrieveKbFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: concierge-conectatel-retrieve-kb
+      PackageType: Image
+      Timeout: 30
+      MemorySize: 2048
+      Environment:
+        Variables:
+          S3_BUCKET_NAME: concierge-conectatel-kb-squad4
+          RETRIEVAL_SCORE_THRESHOLD: "0.85"
+      Policies:
+        - S3ReadPolicy:
+            BucketName: concierge-conectatel-kb-squad4
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: ../
+      DockerTag: latest
+
+Outputs:
+  RetrieveKbFunctionName:
+    Description: Nome real da função (use este valor no --function-name)
+    Value: !Ref RetrieveKbFunction
+  RetrieveKbFunctionArn:
+    Description: ARN da função, útil pro João configurar o SubAgente Buscador
+    Value: !GetAtt RetrieveKbFunction.Arn

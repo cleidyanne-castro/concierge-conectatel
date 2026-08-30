@@ -1,6 +1,6 @@
 {
   "model": "intfloat/multilingual-e5-small",
-  "positive_questions_source": "/home/kaiquesilvasousa/Documentos/Compass/concierge-conectatel/data/evaluation/embedding_questions.json",
+  "positive_questions_source": "data/evaluation/embedding_questions.json",
   "negative_questions": [
     "Qual é a previsão do tempo em Salvador hoje?",
     "Vocês vendem plano internacional para os EUA?",
