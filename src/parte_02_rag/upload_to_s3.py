@@ -12,7 +12,7 @@ from botocore.exceptions import BotoCoreError, ClientError
 
 
 # Configuração do bucket
-BUCKET_NAME = "concierge-conectatel-kb-squad4"
+BUCKET_NAME = "concierge-conectatel-kb-squad04"
 REGION = "us-east-1"
 
 # Perfil AWS SSO configurado pelo AWS CLI

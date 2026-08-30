@@ -1,0 +1,228 @@
+{
+  "model": "intfloat/multilingual-e5-small",
+  "positive_questions_source": "/home/kaiquesilvasousa/Documentos/Compass/concierge-conectatel/data/evaluation/embedding_questions.json",
+  "negative_questions": [
+    "Qual é a previsão do tempo em Salvador hoje?",
+    "Vocês vendem plano internacional para os EUA?",
+    "Qual o horário de funcionamento do banco mais próximo?",
+    "Como faço para trocar o óleo do meu carro?",
+    "Qual é a capital da Argentina?"
+  ],
+  "results": [
+    {
+      "threshold": 0.8,
+      "tp": 6,
+      "fp": 4,
+      "tn": 1,
+      "fn": 6
+    },
+    {
+      "threshold": 0.82,
+      "tp": 6,
+      "fp": 3,
+      "tn": 2,
+      "fn": 6
+    },
+    {
+      "threshold": 0.84,
+      "tp": 6,
+      "fp": 1,
+      "tn": 4,
+      "fn": 6
+    },
+    {
+      "threshold": 0.85,
+      "tp": 6,
+      "fp": 0,
+      "tn": 5,
+      "fn": 6
+    },
+    {
+      "threshold": 0.86,
+      "tp": 5,
+      "fp": 0,
+      "tn": 5,
+      "fn": 7
+    },
+    {
+      "threshold": 0.88,
+      "tp": 5,
+      "fp": 0,
+      "tn": 5,
+      "fn": 7
+    },
+    {
+      "threshold": 0.9,
+      "tp": 2,
+      "fp": 0,
+      "tn": 5,
+      "fn": 10
+    }
+  ],
+  "recommended_threshold": 0.85,
+  "debug_scores": [
+    {
+      "type": "positive",
+      "question_id": "q01",
+      "question": "Como consulto meu consumo de dados?",
+      "score": 0.9114037752151489,
+      "expected_chunk_ids": [
+        "chunk_323d5970f3728530"
+      ],
+      "obtained_chunk_id": "chunk_323d5970f3728530",
+      "chunk_id_match": true
+    },
+    {
+      "type": "positive",
+      "question_id": "q02",
+      "question": "Qual é o valor mensal do plano Conecta Básico?",
+      "score": 0.8773319721221924,
+      "expected_chunk_ids": [
+        "chunk_641b6dcb2a98cbbd"
+      ],
+      "obtained_chunk_id": "chunk_b5b41155918d02a0",
+      "chunk_id_match": false
+    },
+    {
+      "type": "positive",
+      "question_id": "q03",
+      "question": "Qual é a velocidade da internet do plano Conecta Plus depois que a franquia acaba?",
+      "score": 0.8917911648750305,
+      "expected_chunk_ids": [
+        "chunk_b98258e9fafca62d"
+      ],
+      "obtained_chunk_id": "chunk_2bdf36e757be79f7",
+      "chunk_id_match": false
+    },
+    {
+      "type": "positive",
+      "question_id": "q04",
+      "question": "Quais situações permitem cancelar o plano sem pagar multa de fidelidade?",
+      "score": 0.8980394005775452,
+      "expected_chunk_ids": [
+        "chunk_9f2b510c341836d3"
+      ],
+      "obtained_chunk_id": "chunk_7e9f6f7401c39694",
+      "chunk_id_match": false
+    },
+    {
+      "type": "positive",
+      "question_id": "q05",
+      "question": "Qual é o prazo atual para contestar uma cobrança da fatura?",
+      "score": 0.886648416519165,
+      "expected_chunk_ids": [
+        "chunk_72d3e7381e8d5669"
+      ],
+      "obtained_chunk_id": "chunk_72d3e7381e8d5669",
+      "chunk_id_match": true
+    },
+    {
+      "type": "positive",
+      "question_id": "q06",
+      "question": "Como funciona o reembolso quando a contestação é aceita?",
+      "score": 0.8793984055519104,
+      "expected_chunk_ids": [
+        "chunk_3c943a4e1adaa3d8"
+      ],
+      "obtained_chunk_id": "chunk_9e515602f4067c2b",
+      "chunk_id_match": false
+    },
+    {
+      "type": "positive",
+      "question_id": "q07",
+      "question": "Em quais casos uma contestação de fatura precisa passar por verificação antifraude?",
+      "score": 0.8838424682617188,
+      "expected_chunk_ids": [
+        "chunk_9e515602f4067c2b"
+      ],
+      "obtained_chunk_id": "chunk_9e515602f4067c2b",
+      "chunk_id_match": true
+    },
+    {
+      "type": "positive",
+      "question_id": "q08",
+      "question": "Qual é o prazo para concluir uma portabilidade de entrada?",
+      "score": 0.8820804357528687,
+      "expected_chunk_ids": [
+        "chunk_6996e3dc41480fd4"
+      ],
+      "obtained_chunk_id": "chunk_6996e3dc41480fd4",
+      "chunk_id_match": true
+    },
+    {
+      "type": "positive",
+      "question_id": "q09",
+      "question": "O que devo fazer se suspeitar que meu chip foi trocado sem minha autorização?",
+      "score": 0.8756650686264038,
+      "expected_chunk_ids": [
+        "chunk_92ab111e7673f0b6"
+      ],
+      "obtained_chunk_id": "chunk_416f6a4794c844cf",
+      "chunk_id_match": false
+    },
+    {
+      "type": "positive",
+      "question_id": "q10",
+      "question": "Como faço para desbloquear um aparelho comprado da ConectaTel?",
+      "score": 0.9124239683151245,
+      "expected_chunk_ids": [
+        "chunk_e15f022692df2b29"
+      ],
+      "obtained_chunk_id": "chunk_e15f022692df2b29",
+      "chunk_id_match": true
+    },
+    {
+      "type": "positive",
+      "question_id": "q11",
+      "question": "Quais situações exigem encaminhamento obrigatório para atendimento humano?",
+      "score": 0.858153760433197,
+      "expected_chunk_ids": [
+        "chunk_985c42b47c866998",
+        "chunk_e59e365663f9a98c"
+      ],
+      "obtained_chunk_id": "chunk_e59e365663f9a98c",
+      "chunk_id_match": true
+    },
+    {
+      "type": "positive",
+      "question_id": "q12",
+      "question": "Qual versão da política de reembolso deve ser usada atualmente?",
+      "score": 0.8627534508705139,
+      "expected_chunk_ids": [
+        "chunk_ec998cd8fec67705"
+      ],
+      "obtained_chunk_id": "chunk_9e515602f4067c2b",
+      "chunk_id_match": false
+    },
+    {
+      "type": "negative",
+      "question": "Qual é a previsão do tempo em Salvador hoje?",
+      "score": 0.8077867031097412,
+      "top_chunk_id": "chunk_ec998cd8fec67705"
+    },
+    {
+      "type": "negative",
+      "question": "Vocês vendem plano internacional para os EUA?",
+      "score": 0.8380025625228882,
+      "top_chunk_id": "chunk_f6792836b124c200"
+    },
+    {
+      "type": "negative",
+      "question": "Qual o horário de funcionamento do banco mais próximo?",
+      "score": 0.8488128185272217,
+      "top_chunk_id": "chunk_a02e22270f87d4d2"
+    },
+    {
+      "type": "negative",
+      "question": "Como faço para trocar o óleo do meu carro?",
+      "score": 0.8304094672203064,
+      "top_chunk_id": "chunk_416f6a4794c844cf"
+    },
+    {
+      "type": "negative",
+      "question": "Qual é a capital da Argentina?",
+      "score": 0.7766419649124146,
+      "top_chunk_id": "chunk_641b6dcb2a98cbbd"
+    }
+  ]
+}
