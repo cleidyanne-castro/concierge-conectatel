@@ -1,0 +1,18 @@
+{
+  "agentRuntimeName": "concierge_agent",
+  "description": "Agente Concierge ConectaTel (Strands + 2 tools)",
+  "agentRuntimeArtifact": {
+    "containerConfiguration": {
+      "containerUri": "582766763753.dkr.ecr.us-east-1.amazonaws.com/bedrock-agentcore-concierge_agent:latest"
+    }
+  },
+  "roleArn": "arn:aws:iam::582766763753:role/AmazonBedrockAgentCoreSDKRuntime-us-east-1-1c47481ceb",
+  "networkConfiguration": { "networkMode": "PUBLIC" },
+  "protocolConfiguration": { "serverProtocol": "HTTP" },
+  "environmentVariables": {
+    "AWS_REGION": "us-east-1",
+    "BEDROCK_MODEL_ID": "amazon.nova-lite-v1:0",
+    "RETRIEVE_KB_FUNCTION": "concierge-conectatel-retrieve-kb",
+    "STORE_HANDOFF_FUNCTION": "concierge-conectatel-store-handoff"
+  }
+}
