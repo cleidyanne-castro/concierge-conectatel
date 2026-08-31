@@ -1,0 +1,8 @@
+# Dependencias do container do agente (AgentCore Runtime) — enxuto de proposito.
+strands-agents>=0.1
+bedrock-agentcore>=0.1
+boto3>=1.34,<2
+
+# Observabilidade: traces/spans OTEL -> CloudWatch (GenAI Observability).
+# O Runtime injeta OTEL_EXPORTER_OTLP_ENDPOINT; o distro auto-configura.
+aws-opentelemetry-distro>=0.8

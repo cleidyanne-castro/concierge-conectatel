@@ -1,8 +1,18 @@
+# --- Base / dados / RAG (Partes 1 e 2) ---
 boto3>=1.34,<2
 pandas>=2.2,<3
 numpy>=1.26,<3
 faiss-cpu>=1.8,<2
 pypdf>=4,<6
 python-dotenv>=1.0,<2
-pytest>=8,<9
 sentence-transformers>=3,<6
+
+# --- Agente (Parte 3) — AgentCore Runtime + Strands ---
+# strands: loop de tool-use sobre o modelo Bedrock.
+# bedrock-agentcore: wrapper do container do Runtime (/invocations, /ping)
+#   e o cliente de dados invoke_agent_runtime usado pela lambda_gateway.
+strands-agents>=0.1
+bedrock-agentcore>=0.1
+
+# --- Testes ---
+pytest>=8,<9

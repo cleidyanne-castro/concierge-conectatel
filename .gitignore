@@ -15,5 +15,10 @@ data/call_log.csv
 *.secret
 .aws-sam
 samconfig.toml
+CLAUDE.md
 !data/corpus/
 !data/corpus/.gitkeep
+
+# AgentCore starter toolkit (config local)
+.bedrock_agentcore/
+.bedrock_agentcore.yaml

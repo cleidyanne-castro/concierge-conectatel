@@ -7,10 +7,11 @@ A organização acompanha o fluxo funcional do Concierge:
 |---|---|---|
 | `parte_01_dados/` | ingestão, limpeza e qualidade dos dados | notebooks Bronze, Silver e Gold |
 | `parte_02_rag/` | chunking, embeddings, índice e busca | `rag_index.py` |
-| `parte_03_agente/` | agente, handler e integração Bedrock | `handler.py` |
-| `parte_04_triagem/` | política de decisão e escalonamento | `policy.py` |
+| `tools/retrieve_kb/` | tool de busca (Lambda) | `lambda_handler.py` |
+| `parte_03_04_agente_triagem/` | agente (AgentCore) e Lambda de borda | `agent_concierge.py`, `lambda_gateway.py` |
 | `parte_05_governanca/` | auditoria e rastreabilidade | `audit.py` |
 | `shared/` | configuração e tipos compartilhados | `config.py`, `types.py` |
+| `cli.py` | entrada local do agente | `python -m src.cli` |
 
 ## Convenções
 

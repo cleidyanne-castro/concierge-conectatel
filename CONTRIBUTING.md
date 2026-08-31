@@ -8,6 +8,13 @@ Responsável pela Parte 0 e pela coordenação técnica inicial. O registro
 consolidado das contribuições está em
  [`docs/registros_cleidyanne.md`](docs/registros_cleidyanne.md).
 
+### João Vitor Althaus Godoi
+
+Responsável pela Parte 3 (Agente Concierge) e pela integração ponta a ponta com
+a AWS (agente no AgentCore Runtime, Lambda de borda, infraestrutura SAM +
+AgentCore, deploy na conta da squad). Registro consolidado em
+ [`docs/registros_joao.md`](docs/registros_joao.md).
+
 ## Responsabilidades planejadas por etapa
 
 ### Parte 1. Pipeline de dados
