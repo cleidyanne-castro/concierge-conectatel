@@ -1,0 +1,16 @@
+# Ambiente e arquivos locais que não pertencem à imagem da Lambda.
+.venv/
+.git/
+.aws-sam/
+.pytest_cache/
+__pycache__/
+*.pyc
+.env
+
+# A Lambda copia somente src/tools e src/shared durante o build.
+artifacts/
+data/
+docs/
+tests/
+infra/
+.vscode/

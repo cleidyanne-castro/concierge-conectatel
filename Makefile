@@ -7,6 +7,9 @@ test:
 run:
 	python -m src.cli --question "teste local"
 
+ui:
+	python -m streamlit run src/interface/app.py
+
 # Semeia o bucket S3 (que ja deve existir) com embeddings.json e chunks.json.
 # Requer S3_BUCKET_NAME no ambiente ou no .env.
 seed-kb:
