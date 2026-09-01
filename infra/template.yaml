@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Concierge ConectaTel - tool retrieve_kb + gateway (API GW -> AgentCore) + HTTP API
+Description: Concierge ConectaTel - tool retrieve_kb + gateway (API GW -> AgentCore) + HTTP API + Escalonamento (DynamoDB)
 
 Parameters:
   KnowledgeBaseBucketName:
@@ -26,8 +26,6 @@ Resources:
     Properties:
       FunctionName: concierge-conectatel-retrieve-kb
       PackageType: Image
-      # 10240 MB = ~6 vCPU. O cold start carrega torch + o modelo de embeddings;
-      # com pouca CPU isso passa de 30s e o API Gateway derruba (503).
       MemorySize: 10240
       Timeout: 60
       Environment:
@@ -47,6 +45,32 @@ Resources:
       Dockerfile: infra/retrieve_kb.Dockerfile
       DockerContext: ../
       DockerTag: latest
+
+  # -------- Tabela DynamoDB para Handoff (José) --------
+  EscalonamentosTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: concierge-conectatel-escalonamentos
+      PrimaryKey:
+        Name: trace_id
+        Type: String
+
+  # -------- Lambda de Armazenamento do Handoff (José) --------
+  StoreHandoffFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: concierge-conectatel-store-handoff
+      Runtime: python3.12
+      Handler: store_handoff_lambda.handler
+      CodeUri: ../src/parte_03_04_agente_triagem/
+      MemorySize: 256
+      Timeout: 15
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref EscalonamentosTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EscalonamentosTable
 
   # -------- Borda: API Gateway (HTTP API) -> AgentCore Runtime --------
   GatewayFunction:
@@ -89,8 +113,11 @@ Outputs:
   ConciergeApiUrl:
     Description: 'Endpoint principal - POST {question, trace_id}'
     Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/concierge"
-  RetrieveKbApiUrl:
-    Description: 'Debug - POST direto na tool de busca'
-    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/retrieve"
+#  RetrieveKbApiUrl:
+#    Description: 'Debug - POST direto na tool de busca'
+#    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/retrieve"
   GatewayFunctionArn:
     Value: !GetAtt GatewayFunction.Arn
+  StoreHandoffFunctionArn:
+    Description: 'ARN da Lambda de persistência de Handoff'
+    Value: !GetAtt StoreHandoffFunction.Arn
