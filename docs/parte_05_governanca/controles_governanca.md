@@ -81,6 +81,11 @@ ser entregues. Definir retenção explícita para os log groups no template ante
 do deploy final; para a demonstração, a recomendação é 14 dias, salvo exigência
 institucional diferente.
 
+Na conta de demonstração, a retenção de **14 dias** foi aplicada em
+31/08/2026 ao log group `/aws/lambda/concierge-conectatel-retrieve-kb`. Os log
+groups do gateway, AgentCore e handoff devem receber a mesma configuração ao
+serem criados.
+
 ## Checklist pré-demo
 
 - [ ] Conta, região, bucket e ARNs correspondem ao ambiente da demo.

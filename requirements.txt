@@ -6,6 +6,7 @@ faiss-cpu>=1.8,<2
 pypdf>=4,<6
 python-dotenv>=1.0,<2
 sentence-transformers>=3,<6
+streamlit>=1.39,<2
 
 # --- Agente (Parte 3) — AgentCore Runtime + Strands ---
 # strands: loop de tool-use sobre o modelo Bedrock.
