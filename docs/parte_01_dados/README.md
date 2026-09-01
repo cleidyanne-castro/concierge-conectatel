@@ -62,6 +62,13 @@ O desenho usa Python e Pandas, com CSV, JSON e Markdown como formatos de trabalh
 - [`gold_workflow_execution_evidence.png`](../../artifacts/audit/gold_workflow_execution_evidence.png) — evidência visual das dependências entre as camadas.
 - [`databricks_workflow_gold.json`](../../infra/databricks_workflow_gold.json) — definição do Workflow Job com dependências entre as camadas.
 
+### Índice de evidências
+
+As evidências visuais da Parte 1 estão organizadas por etapa no relatório da
+Gold: [`gold_dashboard_execution_evidence.md`](../../artifacts/audit/gold_dashboard_execution_evidence.md).
+Ele reúne os links para Bronze, Silver, Workflow e Gold, além das descrições de
+acessibilidade das imagens do dashboard.
+
 ## Como reproduzir
 
 1. Disponibilize o CSV de chamados e o corpus no Volume definido pelo projeto.

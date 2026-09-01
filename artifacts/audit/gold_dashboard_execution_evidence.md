@@ -36,16 +36,37 @@
 
 ![Visão geral da dashboard](gold_dashboard_evidence.png)
 
+Descrição de acessibilidade: Dashboard executivo com 320 chamados, satisfação
+média de 3,46, filtros por estado, plano, canal e categoria e volume de
+chamados por categoria.
+
 ![Indicadores operacionais da dashboard](gold_dashboard_operacao_evidence.png)
 
+Descrição de acessibilidade: Dashboard operacional com volume e duração
+mediana por estado, resolução no primeiro contato por canal, encaminhamento
+humano e nota metodológica sobre qualidade e interpretação dos dados.
+
 As capturas foram feitas manualmente na visualização publicada, sem o painel de
-conversa do Genie. A primeira evidencia os KPIs, filtros e volume por
-categoria. A segunda evidencia a tabela por estado, a resolução por canal, a
-duração mediana e a nota metodológica.
+conversa do Genie.
 
 O gráfico de resolução por canal mostra contagens de chamados resolvidos no
 primeiro contato. Ele não deve ser interpretado como taxa de eficiência sem o
 total de chamados recebidos por canal.
+
+## Organização das evidências da Parte 1
+
+As evidências estão separadas por etapa para facilitar a conferência:
+
+- Bronze: [evidência de leitura e validação](bronze_read_validation.png) e
+  [evidência de metadados e persistência](bronze_metadata_persistence.png).
+- Silver: [leitura](silver_read_validation.png), [limpeza](silver_cleaning_result.png)
+  e [persistência dos metadados](silver_persistence_metadata.png).
+- Workflow: [execução Bronze, Silver e Gold](gold_workflow_execution_evidence.png).
+- Gold: [visão geral](gold_dashboard_evidence.png) e [indicadores operacionais](gold_dashboard_operacao_evidence.png).
+
+Cada imagem é acompanhada por uma descrição de acessibilidade imediatamente
+abaixo. Os relatórios completos de execução permanecem nos arquivos Markdown
+correspondentes de cada camada.
 
 ## Reprodutibilidade
 
