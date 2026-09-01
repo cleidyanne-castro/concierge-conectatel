@@ -32,6 +32,10 @@ a AWS (agente no AgentCore Runtime, Lambda de borda, infraestrutura SAM +
 AgentCore, deploy na conta da squad). Registro consolidado em
  [`docs/registros_joao.md`](docs/registros_joao.md).
 
+### Kaique Silva Sousa
+
+Responsável por implementar a ferramenta de busca em uma função lambda e calibrar o treshold, alem de criar o dockerfile para gerar a imagem da lambda, criar o template de IaC, usando o AWS SAM. As implementações da ferramenta e o código de calibração do limiar estão em [`src/tools`](src/tools) o dockerfile em [`infra/retrieve_kb.Dockerfile`](infra/retrieve_kb.Dockerfile) e o template em [`infra/template.yaml`](infra/template.yaml). A documentação da implementação está em [`docs/parte_02_rag/rag_implementation.md`](docs/parte_02_rag/rag_implementation.md) e a documentação da calibração do limiar em [`artifacts/retrieval/calibration_report.json`](artifacts/retrieval/calibration_report.json)
+
 ## Responsabilidades planejadas por etapa
 
 ### Parte 1. Pipeline de dados
