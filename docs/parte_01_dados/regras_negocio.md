@@ -17,7 +17,9 @@ consumo pelas etapas seguintes do projeto, usando Pandas e arquivos CSV/JSON.
 - `duracao_minutos` e `satisfacao_1_a_5` são convertidos para números.
 - A satisfação deve permanecer entre 1 e 5. Durações negativas são inválidas.
 - Campos booleanos aceitam representações como `sim/não`, `true/false` e
-  `1/0`. Valores não reconhecidos são tratados como `False`.
+  `1/0`. Valores não reconhecidos permanecem nulos e ativam a flag
+  `has_unknown_boolean`, evitando que desconhecido seja interpretado como
+  resposta negativa.
 
 ## Relação com o projeto
 

@@ -48,7 +48,10 @@ O desenho usa Python e Pandas, com CSV, JSON e Markdown como formatos de trabalh
 - [`test_silver.py`](../../tests/parte_01_dados/test_silver.py) — testes automatizados da Silver.
 - [`test_gold.py`](../../tests/parte_01_dados/test_gold.py) — testes automatizados da Gold.
 - [`silver_execution_evidence.md`](../../artifacts/audit/silver_execution_evidence.md) — evidência da execução real da Silver no Databricks.
+- [`silver_read_validation.png`](../../artifacts/audit/silver_read_validation.png), [`silver_cleaning_result.png`](../../artifacts/audit/silver_cleaning_result.png) e [`silver_persistence_metadata.png`](../../artifacts/audit/silver_persistence_metadata.png) — evidências visuais da execução da Silver.
 - [`gold_execution_evidence.md`](../../artifacts/audit/gold_execution_evidence.md) — evidência da execução ponta a ponta e dos resultados da Gold.
+- [`bronze_execution_evidence.md`](../../artifacts/audit/bronze_execution_evidence.md) — evidência da leitura, validação e persistência da Bronze.
+- [`gold_workflow_execution_evidence.png`](../../artifacts/audit/gold_workflow_execution_evidence.png) — evidência visual das dependências entre as camadas.
 - [`databricks_workflow_gold.json`](../../infra/databricks_workflow_gold.json) — definição do Workflow Job com dependências entre as camadas.
 
 ## Como reproduzir

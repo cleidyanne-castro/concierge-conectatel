@@ -22,6 +22,10 @@
 O grafo confirmou a ordem `Bronze → Silver → Gold`. Silver aguardou a Bronze,
 e Gold aguardou a Silver.
 
+![Execução do Workflow](gold_workflow_execution_evidence.png)
+
+Descrição de acessibilidade: Grafo do Workflow Job no Databricks mostrando as tarefas Bronze, Silver e Gold executadas com sucesso em sequência dependente, todas em Serverless.
+
 ## Resultado da Gold
 
 - Linhas consumidas da Silver: `320`.
@@ -47,5 +51,6 @@ Concierge. Os denominadores permanecem publicados nos artefatos analíticos.
 ## Limite da evidência
 
 Esta evidência confirma a execução do pipeline e a geração dos arquivos. A
-criação e a validação visual do dashboard continuam sendo uma atividade
-separada no workspace Databricks.
+validação visual do dashboard está registrada separadamente em
+[`gold_dashboard_execution_evidence.md`](gold_dashboard_execution_evidence.md),
+com as capturas da publicação no workspace Databricks.

@@ -53,6 +53,20 @@ canal. Para afirmar que um canal é mais eficiente, é necessário dividir as
 resoluções pelo total de chamados recebidos naquele canal. A dashboard mantém o
 volume total como contexto para evitar uma conclusão indevida.
 
+## Pain points observados
+
+- **Concentração de demandas:** categorias recorrentes indicam onde respostas
+  guiadas e artigos mais acessíveis podem reduzir esforço operacional.
+- **Resolução abaixo da metade:** 151 de 320 chamados foram resolvidos no
+  primeiro contato. Existe oportunidade de melhorar a orientação inicial e a
+  recuperação de conteúdo.
+- **Encaminhamento humano:** 63 de 320 chamados foram encaminhados. Esse grupo
+  merece análise por categoria e canal para separar complexidade real de falha
+  na jornada digital.
+- **Comparações regionais sensíveis ao volume:** Paraná e São Paulo têm volumes
+  diferentes. A mediana ajuda a reduzir o efeito de outliers, mas não permite
+  atribuir causalidade ao estado sem controlar categoria e canal.
+
 Na duração mediana, o Paraná apresenta 15 minutos em 52 chamados, enquanto São
 Paulo apresenta 20,5 minutos em 33 chamados. A diferença é de 5,5 minutos, ou
 aproximadamente 36,7% em relação à mediana do Paraná. Isso significa que o

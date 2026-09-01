@@ -14,6 +14,12 @@ ambiente (`aws sso login` / `AWS_PROFILE`) — nunca deste diretório.
 | Lambda `store_handoff` + DynamoDB | SAM (Parte 4) | ver [`../docs/proximas_etapas_04_05.md`](../docs/proximas_etapas_04_05.md) |
 | Workflow Databricks Bronze→Silver→Gold | Job no workspace | [`databricks_workflow_gold.json`](databricks_workflow_gold.json) |
 
+O Job foi publicado e executado no workspace Databricks com as três tarefas
+dependentes. O JSON é a referência versionada de configuração, enquanto os
+resultados da execução estão registrados em
+[`gold_execution_evidence.md`](../artifacts/audit/gold_execution_evidence.md).
+O screenshot do grafo está em
+[`gold_workflow_execution_evidence.png`](../artifacts/audit/gold_workflow_execution_evidence.png).
 ## Ordem de deploy (do zero)
 
 Ferramentas e credenciais: [`DEPLOY.md`](DEPLOY.md) passos 1–3.

@@ -16,10 +16,10 @@ para análise e decisões do Concierge.
 | `categoria` | string | lowercase, sem acentos, sem espaços externos | Gold/RAG |
 | `subcategoria` | string | lowercase, sem acentos, sem espaços externos | Gold/RAG |
 | `estado` | string | UF canônica em minúsculas | Gold |
-| `cidade` | string | categoria normalizada | Gold |
+| `cidade` | string | texto normalizado, com espaços externos removidos | Gold |
 | `duracao_minutos` | numeric | número não negativo | Gold |
-| `resolvido_primeiro_contato` | boolean | `sim/não`, `1/0`, `true/false` | Gold |
-| `encaminhado_humano` | boolean | `sim/não`, `1/0`, `true/false` | Gold/Agente |
+| `resolvido_primeiro_contato` | boolean | valores reconhecidos são convertidos. Desconhecidos permanecem nulos e são sinalizados | Gold |
+| `encaminhado_humano` | boolean | valores reconhecidos são convertidos. Desconhecidos permanecem nulos e são sinalizados | Gold/Agente |
 | `satisfacao_1_a_5` | numeric | intervalo de 1 a 5 | Gold |
 | `plano_atual` | string | categoria normalizada | Gold |
 | `resumo_atendimento` | string | texto preservado. Ausente vira `unknown` | RAG |
@@ -29,6 +29,8 @@ para análise e decisões do Concierge.
 - Colunas ausentes interrompem a execução (`FAIL`).
 - Saída sem linhas interrompe a execução (`FAIL`).
 - Nulos, valores inválidos e duplicatas devem ser contabilizados.
+- Booleanos não reconhecidos não podem ser convertidos silenciosamente em
+  `False`. Eles permanecem nulos e ativam `has_unknown_boolean`.
 - A Bronze não deduplica. A Silver remove duplicatas exatas mantendo a primeira
   ocorrência.
 - A Gold só deve publicar métricas acompanhadas de denominador e volume.
