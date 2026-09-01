@@ -141,7 +141,7 @@ limpeza de recursos contínuos.
 - Índice ausente: execute a Parte 2 e confira `VECTOR_STORE_PATH`.
 - Tudo retorna “não sei”: confirme índice, limiar e documentos `vigente`.
 - Documento revogado aparece: corrija o filtro antes do score e repita os testes.
-- `trace_id` ausente: confira `AUDIT_LOG_PATH` e a execução do handler.
+- `trace_id` ausente: confira os logs do CloudWatch, `AUDIT_LOG_GROUP` e a execução do handler.
 
 ## 10. Entrega final
 

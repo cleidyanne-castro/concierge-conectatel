@@ -12,7 +12,7 @@ revisado antes de cada deploy de demonstração.
 | Lambda `retrieve_kb` | `s3:GetObject` somente no bucket da base; logs de execução | Não escreve no bucket e não possui permissões Bedrock ou DynamoDB. |
 | Lambda `gateway` | `bedrock-agentcore:InvokeAgentRuntime` somente no ARN do Runtime | Não acessa S3, DynamoDB ou o modelo Bedrock diretamente. |
 | AgentCore Runtime | `bedrock:InvokeModel` para o modelo aprovado; `lambda:InvokeFunction` apenas para `retrieve_kb` e `store_handoff`; logs/traces | Não recebe permissões administrativas e não lista/invoca Lambdas arbitrárias. |
-| Lambda `store_handoff` | `dynamodb:PutItem` na tabela `concierge-handoff`; logs | Não lê/escreve outras tabelas; a chave de idempotência é o protocolo. |
+| Lambda `store_handoff` | `dynamodb:PutItem` na tabela `concierge-conectatel-escalonamentos`; logs | Não lê/escreve outras tabelas; a chave de idempotência é o `trace_id`. |
 | Consulta de auditoria | `logs:StartQuery` e `logs:GetQueryResults` nos log groups do Concierge | A consulta é somente leitura e usa `trace_id` como chave de busca. |
 
 Os ARNs, IDs de conta e nomes de repositório em `infra/agentcore/` são
