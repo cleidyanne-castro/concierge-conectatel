@@ -95,8 +95,8 @@ python -m src.cli --question "<pergunta do assinante>"
 ```
 
 O resultado contém `trace_id` e uma decisão: `responder`, `nao_sei` ou
-`escalar`. O agente está em [`src/parte_03_agente/`](src/parte_03_agente/), a
-triagem em [`src/parte_04_triagem/`](src/parte_04_triagem/) e a auditoria em
+`escalar`. O agente e a triagem estão em
+[`src/parte_03_04_agente_triagem/`](src/parte_03_04_agente_triagem/) e a auditoria em
 [`src/parte_05_governanca/`](src/parte_05_governanca/). O modo local permite
 validar o fluxo sem credenciais.
 
