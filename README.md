@@ -9,12 +9,12 @@ Este README é um guia técnico de execução para avaliadores e pessoas externa
 - [`src/`](src/): código executável, organizado pelas cinco partes da solução.
 - [`tests/`](tests/): testes espelhados por domínio funcional.
 - [`docs/`](docs/): contratos, decisões, arquitetura, QA e materiais de entrega.
-- [`data/`](data/): somente entradas e exemplos pequenos.
-- [`artifacts/`](artifacts/): evidências e saídas de execução.
+- [`data/`](data/): entradas oficiais, corpus e exemplos pequenos.
+- [`artifacts/`](artifacts/): evidências versionadas de execução e resultados selecionados.
 - [`infra/`](infra/): configurações reproduzíveis de infraestrutura, sem segredos.
 
 O conteúdo original dos notebooks, módulos, testes e imagens permanece nas
-pastas correspondentes; este mapa é a camada de navegação do repositório.
+pastas correspondentes. Este mapa é a camada de navegação do repositório.
 
 ## 1. Arquitetura da solução
 
@@ -50,7 +50,10 @@ Edite `.env` com região, bucket, caminho do índice, limiar de recuperação e 
 
 ## 4. Entrada de dados
 
-Coloque o log em `data/call_log.csv` e os documentos em `data/corpus/`. Para versões diferentes da mesma política, use nomes como `politica_fatura__vigente.txt` e `politica_fatura__revogado.txt`.
+Para execução local, use o exemplo em `data/examples/call_log.csv` e os
+documentos em `data/corpus/`. No Databricks, disponibilize os mesmos insumos no
+Volume configurado pela squad. Para versões diferentes da mesma política, use
+nomes como `politica_fatura__vigente.txt` e `politica_fatura__revogado.txt`.
 
 Os metadados devem conter `doc_family_id`, `version_ordinal`, `effective_from`, `effective_to` e `status`. O corpus oficial do desafio é a única fonte autorizada para as respostas.
 
@@ -58,24 +61,44 @@ Os metadados devem conter `doc_family_id`, `version_ordinal`, `effective_from`, 
 
 ### Parte 1: Pipeline de dados
 
-Execute o notebook [`01_bronze_ingestao.ipynb`](src/parte_01_dados/01_bronze_ingestao.ipynb)
-no ambiente Databricks configurado pela squad. A execução gera os snapshots,
-relatórios, análises e metadados descritos em `docs/parte_01_dados/`.
+Execute os notebooks [`01_bronze_ingestao.ipynb`](src/parte_01_dados/01_bronze_ingestao.ipynb),
+[`02_silver_limpeza.ipynb`](src/parte_01_dados/02_silver_limpeza.ipynb) e
+[`03_gold_analise.ipynb`](src/parte_01_dados/03_gold_analise.ipynb) no ambiente
+Databricks configurado pela squad. A documentação, os contratos, as regras de
+negócio, o dashboard e as evidências estão em
+[`docs/parte_01_dados/`](docs/parte_01_dados/) e
+[`artifacts/audit/`](artifacts/audit/).
+
+O storytelling analítico está em
+[`gold_dashboard.md`](docs/parte_01_dados/gold_dashboard.md), e os registros
+visuais do dashboard estão em
+[`gold_dashboard_evidence.png`](artifacts/audit/gold_dashboard_evidence.png)
+e [`gold_dashboard_operacao_evidence.png`](artifacts/audit/gold_dashboard_operacao_evidence.png).
+
+O Workflow Job versionado em
+[`infra/databricks_workflow_gold.json`](infra/databricks_workflow_gold.json)
+encadeia Bronze, Silver e Gold. A evidência visual da execução está em
+[`gold_workflow_execution_evidence.png`](artifacts/audit/gold_workflow_execution_evidence.png).
 
 ### Parte 2: Base de conhecimento e RAG
 
 Use os arquivos locais entregues no handoff em
-`docs/parte_02_rag/data_handoff.md`. O código de chunking, embeddings e índice
-será executado pela Parte 2. O filtro `status=vigente` deve ocorrer antes da
-similaridade. Prompt sozinho não atende ao requisito de vigência.
+[`docs/parte_02_rag/data_handoff.md`](docs/parte_02_rag/data_handoff.md). O
+chunking, os embeddings e o índice vetorial estão organizados em
+[`src/parte_02_rag/`](src/parte_02_rag/). O filtro `status=vigente` deve ocorrer
+antes da similaridade. Prompt sozinho não atende ao requisito de vigência.
 
-### Partes 3 e 4: Agente e escalonamento
+### Partes 3, 4 e 5: Agente, escalonamento e governança
 
 ```bash
 python -m src.cli --question "<pergunta do assinante>"
 ```
 
-O resultado deve conter `trace_id` e uma decisão: `responder`, `nao_sei` ou `escalar`. O adaptador real do Bedrock está em `src/parte_03_agente/bedrock_client.py`. O modo local permite validar o fluxo sem credenciais.
+O resultado contém `trace_id` e uma decisão: `responder`, `nao_sei` ou
+`escalar`. O agente está em [`src/parte_03_agente/`](src/parte_03_agente/), a
+triagem em [`src/parte_04_triagem/`](src/parte_04_triagem/) e a auditoria em
+[`src/parte_05_governanca/`](src/parte_05_governanca/). O modo local permite
+validar o fluxo sem credenciais.
 
 ## 6. Testes e evidências
 
@@ -83,27 +106,34 @@ O resultado deve conter `trace_id` e uma decisão: `responder`, `nao_sei` ou `es
 python -m pytest -q
 ```
 
-As evidências finais devem conter 10 a 15 transcrições textuais. Devem incluir duas respostas com fonte vigente, duas perguntas sobre versão revogada, duas sem fonte com “não sei” e dois escalonamentos distintos com handoff completo. Também devem cobrir perguntas não preparadas, consulta do `trace_id` em até 60 segundos e execução do README por membro diferente do autor da configuração.
+As evidências finais devem conter 10 a 15 transcrições textuais, incluindo duas
+respostas com fonte vigente, duas perguntas sobre versão revogada, duas sem
+fonte com “não sei” e dois escalonamentos distintos com handoff completo.
+Também devem cobrir perguntas não preparadas, consulta do `trace_id` em até 60
+segundos e execução do README por membro diferente do autor da configuração.
 
 As evidências da Parte 1 estão em [`artifacts/audit/`](artifacts/audit/), com
-registros visuais da Bronze, do Workflow, da Silver e da dashboard.
+registros visuais da Bronze, do Workflow, da Silver e do dashboard, além dos
+respectivos registros de execução.
 
 ## 7. Auditoria e governança
 
-Cada resposta registra pergunta, fontes, decisão, guardrail e `trace_id`. O registro local fica em `artifacts/audit/audit.jsonl`. `find_by_trace_id()` localiza uma interação. A entrega final deve documentar IAM de menor privilégio, guardrails, riscos, AWS Budgets e limpeza de recursos contínuos.
+Cada resposta registra pergunta, fontes, decisão, guardrail e `trace_id`. A
+função `find_by_trace_id()` localiza uma interação. A documentação de
+governança cobre IAM de menor privilégio, guardrails, riscos, AWS Budgets e
+limpeza de recursos contínuos.
 
 ## 8. Estrutura do repositório
 
 - `src/`: pipeline, RAG, agente, política e auditoria.
 - `tests/`: testes automatizados.
-- `data/`: entradas oficiais e exemplos de smoke test.
+- `data/`: entradas oficiais, corpus e exemplos de smoke test.
 - `docs/arquitetura/`: arquitetura final aprovada pela squad.
-- `docs/relatorio/`: documento principal.
 - `docs/transcricoes/`: registros dos testes.
-- `docs/qa/`: evidências e checklist.
-- `docs/apresentacao/`: slides da banca.
+- `docs/qa/`: checklist e critérios de qualidade.
 - `infra/`: configuração e documentação AWS.
-- `artifacts/`: saídas locais. Não versionar dados gerados.
+- `artifacts/`: evidências selecionadas e registros de execução. Dados gerados
+  em volume não são versionados no GitHub.
 
 ## 9. Troubleshooting
 
@@ -113,6 +143,9 @@ Cada resposta registra pergunta, fontes, decisão, guardrail e `trace_id`. O reg
 - Documento revogado aparece: corrija o filtro antes do score e repita os testes.
 - `trace_id` ausente: confira `AUDIT_LOG_PATH` e a execução do handler.
 
-## 10. Entrega
+## 10. Entrega final
 
-Valide este README do zero em uma conta de consolidação, revise documento, transcrições, slides, código e vídeo plano B. Crie a tag `v1.0-entrega` e demonstre exatamente essa versão congelada.
+O repositório reúne código, documentação, testes, evidências e contratos das
+cinco partes. Antes da apresentação, a squad deve revisar as transcrições, os
+slides, o código e o vídeo plano B. Se for necessário congelar uma versão,
+crie a tag `v1.0-entrega` a partir da `main` validada.
