@@ -36,22 +36,34 @@ validação estão registrados em
 
 ## Storytelling para o produto
 
-A base contém 320 chamados, satisfação média de 3,46 e 151 resoluções no
-primeiro contato, equivalentes a 47,2% dos registros. A dashboard deve ser
-apresentada como uma leitura de oportunidade para o produto, e não apenas como
-um painel operacional.
+### Problema
 
-O gráfico de resolução por canal mostra contagens de chamados resolvidos no
-primeiro contato. Na leitura atual, os canais virtuais somam 94 resoluções e a
-loja física representa 57. Assim, a maior parte das resoluções ocorreu fora do
-atendimento presencial. Esse achado sustenta o fortalecimento das jornadas
-digitais para as categorias mais frequentes, mantendo a loja física como apoio
-para casos que exigem orientação ou intervenção especializada.
+A base tratada reúne 320 chamados, com satisfação média de 3,46. Apenas 151
+foram resolvidos no primeiro contato e 63 foram encaminhados para atendimento
+humano. O cenário indica oportunidade de melhorar a resolução inicial e reduzir
+o esforço operacional.
 
-Essa comparação representa volume de resoluções, não eficiência percentual por
-canal. Para afirmar que um canal é mais eficiente, é necessário dividir as
-resoluções pelo total de chamados recebidos naquele canal. A dashboard mantém o
-volume total como contexto para evitar uma conclusão indevida.
+### Conflito
+
+Somados, os canais virtuais concentraram 94 resoluções no primeiro contato,
+contra 57 na loja física. Esse resultado indica maior volume absoluto de
+resoluções virtuais, mas não comprova maior rapidez ou eficiência, pois a
+comparação não usa o total de chamados recebidos por canal. Na dimensão
+regional, o Paraná apresentou duração mediana de 15 minutos em 52 chamados,
+enquanto São Paulo apresentou 20,5 minutos em 33 chamados. A diferença pode
+estar relacionada ao canal, à categoria ou à complexidade dos atendimentos.
+
+### Resolução
+
+Os achados orientam decisões de produto e operação: priorizar respostas guiadas
+e conteúdos digitais para as categorias mais frequentes, melhorar a orientação
+inicial e investigar canal e categoria antes de criar regras específicas por
+estado. O dashboard registra evidências para essas decisões, mas não alimenta
+diretamente o RAG ou o agente.
+
+**Decisão de design:** o Concierge deve priorizar respostas guiadas e melhorar
+a orientação inicial para aumentar a resolução no primeiro contato e reduzir
+encaminhamentos desnecessários.
 
 ## Pain points observados
 
