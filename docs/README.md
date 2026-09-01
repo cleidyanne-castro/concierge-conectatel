@@ -27,6 +27,7 @@ duplicar regras entre partes: referenciar o contrato original.
 - `parte_04_triagem/`: política de triagem e escalonamento.
 - `parte_05_governanca/`: auditoria, rastreabilidade e controles.
 - `relatorio/`: template do documento principal e versão final a preencher.
+- `reflexao/`: reflexão coletiva, pontos fortes e oportunidades de melhoria.
 - `transcricoes/`: registros textuais dos testes obrigatórios.
 - `apresentacao/`: slides usados na banca.
 - `qa/`: evidências de execução, teste cego, auditoria e plano B.
