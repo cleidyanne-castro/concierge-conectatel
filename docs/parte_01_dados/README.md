@@ -1,4 +1,4 @@
-# Parte 1 — Engenharia e análise de dados
+# Parte 1: Engenharia e análise de dados
 
 Esta pasta reúne a implementação e a documentação da camada de dados do Concierge ConectaTel. Ela funciona como o ponto de entrada para entender o fluxo, reproduzir as etapas e localizar os contratos, testes e evidências da entrega.
 
@@ -42,6 +42,14 @@ O desenho usa Python e Pandas, com CSV, JSON e Markdown como formatos de trabalh
 - [`03_gold_analise.ipynb`](../../src/parte_01_dados/03_gold_analise.ipynb) — indicadores, análises e recomendações.
 - [`silver.py`](../../src/parte_01_dados/silver.py) — lógica reutilizável da Silver.
 - [`gold.py`](../../src/parte_01_dados/gold.py) — lógica reutilizável da Gold.
+
+### Papel dos módulos Python
+
+- `silver.py` concentra as regras reutilizáveis de limpeza e validação da Silver.
+- `gold.py` concentra as agregações, KPIs, síntese e saídas analíticas da Gold.
+- `quality.py` concentra os status de qualidade e os manifestos de execução.
+- Não há `bronze.py` porque a Bronze é executada pelo notebook de ingestão, que coordena leitura, snapshot, inventário e persistência dos artefatos.
+- Os arquivos `__init__.py` podem permanecer vazios. Eles identificam a pasta como um pacote Python e não precisam conter lógica.
 
 ### Qualidade e operação
 
