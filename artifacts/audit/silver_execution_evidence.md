@@ -26,7 +26,7 @@
 - Metadados: copiados com sucesso
 - Células: `5/5` executadas com sucesso
 
-## Evidência esperada no Databricks
+## Resultados publicados no Databricks
 
 Complementos da execução:
 
@@ -36,7 +36,23 @@ Complementos da execução:
   - `/Volumes/workspace/conectatel/raw_files/silver/silver_quality_report.json`
   - `/Volumes/workspace/conectatel/raw_files/silver/silver_schema.json`
   - `/Volumes/workspace/conectatel/raw_files/silver/silver_processing_metrics.json`
-- Link ou screenshot da execução: execução realizada no notebook do workspace
+- A execução foi realizada no notebook do workspace Databricks. Os resultados
+  foram registrados nesta evidência e os arquivos de saída permanecem no
+  Volume do projeto.
+
+## Evidência visual
+
+![Leitura da Silver](silver_read_validation.png)
+
+Descrição de acessibilidade: Resultado do notebook Silver mostrando a leitura do snapshot da Bronze, a validação das colunas e o carregamento de 324 linhas brutas.
+
+![Limpeza da Silver](silver_cleaning_result.png)
+
+Descrição de acessibilidade: Resultado do notebook Silver mostrando a limpeza concluída, 320 linhas após o tratamento e 4 duplicatas removidas.
+
+![Persistência e metadados da Silver](silver_persistence_metadata.png)
+
+Descrição de acessibilidade: Resultado do notebook Silver mostrando o status WARNING esperado, a persistência dos artefatos e a cópia dos metadados da Bronze para o Volume da Silver.
 
 ## Observação
 

@@ -85,6 +85,9 @@ python -m pytest -q
 
 As evidências finais devem conter 10 a 15 transcrições textuais. Devem incluir duas respostas com fonte vigente, duas perguntas sobre versão revogada, duas sem fonte com “não sei” e dois escalonamentos distintos com handoff completo. Também devem cobrir perguntas não preparadas, consulta do `trace_id` em até 60 segundos e execução do README por membro diferente do autor da configuração.
 
+As evidências da Parte 1 estão em [`artifacts/audit/`](artifacts/audit/), com
+registros visuais da Bronze, do Workflow, da Silver e da dashboard.
+
 ## 7. Auditoria e governança
 
 Cada resposta registra pergunta, fontes, decisão, guardrail e `trace_id`. O registro local fica em `artifacts/audit/audit.jsonl`. `find_by_trace_id()` localiza uma interação. A entrega final deve documentar IAM de menor privilégio, guardrails, riscos, AWS Budgets e limpeza de recursos contínuos.

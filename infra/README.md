@@ -8,8 +8,9 @@ Registrar aqui somente configuração reproduzível e sem segredos: S3 privado c
 encadeamento `Bronze → Silver → Gold`. Os placeholders `workspace_path` e
 `compute_id` evitam registrar caminhos privados e identificadores do workspace.
 
-Antes da publicação, substitua os parâmetros pelo ambiente correto, confirme o
-acesso aos três notebooks e execute uma rodada completa. Registre horário,
-status de cada tarefa, linhas processadas e links das evidências. O JSON é uma
-referência de configuração; a criação efetiva do Job continua sendo feita no
-workspace Databricks.
+O Job foi publicado e executado no workspace Databricks com as três tarefas
+dependentes. O JSON é a referência versionada de configuração, enquanto os
+resultados da execução estão registrados em
+[`gold_execution_evidence.md`](../artifacts/audit/gold_execution_evidence.md).
+O screenshot do grafo está em
+[`gold_workflow_execution_evidence.png`](../artifacts/audit/gold_workflow_execution_evidence.png).

@@ -10,6 +10,9 @@ Este diretório contém entradas do projeto, nunca lógica de negócio ou saída
 O corpus oficial é a única fonte autorizada para respostas. Saídas produzidas
 por notebooks e pipelines devem ir para `artifacts/`, não voltar para `data/`.
 O log de chamados completo e os dados gerados no Volume permanecem fora do GitHub.
+Os exemplos não representam o volume completo da análise. Eles existem para
+validar a estrutura e permitir uma execução local simples sem expor os dados
+processados do Volume.
 
 ## Navegação da Parte 1
 
