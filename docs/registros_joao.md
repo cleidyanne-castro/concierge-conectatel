@@ -42,15 +42,14 @@ Parte 3 (Agente Concierge) e integração ponta a ponta com a AWS.
 - `src/parte_02_rag/upload_to_s3.py` — ajustado para ler bucket/região do
   ambiente, sem `AWS_PROFILE` fixo; `Makefile` com `seed-kb` / `deploy`.
 
-## Deploy executado (conta da squad `582766763753`)
+## Deploy executado 
 
 - Stack SAM `concierge-conectatel`: `retrieve_kb` + HTTP API no ar.
 - AgentCore Runtime `concierge_agent-OGCvl4G9Yj` (status READY), imagem em
   `bedrock-agentcore-concierge_agent`, execution role com invoke das tools.
 - Teste `invoke-agent-runtime`: `statusCode 200`, `decision "responder"` com
   fonte citada.
-- Modelo: `amazon.nova-lite-v1:0` (Claude 4.5 disponível mas exige o formulário
-  "Anthropic use case details" — deixado como upgrade pós-entrega).
+- Modelo: `amazon.nova-lite-v1:0` 
 
 ## Handoff para as Partes 4 e 5
 

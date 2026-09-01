@@ -20,6 +20,12 @@ resultados da execução estão registrados em
 [`gold_execution_evidence.md`](../artifacts/audit/gold_execution_evidence.md).
 O screenshot do grafo está em
 [`gold_workflow_execution_evidence.png`](../artifacts/audit/gold_workflow_execution_evidence.png).
+
+![Grafo do Workflow Job](../artifacts/audit/gold_workflow_execution_evidence.png)
+
+Descrição de acessibilidade: grafo do Workflow Job no Databricks mostrando as
+tarefas Bronze, Silver e Gold executadas com sucesso em sequência dependente,
+todas em Serverless.
 ## Ordem de deploy (do zero)
 
 Ferramentas e credenciais: [`DEPLOY.md`](DEPLOY.md) passos 1–3.

@@ -8,6 +8,23 @@ Responsável pela Parte 0 e pela coordenação técnica inicial. O registro
 consolidado das contribuições está em
  [`docs/registros_cleidyanne.md`](docs/registros_cleidyanne.md).
 
+Na Parte 1, a contribuição concluída inclui:
+
+- ingestão e validação do log de chamados com Pandas;
+- organização da arquitetura Medallion em Bronze, Silver e Gold;
+- tratamento de tipos, textos, estados, valores ausentes e duplicatas;
+- controles de qualidade e testes automatizados;
+- três análises descritivas, síntese dos achados e decisões de design;
+- metadados de vigência para consumo pelo RAG;
+- dashboard executivo com métricas e pain points do atendimento;
+- Workflow Job no Databricks com dependências entre as três camadas;
+- documentação técnica, contrato de dados, regras de negócio e evidências;
+- handoff versionado para Chunking e Embeddings.
+
+As implementações estão em [`src/parte_01_dados/`](src/parte_01_dados/), a
+documentação em [`docs/parte_01_dados/`](docs/parte_01_dados/) e as evidências
+em [`artifacts/audit/`](artifacts/audit/).
+
 ### João Vitor Althaus Godoi
 
 Responsável pela Parte 3 (Agente Concierge) e pela integração ponta a ponta com
