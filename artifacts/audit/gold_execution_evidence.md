@@ -47,5 +47,6 @@ Concierge. Os denominadores permanecem publicados nos artefatos analíticos.
 ## Limite da evidência
 
 Esta evidência confirma a execução do pipeline e a geração dos arquivos. A
-criação e a validação visual do dashboard continuam sendo uma atividade
-separada no workspace Databricks.
+validação visual do dashboard está registrada separadamente em
+[`gold_dashboard_execution_evidence.md`](gold_dashboard_execution_evidence.md),
+com as capturas da publicação no workspace Databricks.

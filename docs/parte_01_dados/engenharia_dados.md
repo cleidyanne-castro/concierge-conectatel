@@ -90,7 +90,7 @@ as agregações reutilizáveis e testáveis.
 | Silver | preparar um dataset confiável | normalização sem acentos, conversões, ausências, duplicatas, métricas e testes | Concluído |
 | Gold | transformar a Silver em evidência para decisões | três agregações, KPIs com denominadores, decisões, qualidade e manifesto | Executado com sucesso |
 | Automação | encadear Bronze → Silver → Gold | Workflow Job publicado, com três tarefas dependentes e Serverless | Executado com sucesso |
-| Dashboard | comunicar os indicadores | especificação de fontes, visuais, filtros e critérios de leitura | Especificado; falta criação no workspace |
+| Dashboard | comunicar os indicadores | dashboard publicado com fontes, visuais, filtros e critérios de leitura | Concluído e validado |
 | Integração | entregar insumos claros às próximas partes | handoff de vigência, campos de chunk e rastreabilidade | Documentado |
 
 Esse comparativo separa código versionado de execução operacional, deixando
@@ -160,9 +160,7 @@ A Silver foi executada no Databricks com:
 - metadados copiados com sucesso;
 - status: `WARNING` esperado pela presença de duplicatas no insumo.
 
-A evidência está em:
-
-`artifacts/audit/silver_execution_evidence.md`
+A evidência está em [`silver_execution_evidence.md`](../../artifacts/audit/silver_execution_evidence.md).
 
 ## Workflow Job
 
@@ -175,28 +173,25 @@ Bronze → Silver → Gold
 Cada tarefa depende da conclusão bem-sucedida da anterior. A configuração
 mantém os notebooks independentes e torna a execução ponta a ponta reproduzível.
 
-O arquivo de referência está em:
+O arquivo de referência está em
+[`databricks_workflow_gold.json`](../../infra/databricks_workflow_gold.json).
 
-`infra/databricks_workflow_gold.json`
+A execução realizada está registrada em
+[`gold_execution_evidence.md`](../../artifacts/audit/gold_execution_evidence.md).
 
-A execução realizada está registrada em:
-
-`artifacts/audit/gold_execution_evidence.md`
-
-Antes da demonstração, devem ser preenchidos os parâmetros do workspace e do
-compute e realizada uma execução completa para gerar a evidência do fluxo.
+O fluxo foi executado com sucesso no workspace Databricks e sua evidência está
+versionada no repositório.
 
 ## Dashboard
 
 A Gold entrega `gold_kpis.csv`, três resumos analíticos,
 `gold_quality_report.json`, `gold_manifest.json` e `gold_decisoes_design.md`.
-O dashboard deve apresentar volume, satisfação, resolução no primeiro contato,
-encaminhamento humano, desempenho por canal e concentração geográfica.
+O dashboard publicado apresenta volume, satisfação, resolução no primeiro
+contato, encaminhamento humano, desempenho por canal e concentração geográfica.
 
 Cada visualização deve indicar sua fonte e exibir o volume ou denominador
-correspondente. A especificação está em:
-
-`docs/parte_01_dados/gold_dashboard.md`
+correspondente. A especificação está em
+[`gold_dashboard.md`](gold_dashboard.md).
 
 ## Integração com as partes seguintes
 
@@ -211,29 +206,38 @@ A Engenharia de Dados entrega:
 - decisões de design baseadas nos chamados;
 - evidências reproduzíveis.
 
-O handoff detalhado para Chunking e Embeddings está separado em:
-
-`docs/parte_02_rag/data_handoff.md`
+O handoff detalhado para Chunking e Embeddings está em
+[`data_handoff.md`](../parte_02_rag/data_handoff.md).
 
 A Engenharia de Dados não cria embeddings, respostas, prompts ou regras de
 roteamento. Ela fornece os dados e o contexto necessários para que essas
 responsabilidades sejam executadas pelas partes seguintes.
 
+## Validação da saída do agente
+
+Como controle de integração, foi definido que a saída do agente deve preservar
+a qualidade dos insumos fornecidos pela Engenharia de Dados. A checagem deve
+considerar a presença da fonte utilizada, o uso de documentos vigentes, a
+coerência entre a intenção da pergunta e o conteúdo recuperado e a decisão
+final do fluxo.
+
+Essa validação não substitui os testes funcionais do agente, da busca ou do
+escalonamento. Ela confirma que os contratos, metadados e regras entregues pela
+Parte 1 permanecem identificáveis no resultado consumido pelas etapas seguintes.
+
 ## Limitações conhecidas
 
 - Os dados processados permanecem no Volume e não são versionados no GitHub.
-- O dashboard precisa ser criado e validado após a execução da Gold.
+- As imagens do dashboard comprovam a visão publicada no momento da captura,
+  enquanto os dados processados continuam no Volume.
 - O status `WARNING` da Silver é esperado quando duplicatas são encontradas.
 - A execução local não substitui a evidência do Databricks.
 
-## Próximos passos
+## Encerramento da entrega
 
-1. Executar a Gold no Databricks.
-2. Validar os arquivos analíticos e o manifesto gerado.
-3. Publicar o Workflow Job com as dependências Bronze → Silver → Gold.
-4. Criar o dashboard a partir dos arquivos da Gold.
-5. Registrar evidências do fluxo completo.
-6. Atualizar o relatório e a apresentação com os achados e decisões.
+A Parte 1 foi concluída, documentada e integrada às partes seguintes. O
+repositório reúne o código, os contratos, as regras, os testes, as evidências
+de execução e os materiais necessários para a apresentação final.
 
 ## Critério de entrega
 
