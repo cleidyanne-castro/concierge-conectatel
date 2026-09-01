@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Concierge ConectaTel - tool retrieve_kb + gateway (API GW -> AgentCore) + HTTP API
+
+Parameters:
+  KnowledgeBaseBucketName:
+    Type: String
+    Default: concierge-conectatel-kb-squad4
+    Description: >-
+      Bucket S3 (ja existente) com index/embeddings.json e processed/chunks.json.
+      O stack NAO cria o bucket - so le dele.
+  AgentRuntimeArn:
+    Type: String
+    Default: arn:aws:bedrock-agentcore:us-east-1:582766763753:runtime/concierge_agent-OGCvl4G9Yj
+    Description: ARN do AgentCore Runtime (agent_concierge) que o gateway invoca.
+  CorsAllowOrigin:
+    Type: String
+    Default: "*"
+    Description: Origem permitida no CORS da API.
+
+Resources:
+
+  # -------- Tool de busca (imagem). Rota de debug POST /retrieve --------
+  RetrieveKbFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: concierge-conectatel-retrieve-kb
+      PackageType: Image
+      # 10240 MB = ~6 vCPU. O cold start carrega torch + o modelo de embeddings;
+      # com pouca CPU isso passa de 30s e o API Gateway derruba (503).
+      MemorySize: 10240
+      Timeout: 60
+      Environment:
+        Variables:
+          S3_BUCKET_NAME: !Ref KnowledgeBaseBucketName
+          RETRIEVAL_SCORE_THRESHOLD: "0.85"
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref KnowledgeBaseBucketName
+      Events:
+        PostRetrieve:
+          Type: HttpApi
+          Properties:
+            Path: /retrieve
+            Method: POST
+    Metadata:
+      Dockerfile: infra/retrieve_kb.Dockerfile
+      DockerContext: ../
+      DockerTag: latest
+
+  # -------- Borda: API Gateway (HTTP API) -> AgentCore Runtime --------
+  GatewayFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: concierge-conectatel-gateway
+      Runtime: python3.12
+      Handler: lambda_gateway.handler
+      CodeUri: ../src/parte_03_04_agente_triagem/
+      MemorySize: 256
+      Timeout: 60
+      Environment:
+        Variables:
+          AGENT_RUNTIME_ARN: !Ref AgentRuntimeArn
+          CORS_ALLOW_ORIGIN: !Ref CorsAllowOrigin
+      Policies:
+        - Statement:
+            - Sid: InvokeAgentRuntime
+              Effect: Allow
+              Action: bedrock-agentcore:InvokeAgentRuntime
+              Resource:
+                - !Ref AgentRuntimeArn
+                - !Sub "${AgentRuntimeArn}/*"
+      Events:
+        PostConcierge:
+          Type: HttpApi
+          Properties:
+            Path: /concierge
+            Method: POST
+        OptionsConcierge:
+          Type: HttpApi
+          Properties:
+            Path: /concierge
+            Method: OPTIONS
+
+Outputs:
+  KnowledgeBaseBucketName:
+    Description: Bucket lido pela tool retrieve_kb
+    Value: !Ref KnowledgeBaseBucketName
+  ConciergeApiUrl:
+    Description: 'Endpoint principal - POST {question, trace_id}'
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/concierge"
+  RetrieveKbApiUrl:
+    Description: 'Debug - POST direto na tool de busca'
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/retrieve"
+  GatewayFunctionArn:
+    Value: !GetAtt GatewayFunction.Arn

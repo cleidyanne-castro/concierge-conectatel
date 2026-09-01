@@ -19,6 +19,8 @@ duplicar regras entre partes: referenciar o contrato original.
 - `arquitetura/README.md`: arquitetura final e comparação entre planejado e executado.
 - `arquitetura/planejado_vs_executado.md`: registro do escopo previsto e entregue.
 - `registros_cleidyanne.md`: registro exclusivo das contribuições de Cleidyanne Castro Pereira.
+- `registros_joao.md`: registro das contribuições de João Vitor Althaus Godoi (Parte 3 + infra).
+- `proximas_etapas_04_05.md`: instruções e contratos para as Partes 4 e 5.
 - `parte_01_dados/`: pipeline Bronze, Silver e Gold.
 - `parte_02_rag/`: handoff, chunking, embeddings e índice vetorial.
 - `parte_03_agente/`: agente Concierge e integração com Bedrock.

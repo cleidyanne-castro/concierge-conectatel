@@ -1,0 +1,746 @@
+{
+  "summary": {
+    "model_key": "multilingual_minilm",
+    "model_name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "total_questions": 12,
+    "hit_at_1": 0.25,
+    "hit_at_3": 0.6667,
+    "hit_at_5": 0.75,
+    "mrr": 0.4514
+  },
+  "questions": [
+    {
+      "question_id": "q01",
+      "question": "Como consulto meu consumo de dados?",
+      "expected_doc_family_id": "faq-geral",
+      "expected_chunk_ids": [
+        "chunk_323d5970f3728530"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_323d5970f3728530",
+          "score": 0.6050055623054504,
+          "doc_family_id": "faq-geral",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/faq/faq_geral.md",
+          "section_title": "FAQ Geral — ConectaTel"
+        },
+        {
+          "chunk_id": "chunk_6a70fd8c35347420",
+          "score": 0.4693055748939514,
+          "doc_family_id": "plano-conecta-basico",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_basico.md",
+          "section_title": "Plano Conecta Básico"
+        },
+        {
+          "chunk_id": "chunk_6710ca63568e8380",
+          "score": 0.44675230979919434,
+          "doc_family_id": "pol-suporte-escalonamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
+          "section_title": "Campos mínimos do registro de escalonamento"
+        },
+        {
+          "chunk_id": "chunk_7ce95bad6a1a4628",
+          "score": 0.4110274314880371,
+          "doc_family_id": "pol-reembolso",
+          "status": "revogado",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
+          "section_title": "Registro"
+        },
+        {
+          "chunk_id": "chunk_6312066740294e11",
+          "score": 0.3895421028137207,
+          "doc_family_id": "pol-suporte-escalonamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
+          "section_title": "Campos mínimos do registro de escalonamento"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "mrr": 1.0
+      }
+    },
+    {
+      "question_id": "q02",
+      "question": "Qual é o valor mensal do plano Conecta Básico?",
+      "expected_doc_family_id": "plano-conecta-basico",
+      "expected_chunk_ids": [
+        "chunk_641b6dcb2a98cbbd"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_f6792836b124c200",
+          "score": 0.5627954006195068,
+          "doc_family_id": "plano-conecta-familia",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_familia.md",
+          "section_title": "Valor mensal"
+        },
+        {
+          "chunk_id": "chunk_6a70fd8c35347420",
+          "score": 0.43496444821357727,
+          "doc_family_id": "plano-conecta-basico",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_basico.md",
+          "section_title": "Plano Conecta Básico"
+        },
+        {
+          "chunk_id": "chunk_b5b41155918d02a0",
+          "score": 0.4324914216995239,
+          "doc_family_id": "plano-conecta-plus",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_plus.md",
+          "section_title": "Valor mensal"
+        },
+        {
+          "chunk_id": "chunk_641b6dcb2a98cbbd",
+          "score": 0.4115086793899536,
+          "doc_family_id": "plano-conecta-basico",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_basico.md",
+          "section_title": "Valor mensal"
+        },
+        {
+          "chunk_id": "chunk_549a7dc1033fd435",
+          "score": 0.40212029218673706,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Cancelamento durante o período de fidelidade"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_3": 0,
+        "hit_at_5": 1,
+        "mrr": 0.25
+      }
+    },
+    {
+      "question_id": "q03",
+      "question": "Qual é a velocidade da internet do plano Conecta Plus depois que a franquia acaba?",
+      "expected_doc_family_id": "plano-conecta-plus",
+      "expected_chunk_ids": [
+        "chunk_b98258e9fafca62d"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_2bdf36e757be79f7",
+          "score": 0.6553173661231995,
+          "doc_family_id": "plano-conecta-basico",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_basico.md",
+          "section_title": "Após o consumo da franquia de dados"
+        },
+        {
+          "chunk_id": "chunk_b98258e9fafca62d",
+          "score": 0.6013101935386658,
+          "doc_family_id": "plano-conecta-plus",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_plus.md",
+          "section_title": "Após o consumo da franquia de dados"
+        },
+        {
+          "chunk_id": "chunk_7b143607807e81b2",
+          "score": 0.5515396595001221,
+          "doc_family_id": "faq-cobertura-rede",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/faq/faq_cobertura_rede.md",
+          "section_title": "FAQ Cobertura e Rede — ConectaTel"
+        },
+        {
+          "chunk_id": "chunk_1bb844ea5e7193ca",
+          "score": 0.5353314876556396,
+          "doc_family_id": "plano-conecta-basico",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_basico.md",
+          "section_title": "Franquia mensal"
+        },
+        {
+          "chunk_id": "chunk_b5b41155918d02a0",
+          "score": 0.5085363984107971,
+          "doc_family_id": "plano-conecta-plus",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_plus.md",
+          "section_title": "Valor mensal"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "mrr": 0.5
+      }
+    },
+    {
+      "question_id": "q04",
+      "question": "Quais situações permitem cancelar o plano sem pagar multa de fidelidade?",
+      "expected_doc_family_id": "pol-cancelamento",
+      "expected_chunk_ids": [
+        "chunk_9f2b510c341836d3"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_5de493491d91ef3c",
+          "score": 0.6983162760734558,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Cancelamento sem período de fidelidade"
+        },
+        {
+          "chunk_id": "chunk_549a7dc1033fd435",
+          "score": 0.6467405557632446,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Cancelamento durante o período de fidelidade"
+        },
+        {
+          "chunk_id": "chunk_3cb615881b0534dc",
+          "score": 0.634040355682373,
+          "doc_family_id": "proc-portabilidade",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_portabilidade.md",
+          "section_title": "Portabilidade de saída (número ConectaTel migrando para outra operadora)"
+        },
+        {
+          "chunk_id": "chunk_0e691e03deef38a0",
+          "score": 0.6120942234992981,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Contestação da multa"
+        },
+        {
+          "chunk_id": "chunk_7e9f6f7401c39694",
+          "score": 0.6021716594696045,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Processo de cancelamento"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_3": 0,
+        "hit_at_5": 0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "question_id": "q05",
+      "question": "Qual é o prazo atual para contestar uma cobrança da fatura?",
+      "expected_doc_family_id": "pol-reembolso",
+      "expected_chunk_ids": [
+        "chunk_72d3e7381e8d5669"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_f50f7e4a4eb48118",
+          "score": 0.7047113180160522,
+          "doc_family_id": "pol-reembolso",
+          "status": "revogado",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
+          "section_title": "Prazo para contestação"
+        },
+        {
+          "chunk_id": "chunk_72d3e7381e8d5669",
+          "score": 0.6488735675811768,
+          "doc_family_id": "pol-reembolso",
+          "status": "vigente",
+          "version_ordinal": 2,
+          "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+          "section_title": "Prazo para contestação"
+        },
+        {
+          "chunk_id": "chunk_549a7dc1033fd435",
+          "score": 0.5691609382629395,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Cancelamento durante o período de fidelidade"
+        },
+        {
+          "chunk_id": "chunk_eca5c97634711bff",
+          "score": 0.5432944297790527,
+          "doc_family_id": "pol-reembolso",
+          "status": "revogado",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
+          "section_title": "Forma de reembolso"
+        },
+        {
+          "chunk_id": "chunk_641b6dcb2a98cbbd",
+          "score": 0.5256242752075195,
+          "doc_family_id": "plano-conecta-basico",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_basico.md",
+          "section_title": "Valor mensal"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "mrr": 0.5
+      }
+    },
+    {
+      "question_id": "q06",
+      "question": "Como funciona o reembolso quando a contestação é aceita?",
+      "expected_doc_family_id": "pol-reembolso",
+      "expected_chunk_ids": [
+        "chunk_3c943a4e1adaa3d8"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_eca5c97634711bff",
+          "score": 0.6849557161331177,
+          "doc_family_id": "pol-reembolso",
+          "status": "revogado",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
+          "section_title": "Forma de reembolso"
+        },
+        {
+          "chunk_id": "chunk_9e515602f4067c2b",
+          "score": 0.6211534142494202,
+          "doc_family_id": "pol-reembolso",
+          "status": "vigente",
+          "version_ordinal": 2,
+          "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+          "section_title": "Verificação antifraude"
+        },
+        {
+          "chunk_id": "chunk_3c943a4e1adaa3d8",
+          "score": 0.5469560027122498,
+          "doc_family_id": "pol-reembolso",
+          "status": "vigente",
+          "version_ordinal": 2,
+          "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+          "section_title": "Forma de reembolso"
+        },
+        {
+          "chunk_id": "chunk_0e691e03deef38a0",
+          "score": 0.5248363018035889,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Contestação da multa"
+        },
+        {
+          "chunk_id": "chunk_985c42b47c866998",
+          "score": 0.513877272605896,
+          "doc_family_id": "pol-suporte-escalonamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
+          "section_title": "Casos de escalonamento obrigatório"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "mrr": 0.3333333333333333
+      }
+    },
+    {
+      "question_id": "q07",
+      "question": "Em quais casos uma contestação de fatura precisa passar por verificação antifraude?",
+      "expected_doc_family_id": "pol-reembolso",
+      "expected_chunk_ids": [
+        "chunk_9e515602f4067c2b"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_985c42b47c866998",
+          "score": 0.7653648853302002,
+          "doc_family_id": "pol-suporte-escalonamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
+          "section_title": "Casos de escalonamento obrigatório"
+        },
+        {
+          "chunk_id": "chunk_9e515602f4067c2b",
+          "score": 0.7493540048599243,
+          "doc_family_id": "pol-reembolso",
+          "status": "vigente",
+          "version_ordinal": 2,
+          "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+          "section_title": "Verificação antifraude"
+        },
+        {
+          "chunk_id": "chunk_3c943a4e1adaa3d8",
+          "score": 0.6291295289993286,
+          "doc_family_id": "pol-reembolso",
+          "status": "vigente",
+          "version_ordinal": 2,
+          "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+          "section_title": "Forma de reembolso"
+        },
+        {
+          "chunk_id": "chunk_7b1bdd41b5d39bfd",
+          "score": 0.6193840503692627,
+          "doc_family_id": "pol-reembolso",
+          "status": "vigente",
+          "version_ordinal": 2,
+          "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+          "section_title": "Registro"
+        },
+        {
+          "chunk_id": "chunk_0e691e03deef38a0",
+          "score": 0.5430964231491089,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Contestação da multa"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "mrr": 0.5
+      }
+    },
+    {
+      "question_id": "q08",
+      "question": "Qual é o prazo para concluir uma portabilidade de entrada?",
+      "expected_doc_family_id": "proc-portabilidade",
+      "expected_chunk_ids": [
+        "chunk_6996e3dc41480fd4"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_6996e3dc41480fd4",
+          "score": 0.6717665195465088,
+          "doc_family_id": "proc-portabilidade",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_portabilidade.md",
+          "section_title": "Portabilidade de entrada (número vindo de outra operadora para a ConectaTel)"
+        },
+        {
+          "chunk_id": "chunk_549a7dc1033fd435",
+          "score": 0.52692711353302,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Cancelamento durante o período de fidelidade"
+        },
+        {
+          "chunk_id": "chunk_e15f022692df2b29",
+          "score": 0.5183234810829163,
+          "doc_family_id": "proc-desbloqueio-aparelho",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_desbloqueio_aparelho.md",
+          "section_title": "Passo a passo"
+        },
+        {
+          "chunk_id": "chunk_7e9f6f7401c39694",
+          "score": 0.509209156036377,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Processo de cancelamento"
+        },
+        {
+          "chunk_id": "chunk_a43b1f9495698ffc",
+          "score": 0.504887044429779,
+          "doc_family_id": "proc-portabilidade",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_portabilidade.md",
+          "section_title": "Casos que exigem escalonamento"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "mrr": 1.0
+      }
+    },
+    {
+      "question_id": "q09",
+      "question": "O que devo fazer se suspeitar que meu chip foi trocado sem minha autorização?",
+      "expected_doc_family_id": "proc-troca-chip-esim",
+      "expected_chunk_ids": [
+        "chunk_92ab111e7673f0b6"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_92ab111e7673f0b6",
+          "score": 0.6331074237823486,
+          "doc_family_id": "proc-troca-chip-esim",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_troca_chip_esim.md",
+          "section_title": "Observações"
+        },
+        {
+          "chunk_id": "chunk_416f6a4794c844cf",
+          "score": 0.5890322923660278,
+          "doc_family_id": "proc-troca-chip-esim",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_troca_chip_esim.md",
+          "section_title": "Passo a passo — chip físico"
+        },
+        {
+          "chunk_id": "chunk_dd1101932a40d390",
+          "score": 0.5754590034484863,
+          "doc_family_id": "proc-troca-chip-esim",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_troca_chip_esim.md",
+          "section_title": "Quando se aplica"
+        },
+        {
+          "chunk_id": "chunk_95cc59293e166f37",
+          "score": 0.5555101633071899,
+          "doc_family_id": "proc-desbloqueio-aparelho",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_desbloqueio_aparelho.md",
+          "section_title": "Observações"
+        },
+        {
+          "chunk_id": "chunk_a95c6a426e6699cf",
+          "score": 0.5376768708229065,
+          "doc_family_id": "proc-desbloqueio-aparelho",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_desbloqueio_aparelho.md",
+          "section_title": "Quando se aplica"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "mrr": 1.0
+      }
+    },
+    {
+      "question_id": "q10",
+      "question": "Como faço para desbloquear um aparelho comprado da ConectaTel?",
+      "expected_doc_family_id": "proc-desbloqueio-aparelho",
+      "expected_chunk_ids": [
+        "chunk_e15f022692df2b29"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_95cc59293e166f37",
+          "score": 0.5117257833480835,
+          "doc_family_id": "proc-desbloqueio-aparelho",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_desbloqueio_aparelho.md",
+          "section_title": "Observações"
+        },
+        {
+          "chunk_id": "chunk_4f7cd7837b2c8ad6",
+          "score": 0.48975980281829834,
+          "doc_family_id": "plano-conecta-basico",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_basico.md",
+          "section_title": "Benefícios inclusos"
+        },
+        {
+          "chunk_id": "chunk_a8d1deb114bfa1d5",
+          "score": 0.467798113822937,
+          "doc_family_id": "plano-conecta-familia",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_familia.md",
+          "section_title": "Benefícios inclusos"
+        },
+        {
+          "chunk_id": "chunk_dd1101932a40d390",
+          "score": 0.45115602016448975,
+          "doc_family_id": "proc-troca-chip-esim",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/procedimentos/procedimento_troca_chip_esim.md",
+          "section_title": "Quando se aplica"
+        },
+        {
+          "chunk_id": "chunk_b5b41155918d02a0",
+          "score": 0.42933499813079834,
+          "doc_family_id": "plano-conecta-plus",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_plus.md",
+          "section_title": "Valor mensal"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_3": 0,
+        "hit_at_5": 0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "question_id": "q11",
+      "question": "Quais situações exigem encaminhamento obrigatório para atendimento humano?",
+      "expected_doc_family_id": "pol-suporte-escalonamento",
+      "expected_chunk_ids": [
+        "chunk_985c42b47c866998",
+        "chunk_e59e365663f9a98c"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_88475512ca9d6a6d",
+          "score": 0.5781601667404175,
+          "doc_family_id": "pol-suporte-escalonamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
+          "section_title": "Casos de escalonamento obrigatório"
+        },
+        {
+          "chunk_id": "chunk_7da179e79b57cb99",
+          "score": 0.5493979454040527,
+          "doc_family_id": "plano-conecta-plus",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_plus.md",
+          "section_title": "Migração de plano"
+        },
+        {
+          "chunk_id": "chunk_0e691e03deef38a0",
+          "score": 0.549222469329834,
+          "doc_family_id": "pol-cancelamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_cancelamento.md",
+          "section_title": "Contestação da multa"
+        },
+        {
+          "chunk_id": "chunk_c7bbd3720aa01f27",
+          "score": 0.5451613664627075,
+          "doc_family_id": "pol-suporte-escalonamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
+          "section_title": "Política de Suporte e Escalonamento"
+        },
+        {
+          "chunk_id": "chunk_6312066740294e11",
+          "score": 0.5070735216140747,
+          "doc_family_id": "pol-suporte-escalonamento",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_suporte_escalonamento.md",
+          "section_title": "Campos mínimos do registro de escalonamento"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_3": 0,
+        "hit_at_5": 0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "question_id": "q12",
+      "question": "Qual versão da política de reembolso deve ser usada atualmente?",
+      "expected_doc_family_id": "pol-reembolso",
+      "expected_chunk_ids": [
+        "chunk_ec998cd8fec67705"
+      ],
+      "retrieved": [
+        {
+          "chunk_id": "chunk_eca5c97634711bff",
+          "score": 0.5581274032592773,
+          "doc_family_id": "pol-reembolso",
+          "status": "revogado",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/politicas/politica_reembolso_v1.md",
+          "section_title": "Forma de reembolso"
+        },
+        {
+          "chunk_id": "chunk_9e515602f4067c2b",
+          "score": 0.5367211699485779,
+          "doc_family_id": "pol-reembolso",
+          "status": "vigente",
+          "version_ordinal": 2,
+          "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+          "section_title": "Verificação antifraude"
+        },
+        {
+          "chunk_id": "chunk_ec998cd8fec67705",
+          "score": 0.5305759906768799,
+          "doc_family_id": "pol-reembolso",
+          "status": "vigente",
+          "version_ordinal": 2,
+          "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+          "section_title": "Política de Reembolso e Contestação de Fatura (versão 2)"
+        },
+        {
+          "chunk_id": "chunk_641b6dcb2a98cbbd",
+          "score": 0.47640085220336914,
+          "doc_family_id": "plano-conecta-basico",
+          "status": "vigente",
+          "version_ordinal": 1,
+          "source_path": "data/corpus/planos/plano_conecta_basico.md",
+          "section_title": "Valor mensal"
+        },
+        {
+          "chunk_id": "chunk_3c943a4e1adaa3d8",
+          "score": 0.4564591646194458,
+          "doc_family_id": "pol-reembolso",
+          "status": "vigente",
+          "version_ordinal": 2,
+          "source_path": "data/corpus/politicas/politica_reembolso_v2.md",
+          "section_title": "Forma de reembolso"
+        }
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_3": 1,
+        "hit_at_5": 1,
+        "mrr": 0.3333333333333333
+      }
+    }
+  ]
+}
