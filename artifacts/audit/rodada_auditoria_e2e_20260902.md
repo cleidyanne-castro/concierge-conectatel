@@ -1,8 +1,8 @@
 # Evidência - auditoria ponta a ponta
 
-**Data:** 02/09/2026  
-**Ambiente:** AWS `us-east-1`, conta de demonstração  
-**Caso:** escalonamento por roubo de aparelho e suspeita de uso indevido  
+**Data:** 02/09/2026
+**Ambiente:** AWS `us-east-1`, conta de demonstração
+**Caso:** escalonamento por roubo de aparelho e suspeita de uso indevido
 **Trace ID:** `e2e-handoff-20260901`
 
 ## Consulta executada
