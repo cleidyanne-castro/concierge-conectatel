@@ -154,6 +154,29 @@ def test_bedrock_model_uses_stable_nova_tool_parameters():
     assert config["additional_request_fields"] == {"inferenceConfig": {"topK": 1}}
 
 
+def test_run_creates_an_isolated_agent_for_each_request(monkeypatch):
+    created = []
+
+    class FakeAgent:
+        def __call__(self, question):
+            return f"Sem fonte para: {question}"
+
+    def fake_new_agent():
+        instance = FakeAgent()
+        created.append(instance)
+        return instance
+
+    monkeypatch.setattr(agent_concierge, "_new_agent", fake_new_agent)
+
+    first = agent_concierge.run({"question": "pergunta um", "trace_id": "isolado-1"})
+    second = agent_concierge.run({"question": "pergunta dois", "trace_id": "isolado-2"})
+
+    assert len(created) == 2
+    assert created[0] is not created[1]
+    assert first["trace_id"] == "isolado-1"
+    assert second["trace_id"] == "isolado-2"
+
+
 def test_audit_event_masks_personal_data(capsys):
     response = agent_concierge.ConciergeResponse(
         "nao_sei", "trace-seguro", "Não encontrei a informação."

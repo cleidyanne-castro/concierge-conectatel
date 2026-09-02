@@ -225,12 +225,20 @@ REGRAS:
 # ------------------------------------------------------------------
 # Etapa 5 — agente + entrypoint do Runtime
 # ------------------------------------------------------------------
-agent = Agent(
-    model=bedrock_model,
-    tools=[retrieve_kb, store_handoff],
-    system_prompt=system_prompt,
-    callback_handler=None,  # sem echo de streaming no stdout
-)
+def _new_agent() -> Agent:
+    """Cria uma conversa isolada para cada invocação do Runtime.
+
+    O Strands acumula mensagens no objeto ``Agent``. Reutilizar uma instância
+    global mistura sessões de clientes e pode produzir sequências ToolUse
+    inválidas quando uma chamada anterior termina com erro.
+    """
+
+    return Agent(
+        model=bedrock_model,
+        tools=[retrieve_kb, store_handoff],
+        system_prompt=system_prompt,
+        callback_handler=None,  # sem echo de streaming no stdout
+    )
 
 
 # Nova (e outros) as vezes emitem raciocinio em <thinking>...</thinking>;
@@ -305,7 +313,7 @@ def run(payload: dict | None) -> dict:
     if not question:
         return ConciergeResponse("nao_sei", trace_id, "Pergunta vazia.").to_dict()
 
-    answer = _clean_answer(str(agent(question)))
+    answer = _clean_answer(str(_new_agent()(question)))
     ctx = _ctx_get()
     resp = _build_response(trace_id, answer, ctx)
     _emit_audit(question, resp, ctx)
