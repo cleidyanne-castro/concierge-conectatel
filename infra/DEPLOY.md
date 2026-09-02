@@ -201,11 +201,10 @@ Você deve ver `index/embeddings.json` e `processed/chunks.json`.
 
 ## Passo 6 — Montar e publicar (o deploy em si)
 
-> **Antes deste passo**, o AgentCore Runtime já precisa existir — o parâmetro
-> `AgentRuntimeArn` do `sam deploy` aponta para ele. Ver
-> [`agentcore/README.md`](agentcore/README.md). Se ainda não subiu, o `template.yaml`
-> tem um default (o runtime da squad) e o deploy passa, mas a rota `/concierge`
-> só funciona com um runtime válido.
+> **Antes deste passo**, o AgentCore Runtime já precisa existir na conta de
+> demonstração. O parâmetro `AgentRuntimeArn` é obrigatório e deve apontar para
+> esse Runtime. Ver [`agentcore/README.md`](agentcore/README.md). Nunca use ARN
+> de runtime pertencente a outra conta.
 
 > Se você usa SSO (passo 3), garanta que a sessão está ativa **nesta janela do
 > PowerShell** antes de continuar:
@@ -240,8 +239,7 @@ Responda:
 - **Stack Name**: `concierge-conectatel`
 - **AWS Region**: `us-east-1`
 - **Parameter KnowledgeBaseBucketName**: o mesmo valor de `$env:S3_BUCKET_NAME`
-- **Parameter AgentRuntimeArn**: o ARN do AgentCore Runtime (ver `agentcore/README.md`),
-  ou Enter para usar o default
+- **Parameter AgentRuntimeArn**: o ARN do AgentCore Runtime da conta de demonstração
 - **Parameter CorsAllowOrigin**: `*` (ou a origem da interface)
 - **Confirm changes before deploy**: `Y`
 - **Allow SAM CLI IAM role creation**: `Y`
@@ -252,7 +250,7 @@ Responda:
 Ele mostra a lista de recursos que vai criar, pede confirmação (`y`), sobe a
 imagem para o ECR e cria a stack. Ao final imprime a seção **Outputs**.
 
-**Copie o valor de `RetrieveKbApiUrl`.**
+**Copie os valores de `RetrieveKbApiUrl` e `ConciergeApiUrl`.**
 
 Se `sam deploy` falhar com `AccessDenied` em `iam:CreateRole` ou
 `ecr:CreateRepository`: a role `AlunoAdmin` da sua conta não permite. Fale com a
@@ -262,7 +260,7 @@ Cleidyanne sobre qual conta/role a squad vai usar na banca.
 
 ## Passo 7 — Testar
 
-Troque a URL abaixo pela que você copiou:
+Para validar a tool de recuperação, troque a URL abaixo por `RetrieveKbApiUrl`:
 
 ```powershell
 Invoke-RestMethod -Method Post -Uri "https://XXXX.execute-api.us-east-1.amazonaws.com/retrieve" -ContentType "application/json" -Body '{"question":"Qual o prazo para contestar uma cobranca da fatura?","trace_id":"teste-001"}'
@@ -271,6 +269,15 @@ Invoke-RestMethod -Method Post -Uri "https://XXXX.execute-api.us-east-1.amazonaw
 - A **primeira** chamada demora ~20–40 s (a Lambda "acorda" e carrega o modelo).
   As seguintes respondem em ~1 s.
 - Resposta esperada: um JSON com `decision`, `trace_id`, `results` e `threshold_used`.
+
+Para validar o fluxo completo, use `ConciergeApiUrl` depois de publicar o
+AgentCore Runtime:
+
+```powershell
+Invoke-RestMethod -Method Post -Uri "https://XXXX.execute-api.us-east-1.amazonaws.com/concierge" -ContentType "application/json" -Body '{"question":"Como consulto meu consumo de dados?","trace_id":"teste-concierge-001"}'
+```
+
+O resultado deve incluir `trace_id`, decisão, resposta e a fonte utilizada.
 
 Para ver os logs da Lambda:
 

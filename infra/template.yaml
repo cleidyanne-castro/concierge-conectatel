@@ -5,14 +5,12 @@ Description: Concierge ConectaTel - tool retrieve_kb + gateway (API GW -> AgentC
 Parameters:
   KnowledgeBaseBucketName:
     Type: String
-    Default: concierge-conectatel-kb-squad4
     Description: >-
-      Bucket S3 (ja existente) com index/embeddings.json e processed/chunks.json.
-      O stack NAO cria o bucket - so le dele.
+      Bucket S3 da conta de demonstracao, ja existente, com index/embeddings.json
+      e processed/chunks.json. O stack nao cria o bucket, so le dele.
   AgentRuntimeArn:
     Type: String
-    Default: arn:aws:bedrock-agentcore:us-east-1:582766763753:runtime/concierge_agent-OGCvl4G9Yj
-    Description: ARN do AgentCore Runtime (agent_concierge) que o gateway invoca.
+    Description: ARN do AgentCore Runtime da conta de demonstracao que o gateway invoca.
   CorsAllowOrigin:
     Type: String
     Default: "*"
@@ -69,8 +67,11 @@ Resources:
         Variables:
           TABLE_NAME: !Ref EscalonamentosTable
       Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Ref EscalonamentosTable
+        - Statement:
+            - Sid: PersistOnlyHandoffRecords
+              Effect: Allow
+              Action: dynamodb:PutItem
+              Resource: !GetAtt EscalonamentosTable.Arn
 
   # -------- Borda: API Gateway (HTTP API) -> AgentCore Runtime --------
   GatewayFunction:
@@ -113,9 +114,9 @@ Outputs:
   ConciergeApiUrl:
     Description: 'Endpoint principal - POST {question, trace_id}'
     Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/concierge"
-#  RetrieveKbApiUrl:
-#    Description: 'Debug - POST direto na tool de busca'
-#    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/retrieve"
+  RetrieveKbApiUrl:
+    Description: 'Debug - POST direto na tool de busca'
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/retrieve"
   GatewayFunctionArn:
     Value: !GetAtt GatewayFunction.Arn
   StoreHandoffFunctionArn:

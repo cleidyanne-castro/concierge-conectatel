@@ -152,9 +152,12 @@ def store_handoff(
         trace_id=ctx.get("trace_id", ""),
     )
 
-    stored = True
+    stored = False
     try:
-        _invoke_lambda(STORE_HANDOFF_FUNCTION, record.to_item())
+        result = _invoke_lambda(STORE_HANDOFF_FUNCTION, record.to_item())
+        stored = result.get("stored") is True
+        if not stored:
+            raise RuntimeError(result.get("reason", "handoff_nao_persistido"))
     except Exception as error:  # ainda escalamos; so registramos a falha
         stored = False
         print(json.dumps({"trace_id": ctx.get("trace_id"), "level": "ERROR",

@@ -11,7 +11,7 @@ ambiente (`aws sso login` / `AWS_PROFILE`) — nunca deste diretório.
 | Lambda `retrieve_kb` (imagem) + HTTP API | SAM | [`template.yaml`](template.yaml), [`retrieve_kb.Dockerfile`](retrieve_kb.Dockerfile) |
 | Lambda `gateway` (zip) — API Gateway → AgentCore | SAM | [`template.yaml`](template.yaml) |
 | **AgentCore Runtime** (container do agente) | CLI `bedrock-agentcore-control` | [`agentcore/`](agentcore/) |
-| Lambda `store_handoff` + DynamoDB | SAM (Parte 4) | ver [`../docs/proximas_etapas_04_05.md`](../docs/proximas_etapas_04_05.md) |
+| Lambda `store_handoff` + DynamoDB | SAM | [`template.yaml`](template.yaml) |
 | Workflow Databricks Bronze→Silver→Gold | Job no workspace | [`databricks_workflow_gold.json`](databricks_workflow_gold.json) |
 
 O Job foi publicado e executado no workspace Databricks com as três tarefas
@@ -41,15 +41,16 @@ Ferramentas e credenciais: [`DEPLOY.md`](DEPLOY.md) passos 1–3.
      KnowledgeBaseBucketName=<bucket do passo 1>
    ```
    Sobe `retrieve_kb`, `gateway` e o HTTP API. Output `ConciergeApiUrl` é o endpoint.
-4. **Parte 4** — adicionar `store_handoff` + DynamoDB ao `template.yaml` e
-   `sam deploy` de novo (o agente já invoca pelo nome).
+4. **Validar escalonamento** — invoque o endpoint `/concierge` com um caso da
+   política de suporte e confira o item persistido em
+   `concierge-conectatel-escalonamentos` pelo `trace_id`.
 
 ## Parâmetros do `template.yaml`
 
 | Parâmetro | Default | Observação |
 |---|---|---|
-| `KnowledgeBaseBucketName` | `concierge-conectatel-kb-squad4` | bucket já existente; o stack só lê |
-| `AgentRuntimeArn` | ARN do runtime da squad (conta `582766763753`) | **trocar para outra conta** |
+| `KnowledgeBaseBucketName` | sem valor padrão | obrigatório; bucket já existente da conta de demonstração |
+| `AgentRuntimeArn` | sem valor padrão | obrigatório; informar o ARN do runtime da conta de demonstração |
 | `CorsAllowOrigin` | `*` | restringir à origem da interface em produção |
 
 ## Valores específicos da conta da squad
