@@ -75,11 +75,50 @@ Responsável: José Ivanildo
 
 Escopo: política de suporte, critérios de escalonamento, urgência e geração do handoff para atendimento humano.
 
-### Parte 5. Governança e auditoria
+# Contribuição — Observabilidade e Auditoria
 
-Responsável: Natan Alencar Maia
+**Autor:** Natan Alencar
 
-Escopo: audit trail, `trace_id`, guardrails, IAM, riscos conhecidos, consulta do registro e controles de custo.
+## Resumo
+
+Atuei na frente de rastreabilidade e auditoria do Concierge ConectaTel, cobrindo desde a instrumentação inicial (dashboard, alarmes, filtros de métrica) até a evolução do projeto para um modelo sem dashboard agregado, mantendo integralmente a capacidade de auditoria por `trace_id`, retenção de logs e proteção de dados sensíveis.
+
+## Trabalho realizado
+
+### Observabilidade operacional
+
+- Publicação inicial via CloudFormation do dashboard `concierge-conectatel-operacao`, dos alarmes `concierge-conectatel-gateway-errors` e `concierge-conectatel-retrieve-kb-errors`, e dos filtros de métrica `RespondDecisions`, `NoAnswerDecisions`, `EscalateDecisions` e `GatewayRuntimeErrors`, todos confirmados em `CREATE_COMPLETE`.
+- Validação do comportamento esperado do alarme RAG em `INSUFFICIENT_DATA` logo após a criação, com `TreatMissingData: notBreaching` configurado para não tratar ausência de tráfego como incidente.
+- Evolução da stack para remover o dashboard agregado, preservando log group, filtros de métrica, alarmes, retenção (14 dias) e a consulta por `trace_id` como mecanismo primário de verificação — o log group hoje é criado declarativamente antes da Lambda em instalações do zero.
+- Diagnóstico e correção de uma regressão (HTTP 502 por sequência inválida de `ToolUse` no AgentCore/modelo Nova), localizada via consulta por `trace_id` e resolvida com simplificação do contrato da tool e atualização do Runtime (v3 → v4), restaurando HTTP 200 nos três desfechos (`responder`, `nao_sei`, `escalar`).
+
+### Auditoria ponta a ponta
+
+- Execução e validação da consulta de auditoria por `trace_id` (`e2e-handoff-20260901`) cobrindo gateway, `retrieve_kb`, `store_handoff` e AgentCore, com tempo total de 3,814 s (dentro da meta de 60 s).
+- Confirmação do fluxo completo de escalonamento: decisão `escalar`, guardrail `titularidade/falecimento`, protocolo `CONCTL-20260901-6BFEA6` emitido e item correspondente localizado na tabela DynamoDB `concierge-conectatel-escalonamentos` com urgência `alta`.
+- Cobertura complementar dos três desfechos do Concierge com evidência de evento estruturado:
+  - `e2e-grounded-20260902` → `responder`, fontes `faq_geral.md` e `procedimento_desbloqueio_aparelho.md`, score `0,9114`.
+  - `e2e-no-source-20260902` → `nao_sei`, fontes vazias, score nulo.
+  - Handoff (`e2e-handoff-20260901`) → `escalar`, conforme acima.
+- Revalidação pós-correção do Runtime com os três desfechos reexecutados pelo endpoint público (`review-green-answer`, `review-green-unknown`, `review-green-handoff`), todos retornando HTTP 200 com evidência consistente.
+
+### Evidência formal de banca (T01, T02, T08)
+
+- **T01** — pergunta fundamentada ("Como consulto meu consumo de dados?"), decisão `responder`, score `0,9114037752151489`, fonte `data/corpus/faq/faq_geral.md` com status `vigente`; confirmado tanto na chamada direta quanto na consulta posterior ao CloudWatch pelo mesmo `trace_id`.
+- **T02** — pergunta fora do corpus ("Qual será a previsão do tempo amanhã?"), decisão `nao_sei`, sem resultados acima do limiar `0,85`; confirmado da mesma forma via CloudWatch.
+- **T08** — suíte local de testes (`27 passed`) e validação do template SAM (`sam validate`), garantindo consistência da infraestrutura antes do deploy.
+- Registro do limite conhecido: na Lambda `retrieve_kb` isolada, o evento de auditoria ainda não consolida fonte e guardrail junto com `trace_id`/decisão/score — isso depende da integração completa com o AgentCore/gateway (item pendente do caso T06, à época).
+
+### Proteção de dados sensíveis na telemetria
+
+- Validação de que a telemetria GenAI opera em modo `NO_CONTENT`: um teste com marcador inválido de telefone (`00 00000-0000`) não expôs o valor bruto nos spans.
+- Confirmação, no trace funcional `review-green-private-20260902`, de que a trilha preserva o dado mascarado (`[TELEFONE_MASCARADO]`) em vez do valor original.
+- Reconfirmação da retenção de 14 dias nos quatro grupos de logs (gateway, `retrieve_kb`, `store_handoff`, AgentCore) e ausência de erros recentes no gateway após o deploy mais recente.
+
+## Pontos em aberto / próximos passos
+
+- Consolidação definitiva do evento único de auditoria (pergunta + fontes + decisão + score + guardrail + handoff) diretamente no AgentCore, eliminando a limitação registrada em T08.
+- Formalizar, na documentação final, a transição do modelo "com dashboard" para "sem dashboard operacional", já refletida no nome da branch e no roteiro de demonstração atualizado.
 
 ## Metodologia de trabalho
 
