@@ -67,7 +67,7 @@ Trocar ao reproduzir em outra conta AWS:
 ```powershell
 sam delete --stack-name concierge-conectatel
 aws bedrock-agentcore-control delete-agent-runtime --agent-runtime-id <ID> --region us-east-1
-aws ecr delete-repository --repository-name bedrock-agentcore-concierge_agent --force --region us-east-1
+aws ecr delete-repository --repository-name bedrock-agentcore-concierge-agent --force --region us-east-1
 aws s3 rb s3://<bucket> --force
 ```
 

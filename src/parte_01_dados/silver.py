@@ -210,7 +210,9 @@ def clean_calls(df: pd.DataFrame) -> pd.DataFrame:
     cleaned["duracao_minutos"] = cleaned["duracao_minutos"].where(
         cleaned["duracao_minutos"].ge(0)
     )
-    cleaned["satisfacao_1_a_5"] = cleaned["satisfacao_1_a_5"].clip(1, 5)
+    cleaned["satisfacao_1_a_5"] = cleaned["satisfacao_1_a_5"].where(
+        cleaned["satisfacao_1_a_5"].between(1, 5)
+    )
     for column in BOOLEAN_COLUMNS:
         cleaned[column] = _to_boolean(cleaned[column])
 

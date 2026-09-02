@@ -10,6 +10,9 @@ run:
 ui:
 	python -m streamlit run src/interface/app.py
 
+retention:
+	python -m src.parte_05_governanca.log_retention --days 14
+
 # Semeia o bucket S3 (que ja deve existir) com embeddings.json e chunks.json.
 # Requer S3_BUCKET_NAME no ambiente ou no .env.
 seed-kb:

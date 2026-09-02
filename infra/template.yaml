@@ -73,6 +73,16 @@ Resources:
               Action: dynamodb:PutItem
               Resource: !GetAtt EscalonamentosTable.Arn
 
+  # Grupo declarativo: os filtros abaixo também funcionam no primeiro deploy,
+  # antes de qualquer invocação da Lambda criar o grupo padrão automaticamente.
+  GatewayApplicationLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: /concierge-conectatel/lambda/gateway
+      RetentionInDays: 14
+
   # -------- Borda: API Gateway (HTTP API) -> AgentCore Runtime --------
   GatewayFunction:
     Type: AWS::Serverless::Function
@@ -83,6 +93,8 @@ Resources:
       CodeUri: ../src/parte_03_04_agente_triagem/
       MemorySize: 256
       Timeout: 60
+      LoggingConfig:
+        LogGroup: !Ref GatewayApplicationLogGroup
       Environment:
         Variables:
           AGENT_RUNTIME_ARN: !Ref AgentRuntimeArn
@@ -142,7 +154,7 @@ Resources:
   RespondDecisionMetric:
     Type: AWS::Logs::MetricFilter
     Properties:
-      LogGroupName: /aws/lambda/concierge-conectatel-gateway
+      LogGroupName: !Ref GatewayApplicationLogGroup
       FilterPattern: '{ $.decision = "responder" }'
       MetricTransformations:
         - MetricNamespace: ConciergeConectaTel/Operations
@@ -152,7 +164,7 @@ Resources:
   NoAnswerDecisionMetric:
     Type: AWS::Logs::MetricFilter
     Properties:
-      LogGroupName: /aws/lambda/concierge-conectatel-gateway
+      LogGroupName: !Ref GatewayApplicationLogGroup
       FilterPattern: '{ $.decision = "nao_sei" }'
       MetricTransformations:
         - MetricNamespace: ConciergeConectaTel/Operations
@@ -162,7 +174,7 @@ Resources:
   EscalateDecisionMetric:
     Type: AWS::Logs::MetricFilter
     Properties:
-      LogGroupName: /aws/lambda/concierge-conectatel-gateway
+      LogGroupName: !Ref GatewayApplicationLogGroup
       FilterPattern: '{ $.decision = "escalar" }'
       MetricTransformations:
         - MetricNamespace: ConciergeConectaTel/Operations
@@ -172,7 +184,7 @@ Resources:
   GatewayRuntimeErrorMetric:
     Type: AWS::Logs::MetricFilter
     Properties:
-      LogGroupName: /aws/lambda/concierge-conectatel-gateway
+      LogGroupName: !Ref GatewayApplicationLogGroup
       FilterPattern: '{ $.level = "ERROR" }'
       MetricTransformations:
         - MetricNamespace: ConciergeConectaTel/Operations
@@ -252,6 +264,9 @@ Outputs:
     Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/retrieve"
   GatewayFunctionArn:
     Value: !GetAtt GatewayFunction.Arn
+  GatewayLogGroupName:
+    Description: Log group gerenciado da Lambda de entrada.
+    Value: !Ref GatewayApplicationLogGroup
   StoreHandoffFunctionArn:
     Description: 'ARN da Lambda de persistência de Handoff'
     Value: !GetAtt StoreHandoffFunction.Arn

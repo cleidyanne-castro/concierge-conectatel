@@ -50,3 +50,23 @@ consultados no log do AgentCore pelo mesmo procedimento:
 Com o caso de handoff acima, a evidência cobre os três desfechos do
 Concierge: resposta fundamentada, recusa segura por ausência de fonte e
 escalonamento para atendimento humano.
+
+## Revalidação após correção do Runtime
+
+Em 02/09/2026, após a correção na versão 3 e a publicação da imagem definitiva
+na versão 4 do AgentCore Runtime, foram reexecutados os desfechos pelo endpoint
+público:
+
+| Trace ID | Decisão | Resultado |
+|---|---|---|
+| `review-green-answer-20260902` | `responder` | HTTP 200, resposta fundamentada e fonte `data/corpus/faq/faq_geral.md`. |
+| `review-green-unknown-20260902` | `nao_sei` | HTTP 200, resposta segura e `source_path` nulo. |
+| `review-green-handoff-20260902` | `escalar` | HTTP 200, protocolo emitido e registro confirmado no DynamoDB. |
+
+O erro 502 causado por sequência inválida de `ToolUse` do modelo Nova deixou de
+ocorrer após a simplificação do contrato exposto pela tool de handoff. A
+telemetria GenAI também passou a operar em modo `NO_CONTENT`: um teste com o
+marcador inválido `00 00000-0000` não encontrou o valor bruto nos spans, enquanto
+o evento funcional do trace `review-green-private-20260902` preservou a trilha
+com `[TELEFONE_MASCARADO]`. Os quatro grupos de logs foram novamente confirmados
+com retenção de 14 dias e não houve erro recente no gateway após o deploy.

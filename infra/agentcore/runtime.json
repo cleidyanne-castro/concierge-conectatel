@@ -1,18 +1,20 @@
 {
-  "agentRuntimeName": "concierge_agent",
+  "agentRuntimeName": "concierge_conectatel_agent",
   "description": "Agente Concierge ConectaTel (Strands + 2 tools)",
   "agentRuntimeArtifact": {
     "containerConfiguration": {
-      "containerUri": "582766763753.dkr.ecr.us-east-1.amazonaws.com/bedrock-agentcore-concierge_agent:latest"
+      "containerUri": "699038657189.dkr.ecr.us-east-1.amazonaws.com/bedrock-agentcore-concierge-agent:review-green-20260902"
     }
   },
-  "roleArn": "arn:aws:iam::582766763753:role/AmazonBedrockAgentCoreSDKRuntime-us-east-1-1c47481ceb",
+  "roleArn": "arn:aws:iam::699038657189:role/ConciergeConectaTelAgentCoreRuntimeRole",
   "networkConfiguration": { "networkMode": "PUBLIC" },
   "protocolConfiguration": { "serverProtocol": "HTTP" },
   "environmentVariables": {
     "AWS_REGION": "us-east-1",
     "BEDROCK_MODEL_ID": "amazon.nova-lite-v1:0",
     "RETRIEVE_KB_FUNCTION": "concierge-conectatel-retrieve-kb",
-    "STORE_HANDOFF_FUNCTION": "concierge-conectatel-store-handoff"
+    "STORE_HANDOFF_FUNCTION": "concierge-conectatel-store-handoff",
+    "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT": "NO_CONTENT",
+    "OTEL_INSTRUMENTATION_GENAI_EMIT_EVENT": "false"
   }
 }

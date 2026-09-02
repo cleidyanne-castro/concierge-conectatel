@@ -48,8 +48,10 @@ trilha em menos de 60 segundos; uma execução real está registrada em
 [`rodada_auditoria_e2e_20260902.md`](../../artifacts/audit/rodada_auditoria_e2e_20260902.md).
 
 Não registrar em logs access keys, tokens, CPF, cartão, anexos ou conteúdo
-sensível fora do necessário para o desafio. Para uso real, a pergunta deve
-passar por mascaramento de PII antes de ser emitida no evento de auditoria.
+sensível fora do necessário para o desafio. CPF, cartão, telefone e e-mail são
+mascarados antes de a pergunta ser emitida no evento de auditoria. A telemetria
+automática mantém métricas e traces, mas não captura prompts, respostas ou
+argumentos de tools (`NO_CONTENT`), evitando duplicar dados pessoais nos spans.
 
 ## Observabilidade operacional
 
@@ -96,9 +98,15 @@ aws s3 rb s3://<bucket-da-base> --force
 ```
 
 O bucket deve ser removido apenas depois de preservar as evidências que precisam
-ser entregues. Definir retenção explícita para os log groups no template antes
-do deploy final; para a demonstração, a recomendação é 14 dias, salvo exigência
-institucional diferente.
+ser entregues. A retenção dos log groups é reaplicada de forma idempotente após
+o deploy com:
+
+```bash
+make retention
+```
+
+O comando descobre o grupo do AgentCore e configura 14 dias nele e nos três
+grupos Lambda, salvo exigência institucional diferente.
 
 Na conta de demonstração, a retenção de **14 dias** está aplicada aos quatro
 grupos operacionais: `retrieve_kb`, gateway, `store_handoff` e AgentCore. O
@@ -111,6 +119,6 @@ também estava ativo na verificação de 02/09/2026.
 - [ ] SSO válido e `aws sts get-caller-identity` confirmado.
 - [x] Budget de US$ 20 ativo e plano de limpeza revisado.
 - [x] Consulta por `trace_id` cronometrada em menos de 60 segundos.
-- [ ] Logs não contêm segredos ou PII fora do escopo do desafio.
+- [x] Captura de conteúdo sensível desabilitada na telemetria; evento funcional mascara PII.
 - [ ] Duas transcrições grounded, duas `nao_sei` e dois handoffs disponíveis.
 - [ ] Rollback do CloudFormation habilitado no deploy final.

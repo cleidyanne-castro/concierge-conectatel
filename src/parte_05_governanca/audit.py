@@ -100,7 +100,18 @@ def find_by_trace_id(
             endTime=int(end.timestamp()),
             queryString=_query_for(trace_id.strip()),
         )
-    except (BotoCoreError, ClientError) as error:
+    except ClientError as error:
+        code = error.response.get("Error", {}).get("Code")
+        if code == "ResourceNotFoundException":
+            groups = ", ".join(_as_log_groups(log_group_names))
+            raise AuditQueryError(
+                "Um ou mais log groups não existem no CloudWatch: " + groups
+            ) from error
+        raise AuditQueryError(
+            "Não foi possível iniciar a consulta no CloudWatch. Confirme as "
+            "credenciais, permissões logs:StartQuery e os log groups informados."
+        ) from error
+    except BotoCoreError as error:
         raise AuditQueryError(
             "Não foi possível iniciar a consulta no CloudWatch. Confirme as "
             "credenciais (por exemplo, `aws sso login --profile <perfil>`) e "

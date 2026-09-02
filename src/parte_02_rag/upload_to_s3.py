@@ -24,7 +24,7 @@ except Exception:
     pass
 
 
-BUCKET_NAME = os.environ.get("S3_BUCKET_NAME", "concierge-conectatel-kb-squad4")
+BUCKET_NAME = os.environ.get("S3_BUCKET_NAME", "").strip()
 REGION = os.environ.get("AWS_REGION", "us-east-1")
 
 
@@ -42,6 +42,10 @@ ARTIFACTS = {
 def upload_file(s3_client, local_path: Path, s3_key: str) -> None:
     """Envia um arquivo local para o S3."""
 
+    if not BUCKET_NAME:
+        raise RuntimeError(
+            "Defina S3_BUCKET_NAME explicitamente antes de publicar os artefatos."
+        )
     if not local_path.exists():
         raise FileNotFoundError(
             f"Artefato não encontrado: {local_path}"

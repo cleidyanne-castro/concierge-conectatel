@@ -36,11 +36,12 @@ alimentadas por filtros no log do gateway. Isso permanece dentro da cota
 gratuita de dez métricas customizadas. Não foram criados alarmes de alta
 resolução ou ações automáticas.
 
-## Limite da evidência funcional
+## Revalidação da evidência funcional
 
-Uma chamada de alimentação posterior ao deploy retornou `502` no gateway. A
-consulta do log pelo `trace_id` mostrou que a origem foi o AgentCore: o modelo
-retornou `modelStreamErrorException` por sequência inválida de `ToolUse`. O
-alarme de erros do gateway passa a sinalizar esse tipo de ocorrência; a correção
-da orquestração do agente deve ser tratada pela frente responsável, sem alterar
-os controles de observabilidade desta entrega.
+Uma chamada posterior ao primeiro deploy retornou `502` no gateway. A consulta
+pelo `trace_id` localizou uma sequência inválida de `ToolUse` no AgentCore. O
+contrato da tool foi simplificado, o Runtime foi atualizado e os três desfechos
+(`responder`, `nao_sei` e `escalar`) voltaram a responder HTTP 200. O alarme do
+gateway continua sinalizando uma eventual regressão pelo mesmo evento
+estruturado. Para instalações do zero, o log group usado pelos filtros agora é
+criado declarativamente antes da Lambda e mantém retenção de 14 dias.

@@ -13,7 +13,7 @@ depois recebe o ARN resultante no parâmetro `AgentRuntimeArn`.
 | `runtime.json` | input do `create-agent-runtime` (container URI, role, env vars) |
 | `lambda-invoke-policy.json` | policy que dá ao Runtime permissão de invocar as Lambdas-tool |
 
-> **Valores específicos da conta** nos JSON: account id `582766763753`, região
+> **Valores específicos da conta** nos JSON: account id `699038657189`, região
 > `us-east-1`, nome de repo ECR e ARN do runtime. Outra conta/squad precisa
 > editar `runtime.json` e `lambda-invoke-policy.json`.
 
@@ -32,15 +32,15 @@ depois recebe o ARN resultante no parâmetro `AgentRuntimeArn`.
 Da **raiz do repo**:
 
 ```powershell
-$env:AWS_PROFILE = "AlunoAdmin582766763753"
-$ACCT = "582766763753"; $REGION = "us-east-1"
-$ECR  = "$ACCT.dkr.ecr.$REGION.amazonaws.com/bedrock-agentcore-concierge_agent"
+$env:AWS_PROFILE = "AlunoAdmin-699038657189"
+$ACCT = "699038657189"; $REGION = "us-east-1"
+$ECR  = "$ACCT.dkr.ecr.$REGION.amazonaws.com/bedrock-agentcore-concierge-agent"
 ```
 
 ### 1. ECR + login
 
 ```powershell
-aws ecr create-repository --repository-name bedrock-agentcore-concierge_agent --region $REGION
+aws ecr create-repository --repository-name bedrock-agentcore-concierge-agent --region $REGION
 aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin "$ACCT.dkr.ecr.$REGION.amazonaws.com"
 ```
 
@@ -61,7 +61,7 @@ adicionar a permissão de invocar as tools:
 
 ```powershell
 aws iam put-role-policy `
-  --role-name AmazonBedrockAgentCoreSDKRuntime-us-east-1-1c47481ceb `
+  --role-name ConciergeConectaTelAgentCoreRuntimeRole `
   --policy-name concierge-tools-invoke `
   --policy-document file://infra/agentcore/lambda-invoke-policy.json
 ```
@@ -119,6 +119,9 @@ aws bedrock-agentcore-control update-agent-runtime --agent-runtime-id <ID> --reg
 ## Observabilidade (traces OTEL)
 
 - Container já instrumentado: `aws-opentelemetry-distro` + `opentelemetry-instrument` no CMD.
+- A captura de prompts, respostas e argumentos de tools está desabilitada por
+  `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=NO_CONTENT`; métricas,
+  traces e os eventos de auditoria sanitizados continuam disponíveis.
 - Habilitar uma vez por conta: **CloudWatch → Settings → Transaction Search → Enable**.
 - Ver traces: **CloudWatch → GenAI Observability → Bedrock AgentCore**.
 - Independente disso, os logs `AuditEvent` (JSON com `trace_id`) já vão pro log
@@ -128,5 +131,5 @@ aws bedrock-agentcore-control update-agent-runtime --agent-runtime-id <ID> --reg
 
 ```powershell
 aws bedrock-agentcore-control delete-agent-runtime --agent-runtime-id <ID> --region $REGION
-aws ecr delete-repository --repository-name bedrock-agentcore-concierge_agent --force --region $REGION
+aws ecr delete-repository --repository-name bedrock-agentcore-concierge-agent --force --region $REGION
 ```

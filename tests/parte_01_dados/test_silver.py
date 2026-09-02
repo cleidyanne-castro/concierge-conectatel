@@ -109,6 +109,15 @@ def test_clean_calls_keeps_invalid_dates_as_null(raw_calls):
     assert pd.isna(cleaned.loc[0, "data_abertura"])
 
 
+def test_clean_calls_keeps_out_of_range_satisfaction_as_missing(raw_calls):
+    raw_calls.loc[0, "satisfacao_1_a_5"] = "6"
+
+    cleaned = clean_calls(raw_calls)
+
+    assert pd.isna(cleaned.loc[0, "satisfacao_1_a_5"])
+    assert bool(cleaned.loc[0, "is_valid_satisfaction"]) is False
+
+
 def test_build_processing_metrics_reports_volume_and_duration():
     start = datetime(2026, 1, 1, tzinfo=timezone.utc)
     end = datetime(2026, 1, 1, 0, 0, 2, tzinfo=timezone.utc)

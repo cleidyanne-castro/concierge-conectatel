@@ -175,7 +175,6 @@ def handler(event, context):
     # log estruturado — é o que a Parte 5 (Natan) vai consultar por trace_id
     print(json.dumps({
         "trace_id": trace_id,
-        "question": question,
         "decision": response["decision"],
         "top_score": response["results"][0]["score"] if response["results"] else None,
     }))

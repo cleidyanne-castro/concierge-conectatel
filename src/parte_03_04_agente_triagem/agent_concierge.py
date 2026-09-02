@@ -24,6 +24,7 @@ from strands import Agent, tool
 from strands.models import BedrockModel
 
 from src.shared.config import get_settings
+from src.shared.security import normalize_trace_id, redact_pii
 from src.shared.types import AuditEvent, ConciergeResponse, HandoffRecord
 
 # ------------------------------------------------------------------
@@ -37,7 +38,14 @@ RETRIEVE_KB_FUNCTION = settings.retrieve_kb_function
 STORE_HANDOFF_FUNCTION = settings.store_handoff_function
 
 app = BedrockAgentCoreApp()
-bedrock_model = BedrockModel(model_id=MODEL_ID, region_name=AWS_REGION)
+bedrock_model = BedrockModel(
+    model_id=MODEL_ID,
+    region_name=AWS_REGION,
+    # Parâmetros recomendados pela AWS para estabilizar ToolUse no Nova.
+    temperature=0,
+    max_tokens=3000,
+    additional_request_fields={"inferenceConfig": {"topK": 1}},
+)
 
 # Client Lambda reaproveitado entre invocacoes quentes do container.
 _lambda_client = None
@@ -115,11 +123,8 @@ def retrieve_kb(question: str) -> dict:
 def store_handoff(
     categoria_motivo: str,
     resumo_caso: str,
-    historico_ja_levantado: str = "Nao informado",
-    produto_servico_envolvido: str = "Nao identificado",
-    urgencia: str = "media",
-    dados_contato_retorno: str = "Nao informado",
-    canal_origem: str = "chat",
+    urgencia: str,
+    dados_contato_retorno: str,
 ) -> dict:
     """Registra o caso para atendimento humano (escalonamento).
 
@@ -129,9 +134,13 @@ def store_handoff(
     Anatel/Procon ou acao judicial; assedio/discriminacao; problema tecnico com
     visita presencial; ou pergunta sem fonte suficiente com cliente insistindo).
 
-    Preencha os campos com o que o cliente JA informou, para o atendente humano
-    nao precisar pedir nada de novo. `urgencia` deve ser "baixa", "media" ou
-    "alta". Se faltar o contato de retorno, pergunte ao cliente antes de chamar.
+    Em `resumo_caso`, consolide também produto/serviço e verificações já feitas,
+    para o atendente não pedir que o cliente repita o relato. `urgencia` deve ser
+    "baixa", "media" ou "alta". Se faltar contato, pergunte antes de chamar.
+
+    O contrato é intencionalmente enxuto: esquemas extensos fazem o Amazon Nova
+    Lite produzir sequências ToolUse inválidas. Os demais campos auditáveis são
+    derivados de forma determinística pela aplicação.
     """
     ctx = _ctx_get()
     record = HandoffRecord(
@@ -139,11 +148,11 @@ def store_handoff(
             f"CONCTL-{datetime.now(timezone.utc):%Y%m%d}-{uuid.uuid4().hex[:6].upper()}"
         ),
         data_hora_abertura=datetime.now(timezone.utc).isoformat(),
-        canal_origem=canal_origem or "chat",
+        canal_origem="chat",
         categoria_motivo=categoria_motivo,
         resumo_caso=resumo_caso,
-        historico_ja_levantado=historico_ja_levantado,
-        produto_servico_envolvido=produto_servico_envolvido,
+        historico_ja_levantado=resumo_caso,
+        produto_servico_envolvido="Conforme relato consolidado no resumo do caso",
         documento_fonte_consultado=(
             _ultimo_source_path(ctx) or "Nenhum documento vigente aplicavel"
         ),
@@ -231,7 +240,7 @@ def _emit_audit(question: str, resp: ConciergeResponse, ctx: dict) -> None:
     ))
     event = AuditEvent(
         trace_id=resp.trace_id,
-        question=question,
+        question=redact_pii(question),
         decision=resp.decision,
         sources=fontes,
         top_score=results[0].get("score") if results else None,
@@ -250,7 +259,7 @@ def run(payload: dict | None) -> dict:
     """
     payload = payload or {}
     question = (payload.get("question") or "").strip()
-    trace_id = (payload.get("trace_id") or str(uuid.uuid4())).strip()
+    trace_id = normalize_trace_id(payload.get("trace_id"))
     _ctx.set({"trace_id": trace_id, "last_retrieve": None, "handoff": None})
 
     if not question:
