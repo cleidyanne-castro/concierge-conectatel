@@ -68,7 +68,13 @@ def _ctx_get() -> dict:
     try:
         return _ctx.get()
     except LookupError:
-        return {"trace_id": "", "last_retrieve": None, "handoff": None}
+        return {
+            "trace_id": "",
+            "last_retrieve": None,
+            "handoff": None,
+            "handoff_failure": None,
+            "handoff_guardrail": None,
+        }
 
 
 def _ultimo_source_path(ctx: dict) -> str | None:
@@ -143,6 +149,15 @@ def store_handoff(
     derivados de forma determinística pela aplicação.
     """
     ctx = _ctx_get()
+    ctx["handoff_guardrail"] = categoria_motivo
+    contact = dados_contato_retorno.strip()
+    if not contact:
+        reason = "dados_contato_retorno_ausente"
+        ctx["handoff_failure"] = reason
+        print(json.dumps({"trace_id": ctx.get("trace_id"), "level": "ERROR",
+                          "tool": "store_handoff", "message": reason}))
+        return {"stored": False, "reason": reason}
+
     record = HandoffRecord(
         protocolo_atendimento=(
             f"CONCTL-{datetime.now(timezone.utc):%Y%m%d}-{uuid.uuid4().hex[:6].upper()}"
@@ -157,23 +172,27 @@ def store_handoff(
             _ultimo_source_path(ctx) or "Nenhum documento vigente aplicavel"
         ),
         urgencia=urgencia if urgencia in ("baixa", "media", "alta") else "media",
-        dados_contato_retorno=dados_contato_retorno,
+        dados_contato_retorno=contact,
         trace_id=ctx.get("trace_id", ""),
     )
 
-    stored = False
     try:
         result = _invoke_lambda(STORE_HANDOFF_FUNCTION, record.to_item())
-        stored = result.get("stored") is True
-        if not stored:
-            raise RuntimeError(result.get("reason", "handoff_nao_persistido"))
-    except Exception as error:  # ainda escalamos; so registramos a falha
-        stored = False
+        if result.get("duplicate") is True:
+            raise RuntimeError("trace_id_duplicado")
+        if result.get("stored") is not True:
+            reason = result.get("reason", "handoff_nao_persistido")
+            raise RuntimeError(reason)
+    except Exception as error:
+        reason = str(error) or "handoff_nao_persistido"
+        ctx["handoff_failure"] = reason
         print(json.dumps({"trace_id": ctx.get("trace_id"), "level": "ERROR",
-                          "tool": "store_handoff", "message": str(error)}))
+                          "tool": "store_handoff", "message": reason}))
+        return {"stored": False, "reason": reason}
 
     ctx["handoff"] = record
-    return {"stored": stored, "protocolo": record.protocolo_atendimento}
+    ctx["handoff_failure"] = None
+    return {"stored": True, "protocolo": record.protocolo_atendimento}
 
 
 # ------------------------------------------------------------------
@@ -193,7 +212,10 @@ REGRAS:
 4. Escalonamento: se o caso se enquadrar em qualquer um dos 8 criterios da
    Politica de Suporte e Escalonamento, chame store_handoff com os campos
    preenchidos a partir do que o cliente informou, e explique ao cliente que o
-   atendimento sera continuado por um humano. Nao tente resolver esses casos.
+   atendimento sera continuado por um humano. Confirme registro e protocolo
+   somente se a ferramenta retornar stored=true. Se stored=false, diga que o
+   encaminhamento nao foi registrado e solicite o dado faltante ou nova tentativa.
+   Nao tente resolver esses casos.
 5. Nunca prometa prazos, valores ou condicoes que nao estejam nas fontes.
 6. Responda direto ao assinante. Nao inclua tags <thinking> nem raciocinio
    interno na resposta final.
@@ -223,6 +245,14 @@ def _clean_answer(text: str) -> str:
 def _build_response(trace_id: str, answer: str, ctx: dict) -> ConciergeResponse:
     if ctx.get("handoff") is not None:
         return ConciergeResponse("escalar", trace_id, answer, handoff=ctx["handoff"])
+    if ctx.get("handoff_failure"):
+        return ConciergeResponse(
+            "nao_sei",
+            trace_id,
+            "Não foi possível registrar o encaminhamento e nenhum protocolo foi "
+            "confirmado. Informe um canal de contato para retorno, caso ainda não "
+            "tenha informado, e tente novamente.",
+        )
 
     last = ctx.get("last_retrieve") or {}
     results = last.get("results") or []
@@ -244,7 +274,11 @@ def _emit_audit(question: str, resp: ConciergeResponse, ctx: dict) -> None:
         decision=resp.decision,
         sources=fontes,
         top_score=results[0].get("score") if results else None,
-        guardrail=(resp.handoff.categoria_motivo if resp.handoff else None),
+        guardrail=(
+            resp.handoff.categoria_motivo
+            if resp.handoff
+            else ctx.get("handoff_guardrail")
+        ),
     )
     # stderr: em Lambda/AgentCore vai pro CloudWatch igual; no CLI mantem o
     # stdout limpo (so a ConciergeResponse).
@@ -260,7 +294,13 @@ def run(payload: dict | None) -> dict:
     payload = payload or {}
     question = (payload.get("question") or "").strip()
     trace_id = normalize_trace_id(payload.get("trace_id"))
-    _ctx.set({"trace_id": trace_id, "last_retrieve": None, "handoff": None})
+    _ctx.set({
+        "trace_id": trace_id,
+        "last_retrieve": None,
+        "handoff": None,
+        "handoff_failure": None,
+        "handoff_guardrail": None,
+    })
 
     if not question:
         return ConciergeResponse("nao_sei", trace_id, "Pergunta vazia.").to_dict()

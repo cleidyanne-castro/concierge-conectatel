@@ -63,3 +63,6 @@ def test_gateway_metric_filters_use_managed_log_group():
     assert "GatewayApplicationLogGroup:" in template
     assert "LogGroup: !Ref GatewayApplicationLogGroup" in template
     assert template.count("LogGroupName: !Ref GatewayApplicationLogGroup") == 4
+    assert "AWS::CloudWatch::Dashboard" not in template
+    assert "GatewayErrorsAlarm:" in template
+    assert "RetrieveKbErrorsAlarm:" in template

@@ -55,13 +55,13 @@ argumentos de tools (`NO_CONTENT`), evitando duplicar dados pessoais nos spans.
 
 ## Observabilidade operacional
 
-Além da auditoria individual por `trace_id`, o dashboard
-`concierge-conectatel-operacao` acompanha indicadores agregados de saúde:
+Além da auditoria individual por `trace_id`, filtros de logs e métricas nativas
+mantêm indicadores agregados de saúde disponíveis no CloudWatch:
 
-| Indicador | Fonte | Uso na demonstração |
+| Indicador | Fonte | Uso operacional |
 |---|---|---|
 | Invocações, erros e duração p95 | Métricas nativas das Lambdas gateway e `retrieve_kb`, mais filtro de erro tratado no gateway | Identificar indisponibilidade ou degradação de latência, inclusive quando a API devolve 502 sem encerrar a Lambda com erro. |
-| Decisões `responder`, `nao_sei` e `escalar` | Três filtros de métrica no log do gateway | Verificar o comportamento seguro do agente em lote sem executar consulta no dashboard. |
+| Decisões `responder`, `nao_sei` e `escalar` | Três filtros de métrica no log do gateway | Verificar o comportamento seguro do agente em lote. |
 | Handoffs persistidos | `SuccessfulRequestLatency` / `PutItem` da tabela DynamoDB | Confirmar que os escalonamentos chegaram à fila humana. |
 
 Os alarmes de erro da gateway e da tool RAG avaliam janelas de cinco minutos,

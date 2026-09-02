@@ -24,10 +24,10 @@ A matriz de IAM, guardrails, riscos, custos e checklist pré-demo está em
 
 ## Observabilidade operacional
 
-O deploy cria o dashboard CloudWatch `concierge-conectatel-operacao`. Ele mostra
-invocações, erros e latência p95 do gateway e da tool RAG, distribuição das
-decisões do Concierge e as operações `PutItem` que representam handoffs. As
-três decisões são convertidas em métricas pelo filtro de logs do gateway.
+O deploy mantém o log group gerenciado da gateway, quatro filtros de métricas e
+dois alarmes no CloudWatch. As decisões `responder`, `nao_sei` e `escalar`, além
+dos erros tratados da gateway, são convertidas em métricas a partir dos eventos
+JSON. A auditoria por `trace_id` continua baseada nos logs estruturados.
 
 Dois alarmes padrão complementam a visualização:
 
@@ -40,4 +40,4 @@ Lambda. Ambos avaliam janelas de cinco minutos e não possuem ação automática
 demonstração, o operador investiga o `trace_id` no CloudWatch antes de qualquer
 ação corretiva. A configuração usa métricas nativas e três métricas customizadas
 de decisão, além de uma métrica de erro da gateway, dentro da cota gratuita de
-dez métricas customizadas.
+dez métricas customizadas. Nenhum dashboard operacional é provisionado.

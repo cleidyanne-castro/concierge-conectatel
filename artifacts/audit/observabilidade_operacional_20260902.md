@@ -1,4 +1,8 @@
-# Evidência - observabilidade operacional
+# Evidência histórica - observabilidade operacional
+
+> Esta evidência registra o estado implantado em 02/09/2026. A configuração
+> atual remove o dashboard agregado, mas preserva log group, filtros de métrica,
+> alarmes, retenção e auditoria por `trace_id`.
 
 **Data:** 02/09/2026
 **Região:** `us-east-1`
