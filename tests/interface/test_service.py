@@ -112,3 +112,36 @@ def test_post_json_preserves_payload_from_http_error(monkeypatch):
 
     assert captured.value.status_code == 502
     assert captured.value.payload == payload
+
+
+def test_post_json_rejects_non_http_url():
+    with pytest.raises(ValueError, match="HTTP ou HTTPS"):
+        service._post_json("file:///tmp/resposta.json", {"question": "teste"})
+
+
+def test_post_json_normalizes_invalid_unicode_response(monkeypatch):
+    class InvalidResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def read(self):
+            return b"\xff"
+
+    monkeypatch.setattr(service, "urlopen", lambda *_args, **_kwargs: InvalidResponse())
+
+    with pytest.raises(RuntimeError, match="JSON inválido"):
+        service._post_json("https://example.com/concierge", {"question": "teste"})
+
+
+def test_post_json_normalizes_timeout(monkeypatch):
+    monkeypatch.setattr(
+        service,
+        "urlopen",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(TimeoutError()),
+    )
+
+    with pytest.raises(RuntimeError, match="conectar"):
+        service._post_json("https://example.com/concierge", {"question": "teste"})

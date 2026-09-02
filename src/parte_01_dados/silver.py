@@ -145,7 +145,7 @@ def _add_quality_flags(cleaned: pd.DataFrame) -> pd.DataFrame:
     """Registra anomalias sem excluir observações válidas."""
     cleaned["is_valid_date"] = (
         cleaned["data_abertura"].notna()
-        & cleaned["data_abertura"].le(pd.Timestamp.now())
+        & cleaned["data_abertura"].le(pd.Timestamp.now(tz="UTC"))
     )
     cleaned["is_valid_duration"] = (
         cleaned["duracao_minutos"].notna()
@@ -203,7 +203,7 @@ def clean_calls(df: pd.DataFrame) -> pd.DataFrame:
     cleaned["estado"] = cleaned["estado"].map(normalize_state).fillna("unknown")
 
     cleaned["data_abertura"] = pd.to_datetime(
-        cleaned["data_abertura"], errors="coerce", format="mixed"
+        cleaned["data_abertura"], errors="coerce", format="mixed", utc=True
     )
     for column in NUMERIC_COLUMNS:
         cleaned[column] = pd.to_numeric(cleaned[column], errors="coerce")

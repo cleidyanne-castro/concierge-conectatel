@@ -64,6 +64,25 @@ def test_find_by_trace_id_rejects_empty_trace_id():
         find_by_trace_id("", client=FakeLogsClient([]))
 
 
+def test_find_by_trace_id_escapes_logs_insights_regex_delimiter():
+    client = FakeLogsClient([{"status": "Complete", "results": []}])
+
+    find_by_trace_id(
+        "trace/.*",
+        log_group_names="/aws/lambda/teste",
+        poll_interval_seconds=0,
+        client=client,
+    )
+
+    query = client.start_args["queryString"]
+    assert r"trace\/\.\*" in query
+
+
+def test_find_by_trace_id_rejects_control_characters():
+    with pytest.raises(ValueError, match="controle"):
+        find_by_trace_id("trace\n| limit 1", client=FakeLogsClient([]))
+
+
 def test_find_by_trace_id_raises_when_logs_query_fails():
     client = FakeLogsClient([{"status": "Failed"}])
 
