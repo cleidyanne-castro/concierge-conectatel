@@ -1,0 +1,11 @@
+# Tema do painel de testes do Concierge.
+# Sem isto o Streamlit renderiza os widgets no tema claro por cima do fundo
+# escuro do CSS, gerando baixo contraste (caption, resposta, metrics).
+
+[theme]
+base = "dark"
+primaryColor = "#8b80ff"
+backgroundColor = "#0d0e14"
+secondaryBackgroundColor = "#16171f"
+textColor = "#f2f3f8"
+font = "sans serif"

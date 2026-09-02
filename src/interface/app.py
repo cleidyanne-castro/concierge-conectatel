@@ -24,24 +24,30 @@ dashboard_url = (
 st.markdown(
     """
     <style>
-      .stApp { background: radial-gradient(circle at 82% -10%, #342b75 0, #11121a 38%, #0d0e14 78%); }
+      /* Paleta escura com contraste AA (>= 4.5:1) sobre o fundo #0d0e14.
+         Texto de apoio: #c9cdda (~9:1). Detalhe/realce: #c2b9ff. */
+      .stApp { background: radial-gradient(circle at 82% -10%, #2f2769 0, #11121a 38%, #0d0e14 78%); }
       .block-container { max-width: 1180px; padding-top: 2.4rem; padding-bottom: 3rem; }
-      [data-testid="stSidebar"] { background: #12131b; border-right: 1px solid #292b39; }
+      [data-testid="stSidebar"] { background: #141520; border-right: 1px solid #2f3142; }
       [data-testid="stSidebar"] > div:first-child { padding-top: 1.5rem; }
-      .brand-kicker, .eyebrow { color: #a99fff; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-      .brand-name { color: #f8f8ff; font-size: 1.35rem; font-weight: 750; margin: .15rem 0 .25rem; }
-      .brand-copy, .muted { color: #aeb3c7; font-size: .88rem; line-height: 1.55; }
-      .hero { background: linear-gradient(120deg, rgba(109,93,252,.23), rgba(20,21,31,.72) 56%); border: 1px solid rgba(159,149,255,.28); border-radius: 20px; padding: 2rem 2.1rem; margin-bottom: 1.5rem; }
-      .hero h1 { color: #fafaff; font-size: clamp(2rem, 4vw, 3.3rem); letter-spacing: -.045em; margin: .35rem 0 .55rem; }
-      .hero p { color: #c5c8d8; font-size: 1.04rem; line-height: 1.55; margin: 0; max-width: 680px; }
-      .section-title { color: #f5f5fb; font-size: 1.06rem; font-weight: 700; margin: .2rem 0 .25rem; }
-      .section-copy { color: #aeb3c7; font-size: .9rem; margin-bottom: 1rem; }
-      .result-card { background: rgba(24,25,34,.84); border: 1px solid #34364a; border-radius: 16px; padding: 1.25rem; margin-top: 1rem; }
-      .status-dot { color: #6ee7b7; font-size: .72rem; letter-spacing: .05em; }
+      .brand-kicker, .eyebrow { color: #c2b9ff; font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+      .brand-name { color: #ffffff; font-size: 1.35rem; font-weight: 750; margin: .15rem 0 .25rem; }
+      .brand-copy, .muted { color: #c9cdda; font-size: .9rem; line-height: 1.55; }
+      .hero { background: linear-gradient(120deg, rgba(120,104,255,.28), rgba(20,21,31,.85) 58%); border: 1px solid rgba(170,160,255,.4); border-radius: 20px; padding: 2rem 2.1rem; margin-bottom: 1.5rem; }
+      .hero h1 { color: #ffffff; font-size: clamp(2rem, 4vw, 3.3rem); letter-spacing: -.045em; margin: .35rem 0 .55rem; }
+      .hero p { color: #dfe1ec; font-size: 1.04rem; line-height: 1.55; margin: 0; max-width: 680px; }
+      .section-title { color: #ffffff; font-size: 1.06rem; font-weight: 700; margin: .2rem 0 .25rem; }
+      .section-copy { color: #c9cdda; font-size: .9rem; margin-bottom: 1rem; }
+      .result-card { background: #16171f; border: 1px solid #3a3c50; border-radius: 16px; padding: 1.25rem; margin-top: 1rem; }
+      .status-dot { color: #7ff0c2; font-size: .74rem; font-weight: 700; letter-spacing: .05em; }
       .stButton > button, .stLinkButton > a { border-radius: 10px !important; font-weight: 650 !important; min-height: 2.75rem; }
-      [data-testid="stMetric"] { background: rgba(255,255,255,.035); border: 1px solid #303244; border-radius: 12px; padding: .75rem; }
-      [data-testid="stMetricLabel"] { color: #aeb3c7; }
-      .flow-note { border-left: 3px solid #8b80ff; color: #bfc2d3; font-size: .88rem; line-height: 1.5; margin: .5rem 0 1rem; padding: .2rem 0 .2rem .8rem; }
+      [data-testid="stMetric"] { background: rgba(255,255,255,.05); border: 1px solid #3a3c50; border-radius: 12px; padding: .75rem; }
+      [data-testid="stMetricLabel"] p { color: #c9cdda !important; }
+      [data-testid="stMetricValue"] { color: #ffffff; }
+      /* caption nativo do Streamlit: sobe de ~2.8:1 para ~7:1 */
+      [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p { color: #b9bdcc !important; }
+      .stExpander summary, .stExpander summary p { color: #e7e9f2 !important; }
+      .flow-note { border-left: 3px solid #8b80ff; color: #cdd0dd; font-size: .88rem; line-height: 1.5; margin: .5rem 0 1rem; padding: .2rem 0 .2rem .8rem; }
     </style>
     """,
     unsafe_allow_html=True,
