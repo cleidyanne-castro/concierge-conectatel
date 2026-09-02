@@ -11,7 +11,7 @@
 | Dashboard CloudWatch | `concierge-conectatel-operacao` | Visualizar invocações, erros, duração p95, decisões e handoffs. |
 | Alarme padrão | `concierge-conectatel-gateway-errors` | Sinalizar erro da Lambda de borda em janela de 5 min. |
 | Alarme padrão | `concierge-conectatel-retrieve-kb-errors` | Sinalizar erro da tool RAG em janela de 5 min. |
-| Filtros de métrica | `RespondDecisions`, `NoAnswerDecisions`, `EscalateDecisions` | Contabilizar decisões a partir dos eventos JSON da gateway. |
+| Filtros de métrica | `RespondDecisions`, `NoAnswerDecisions`, `EscalateDecisions`, `GatewayRuntimeErrors` | Contabilizar decisões e erros tratados a partir dos eventos JSON da gateway. |
 
 ## Verificação pós-deploy
 
@@ -30,7 +30,8 @@ tráfego seja interpretada como incidente.
 4. Se houver erro, abrir a consulta de auditoria pelo `trace_id` exibido pela
    interface.
 
-O dashboard usa métricas nativas e três métricas customizadas de decisão,
+O dashboard usa métricas nativas e quatro métricas customizadas de decisão e
+erro tratado,
 alimentadas por filtros no log do gateway. Isso permanece dentro da cota
 gratuita de dez métricas customizadas. Não foram criados alarmes de alta
 resolução ou ações automáticas.

@@ -112,12 +112,9 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmName: concierge-conectatel-gateway-errors
-      AlarmDescription: Erro na Lambda de borda do Concierge; investigar pelo trace_id.
-      Namespace: AWS/Lambda
-      MetricName: Errors
-      Dimensions:
-        - Name: FunctionName
-          Value: !Ref GatewayFunction
+      AlarmDescription: Erro tratado ou não tratado no gateway; investigar pelo trace_id.
+      Namespace: ConciergeConectaTel/Operations
+      MetricName: GatewayRuntimeErrors
       Statistic: Sum
       Period: 300
       EvaluationPeriods: 1
@@ -172,6 +169,16 @@ Resources:
           MetricName: EscalateDecisions
           MetricValue: '1'
 
+  GatewayRuntimeErrorMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: /aws/lambda/concierge-conectatel-gateway
+      FilterPattern: '{ $.level = "ERROR" }'
+      MetricTransformations:
+        - MetricNamespace: ConciergeConectaTel/Operations
+          MetricName: GatewayRuntimeErrors
+          MetricValue: '1'
+
   OperationalDashboard:
     Type: AWS::CloudWatch::Dashboard
     Properties:
@@ -187,8 +194,9 @@ Resources:
                 "region": "${AWS::Region}", "view": "timeSeries", "period": 300,
                 "metrics": [
                   ["AWS/Lambda", "Invocations", "FunctionName", "concierge-conectatel-gateway", {"stat": "Sum", "label": "Invocações"}],
-                  [".", "Errors", ".", ".", {"stat": "Sum", "label": "Erros"}],
-                  [".", "Duration", ".", ".", {"stat": "p95", "label": "Duração p95 (ms)", "yAxis": "right"}]
+                  [".", "Errors", ".", ".", {"stat": "Sum", "label": "Falhas não tratadas"}],
+                  [".", "Duration", ".", ".", {"stat": "p95", "label": "Duração p95 (ms)", "yAxis": "right"}],
+                  ["ConciergeConectaTel/Operations", "GatewayRuntimeErrors", {"stat": "Sum", "label": "Erros HTTP"}]
                 ]
               }
             },

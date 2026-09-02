@@ -58,12 +58,14 @@ Além da auditoria individual por `trace_id`, o dashboard
 
 | Indicador | Fonte | Uso na demonstração |
 |---|---|---|
-| Invocações, erros e duração p95 | Métricas nativas das Lambdas gateway e `retrieve_kb` | Identificar indisponibilidade ou degradação de latência. |
+| Invocações, erros e duração p95 | Métricas nativas das Lambdas gateway e `retrieve_kb`, mais filtro de erro tratado no gateway | Identificar indisponibilidade ou degradação de latência, inclusive quando a API devolve 502 sem encerrar a Lambda com erro. |
 | Decisões `responder`, `nao_sei` e `escalar` | Três filtros de métrica no log do gateway | Verificar o comportamento seguro do agente em lote sem executar consulta no dashboard. |
 | Handoffs persistidos | `SuccessfulRequestLatency` / `PutItem` da tabela DynamoDB | Confirmar que os escalonamentos chegaram à fila humana. |
 
 Os alarmes de erro da gateway e da tool RAG avaliam janelas de cinco minutos,
-tratam ausência de dados como saudável e não executam ação automática. Isso
+tratam ausência de dados como saudável e não executam ação automática. O alarme
+da gateway usa o evento estruturado de erro, pois uma resposta HTTP 502 tratada
+não incrementa necessariamente a métrica nativa `AWS/Lambda Errors`. Isso
 evita custo e ruído operacional durante a demonstração, mantendo uma sinalização
 visível para investigação pelo `trace_id`.
 

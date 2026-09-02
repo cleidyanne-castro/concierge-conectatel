@@ -34,8 +34,10 @@ Dois alarmes padrão complementam a visualização:
 - `concierge-conectatel-gateway-errors`;
 - `concierge-conectatel-retrieve-kb-errors`.
 
-Cada um entra em estado `ALARM` quando a respectiva Lambda registra ao menos
-um erro em cinco minutos. Os alarmes não possuem ação automática: na
+O alarme do gateway entra em estado `ALARM` quando há erro tratado ou não
+tratado registrado pela aplicação; o da RAG acompanha falhas não tratadas da
+Lambda. Ambos avaliam janelas de cinco minutos e não possuem ação automática: na
 demonstração, o operador investiga o `trace_id` no CloudWatch antes de qualquer
 ação corretiva. A configuração usa métricas nativas e três métricas customizadas
-de decisão, dentro da cota gratuita de dez métricas customizadas.
+de decisão, além de uma métrica de erro da gateway, dentro da cota gratuita de
+dez métricas customizadas.
