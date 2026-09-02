@@ -1,0 +1,258 @@
+{
+  "metric": "version_accuracy",
+  "definition": "proporção de perguntas em que o chunk vigente esperado aparece no top-k sem chunk revogado da mesma família",
+  "top_k": 5,
+  "total_questions": 12,
+  "version_accurate_questions": 10,
+  "current_chunk_hits": 10,
+  "revoked_same_family_errors": 0,
+  "version_accuracy": 0.8333,
+  "current_chunk_hit_rate": 0.8333,
+  "revoked_same_family_error_rate": 0.0,
+  "questions": [
+    {
+      "question_id": "q01",
+      "question": "Como consulto meu consumo de dados?",
+      "expected_chunk_ids": [
+        "chunk_323d5970f3728530"
+      ],
+      "expected_doc_family_id": "faq-geral",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_323d5970f3728530",
+        "chunk_38054c5d7787d0a6",
+        "chunk_e15f022692df2b29",
+        "chunk_4f7cd7837b2c8ad6",
+        "chunk_985c42b47c866998"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    },
+    {
+      "question_id": "q02",
+      "question": "Qual é o valor mensal do plano Conecta Básico?",
+      "expected_chunk_ids": [
+        "chunk_641b6dcb2a98cbbd"
+      ],
+      "expected_doc_family_id": "plano-conecta-basico",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_b5b41155918d02a0",
+        "chunk_6a70fd8c35347420",
+        "chunk_641b6dcb2a98cbbd",
+        "chunk_985c42b47c866998",
+        "chunk_d520fdc725ccefc1"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    },
+    {
+      "question_id": "q03",
+      "question": "Qual é a velocidade da internet do plano Conecta Plus depois que a franquia acaba?",
+      "expected_chunk_ids": [
+        "chunk_b98258e9fafca62d"
+      ],
+      "expected_doc_family_id": "plano-conecta-plus",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_2bdf36e757be79f7",
+        "chunk_7b143607807e81b2",
+        "chunk_d6f8a677407eefba",
+        "chunk_28a3948e592b9265",
+        "chunk_ad53e7a81cb97eff"
+      ],
+      "current_chunk_hit": false,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": false
+    },
+    {
+      "question_id": "q04",
+      "question": "Quais situações permitem cancelar o plano sem pagar multa de fidelidade?",
+      "expected_chunk_ids": [
+        "chunk_9f2b510c341836d3"
+      ],
+      "expected_doc_family_id": "pol-cancelamento",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_7e9f6f7401c39694",
+        "chunk_549a7dc1033fd435",
+        "chunk_985c42b47c866998",
+        "chunk_5de493491d91ef3c",
+        "chunk_e15f022692df2b29"
+      ],
+      "current_chunk_hit": false,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": false
+    },
+    {
+      "question_id": "q05",
+      "question": "Qual é o prazo atual para contestar uma cobrança da fatura?",
+      "expected_chunk_ids": [
+        "chunk_72d3e7381e8d5669"
+      ],
+      "expected_doc_family_id": "pol-reembolso",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_72d3e7381e8d5669",
+        "chunk_985c42b47c866998",
+        "chunk_9e515602f4067c2b",
+        "chunk_6996e3dc41480fd4",
+        "chunk_3c943a4e1adaa3d8"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    },
+    {
+      "question_id": "q06",
+      "question": "Como funciona o reembolso quando a contestação é aceita?",
+      "expected_chunk_ids": [
+        "chunk_3c943a4e1adaa3d8"
+      ],
+      "expected_doc_family_id": "pol-reembolso",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_9e515602f4067c2b",
+        "chunk_985c42b47c866998",
+        "chunk_3c943a4e1adaa3d8",
+        "chunk_72d3e7381e8d5669",
+        "chunk_0e691e03deef38a0"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    },
+    {
+      "question_id": "q07",
+      "question": "Em quais casos uma contestação de fatura precisa passar por verificação antifraude?",
+      "expected_chunk_ids": [
+        "chunk_9e515602f4067c2b"
+      ],
+      "expected_doc_family_id": "pol-reembolso",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_9e515602f4067c2b",
+        "chunk_985c42b47c866998",
+        "chunk_7b1bdd41b5d39bfd",
+        "chunk_72d3e7381e8d5669",
+        "chunk_0e691e03deef38a0"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    },
+    {
+      "question_id": "q08",
+      "question": "Qual é o prazo para concluir uma portabilidade de entrada?",
+      "expected_chunk_ids": [
+        "chunk_6996e3dc41480fd4"
+      ],
+      "expected_doc_family_id": "proc-portabilidade",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_6996e3dc41480fd4",
+        "chunk_a43b1f9495698ffc",
+        "chunk_3cb615881b0534dc",
+        "chunk_416f6a4794c844cf",
+        "chunk_7e9f6f7401c39694"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    },
+    {
+      "question_id": "q09",
+      "question": "O que devo fazer se suspeitar que meu chip foi trocado sem minha autorização?",
+      "expected_chunk_ids": [
+        "chunk_92ab111e7673f0b6"
+      ],
+      "expected_doc_family_id": "proc-troca-chip-esim",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_416f6a4794c844cf",
+        "chunk_92ab111e7673f0b6",
+        "chunk_985c42b47c866998",
+        "chunk_e15f022692df2b29",
+        "chunk_dd1101932a40d390"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    },
+    {
+      "question_id": "q10",
+      "question": "Como faço para desbloquear um aparelho comprado da ConectaTel?",
+      "expected_chunk_ids": [
+        "chunk_e15f022692df2b29"
+      ],
+      "expected_doc_family_id": "proc-desbloqueio-aparelho",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_e15f022692df2b29",
+        "chunk_95cc59293e166f37",
+        "chunk_416f6a4794c844cf",
+        "chunk_a946b3753311abf4",
+        "chunk_d6f8a677407eefba"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    },
+    {
+      "question_id": "q11",
+      "question": "Quais situações exigem encaminhamento obrigatório para atendimento humano?",
+      "expected_chunk_ids": [
+        "chunk_985c42b47c866998",
+        "chunk_e59e365663f9a98c"
+      ],
+      "expected_doc_family_id": "pol-suporte-escalonamento",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_e59e365663f9a98c",
+        "chunk_0e691e03deef38a0",
+        "chunk_6312066740294e11",
+        "chunk_985c42b47c866998",
+        "chunk_7e9f6f7401c39694"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    },
+    {
+      "question_id": "q12",
+      "question": "Qual versão da política de reembolso deve ser usada atualmente?",
+      "expected_chunk_ids": [
+        "chunk_ec998cd8fec67705"
+      ],
+      "expected_doc_family_id": "pol-reembolso",
+      "top_k": 5,
+      "returned_chunk_ids": [
+        "chunk_9e515602f4067c2b",
+        "chunk_ec998cd8fec67705",
+        "chunk_c7bbd3720aa01f27",
+        "chunk_985c42b47c866998",
+        "chunk_e15f022692df2b29"
+      ],
+      "current_chunk_hit": true,
+      "revoked_same_family_error": false,
+      "revoked_same_family_chunk_ids": [],
+      "version_accurate": true
+    }
+  ],
+  "model": "intfloat/multilingual-e5-small",
+  "questions_source": "data/evaluation/embedding_questions.json",
+  "retrieval_rule": "status = vigente antes da similaridade"
+}

@@ -87,6 +87,10 @@ Use os arquivos locais entregues no handoff em
 chunking, os embeddings e o índice vetorial estão organizados em
 [`src/parte_02_rag/`](src/parte_02_rag/). O filtro `status=vigente` deve ocorrer
 antes da similaridade. Prompt sozinho não atende ao requisito de vigência.
+Como Stretch, a métrica de acerto de versão e seu procedimento de reprodução
+estão documentados em [`docs/parte_02_rag/version_accuracy.md`](docs/parte_02_rag/version_accuracy.md).
+As evidências visuais estão em [`stretch1.png`](artifacts/audit/stretch1.png)
+e [`stretch2.png`](artifacts/audit/stretch2.png).
 
 ### Partes 3, 4 e 5: Agente, escalonamento e governança
 
