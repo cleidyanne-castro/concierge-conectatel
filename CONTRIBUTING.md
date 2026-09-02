@@ -45,6 +45,30 @@ Registro consolidado em docs/registros_joao.md.
 
 Responsável por implementar a ferramenta de busca em uma função lambda e calibrar o treshold, alem de criar o dockerfile para gerar a imagem da lambda, criar o template de IaC, usando o AWS SAM. As implementações da ferramenta e o código de calibração do limiar estão em [`src/tools`](src/tools) o dockerfile em [`infra/retrieve_kb.Dockerfile`](infra/retrieve_kb.Dockerfile) e o template em [`infra/template.yaml`](infra/template.yaml). A documentação da implementação está em [`docs/parte_02_rag/rag_implementation.md`](docs/parte_02_rag/rag_implementation.md) e a documentação da calibração do limiar em [`artifacts/retrieval/calibration_report.json`](artifacts/retrieval/calibration_report.json)
 
+### Bruno Jordão das Neves Moura
+
+Responsável pela construção e disponibilização da base de conhecimento para o RAG, abrangendo a preparação dos documentos, definição e validação da estratégia de chunking, geração e avaliação dos embeddings e construção do índice vetorial.
+
+Na Parte 2A, a contribuição concluída inclui:
+
+- preparação e organização dos documentos do corpus para utilização na base de conhecimento;
+- definição e aplicação de uma estratégia de chunking, considerando a estrutura e o conteúdo dos documentos;
+- realização de experimentos com diferentes configurações de chunking, avaliando tamanho dos chunks, sobreposição e comportamento dos resultados, até a definição da configuração adotada;
+- preservação dos metadados necessários à rastreabilidade e controle de vigência, incluindo chunk_id, doc_family_id, status,version_ordinal, effective_from, effective_to, source_path e section_title;
+- avaliação comparativa de modelos de embeddings, considerando a adequação ao corpus e às consultas em português;
+- seleção do modelo intfloat/multilingual-e5-small para a geração dos embeddings definitivos;
+- geração dos embeddings definitivos de todo o corpus, utilizando normalização dos vetores para permitir a utilização de similaridade de cosseno por meio de Inner Product;
+- construção do índice vetorial FAISS utilizando IndexFlatIP, mantendo o mapeamento entre cada vetor e seus respectivos metadados;
+- implementação das rotinas de persistência e carregamento do índice e dos metadados;
+- implementação da função de busca vetorial para consultas, retornando scores de similaridade e informações dos chunks recuperados;
+- criação e execução de testes automatizados para validar a existência, estrutura, dimensionalidade, quantidade de vetores, correspondência entre índice e metadados e funcionamento da busca;
+- adaptação dos testes para considerar que os artefatos vetoriais são regeneráveis e não versionados no Git, evitando que a ausência local de arquivos .faiss e .pkl seja tratada como falha de código;
+- organização dos artefatos gerados de forma compatível com a execução posterior do pipeline de recuperação;
+- publicação dos artefatos da base de conhecimento no Amazon S3, permitindo seu consumo pelas etapas posteriores da solução;
+- documentação dos experimentos, decisões técnicas, validações e evidências relacionadas à construção da base.
+
+As implementações relacionadas à Parte 2A estão organizadas em src/parte_02_rag/, os testes em tests/parte_02_rag/ e as documentações e evidências correspondentes estão distribuídas em docs/ e artifacts/.
+
 ## Responsabilidades planejadas por etapa
 
 ### Parte 1. Pipeline de dados
@@ -59,7 +83,7 @@ Responsável pela estratégia de recuperação e pela tool `retrieve_kb`: Kaique
 
 Responsável por chunking, embeddings e índice vetorial: Bruno Jordão das Neves Moura
 
-Escopo do Bruno: chunking, metadados de vigência, embeddings e índice vetorial.
+Escopo do Bruno: definição e experimentação da estratégia de chunking, metadados de vigência e rastreabilidade, avaliação e seleção do modelo de embeddings, geração dos embeddings definitivos, construção e validação do índice vetorial FAISS, testes automatizados e publicação dos artefatos no S3.
 Escopo do Kaique: filtro determinístico de documentos vigentes na busca,
 calibração do limiar de "não sei" e avaliação da recuperação.
 
