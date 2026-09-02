@@ -36,13 +36,12 @@ python -m src.parte_05_governanca.audit \
   --log-group /aws/lambda/concierge-conectatel-retrieve-kb
 ```
 
-Quando o AgentCore e a Parte 4 estiverem implantados, consulte todos os grupos
-da mesma trilha:
+No ambiente implantado, consulte todos os grupos da mesma trilha:
 
 ```bash
 python -m src.parte_05_governanca.audit \
   --trace-id "teste-final-001" \
-  --log-group /aws/bedrock-agentcore/runtimes/<runtime> \
+  --log-group /aws/bedrock-agentcore/runtimes/concierge_conectatel_agent-Sk4fyE6R6C-DEFAULT \
   --log-group /aws/lambda/concierge-conectatel-gateway \
   --log-group /aws/lambda/concierge-conectatel-retrieve-kb \
   --log-group /aws/lambda/concierge-conectatel-store-handoff
@@ -58,10 +57,10 @@ em até 55 segundos. Salve a saída junto às evidências da entrega.
 - **Dados pessoais:** não registrar credenciais, tokens, CPF, cartão ou anexos.
   A pergunta é registrada somente para rastreabilidade do desafio; em produção,
   deve passar por mascaramento de PII antes da emissão do evento.
-- **Retenção:** configurar uma retenção explícita para os log groups no deploy;
-  a duração deve ser aprovada pela política de dados da operação.
-- **Escalonamento:** a Parte 4 adicionará o registro DynamoDB ao mesmo
-  `trace_id`; a consulta deve incluir o resultado de `store_handoff`.
+- **Retenção:** os quatro log groups operacionais usam retenção explícita de
+  14 dias; a duração deve ser revisada caso a política de dados mude.
+- **Escalonamento:** o registro DynamoDB usa o mesmo `trace_id`; a consulta
+  deve incluir o resultado de `store_handoff` quando houver handoff.
 
 ## Evidência esperada
 
@@ -71,3 +70,11 @@ Para a demonstração, cronometre uma consulta real por `trace_id` e registre:
 - tempo até o retorno;
 - pergunta, decisão, fonte, guardrail e `trace_id`;
 - para um handoff, o protocolo retornado e o item associado na DynamoDB.
+
+## Evidência executada
+
+Em 02/09/2026, a consulta do handoff `e2e-handoff-20260901` percorreu os
+quatro grupos em **3,814 s** e retornou o evento estruturado do AgentCore com
+pergunta, decisão `escalar`, guardrail e `trace_id`. O registro reproduzível
+está em
+[`artifacts/audit/rodada_auditoria_e2e_20260902.md`](../../artifacts/audit/rodada_auditoria_e2e_20260902.md).

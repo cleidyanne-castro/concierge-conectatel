@@ -11,7 +11,7 @@ revisado antes de cada deploy de demonstração.
 | Pessoa operadora (SSO) | deploy SAM, leitura de logs, invocação de teste | Usar profile da conta da demo; não salvar access keys no repositório. |
 | Lambda `retrieve_kb` | `s3:GetObject` somente no bucket da base; logs de execução | Não escreve no bucket e não possui permissões Bedrock ou DynamoDB. |
 | Lambda `gateway` | `bedrock-agentcore:InvokeAgentRuntime` somente no ARN do Runtime | Não acessa S3, DynamoDB ou o modelo Bedrock diretamente. |
-| AgentCore Runtime | `bedrock:InvokeModel` para o modelo aprovado; `lambda:InvokeFunction` apenas para `retrieve_kb` e `store_handoff`; logs/traces | Não recebe permissões administrativas e não lista/invoca Lambdas arbitrárias. |
+| AgentCore Runtime | `bedrock:InvokeModel` e `bedrock:InvokeModelWithResponseStream` somente para o modelo aprovado; `lambda:InvokeFunction` apenas para `retrieve_kb` e `store_handoff`; logs/traces | Não recebe permissões administrativas e não lista/invoca Lambdas arbitrárias. |
 | Lambda `store_handoff` | `dynamodb:PutItem` na tabela `concierge-conectatel-escalonamentos`; logs | Não lê/escreve outras tabelas; a chave de idempotência é o `trace_id`. |
 | Consulta de auditoria | `logs:StartQuery` e `logs:GetQueryResults` nos log groups do Concierge | A consulta é somente leitura e usa `trace_id` como chave de busca. |
 
@@ -42,9 +42,10 @@ python -m src.parte_05_governanca.audit \
   --log-group /aws/lambda/concierge-conectatel-retrieve-kb
 ```
 
-Na configuração completa, inclua também os log groups do gateway, AgentCore e
-`store_handoff`. A meta demonstrável é recuperar a trilha em menos de 60
-segundos.
+Na configuração implantada, a consulta inclui os log groups do gateway,
+AgentCore, `retrieve_kb` e `store_handoff`. A meta demonstrável é recuperar a
+trilha em menos de 60 segundos; uma execução real está registrada em
+[`rodada_auditoria_e2e_20260902.md`](../../artifacts/audit/rodada_auditoria_e2e_20260902.md).
 
 Não registrar em logs access keys, tokens, CPF, cartão, anexos ou conteúdo
 sensível fora do necessário para o desafio. Para uso real, a pergunta deve
@@ -81,17 +82,17 @@ ser entregues. Definir retenção explícita para os log groups no template ante
 do deploy final; para a demonstração, a recomendação é 14 dias, salvo exigência
 institucional diferente.
 
-Na conta de demonstração, a retenção de **14 dias** foi aplicada em
-31/08/2026 ao log group `/aws/lambda/concierge-conectatel-retrieve-kb`. Os log
-groups do gateway, AgentCore e handoff devem receber a mesma configuração ao
-serem criados.
+Na conta de demonstração, a retenção de **14 dias** está aplicada aos quatro
+grupos operacionais: `retrieve_kb`, gateway, `store_handoff` e AgentCore. O
+Budget de custo **Consumo AWS - Natan Alencar Maia**, com limite de **US$ 20**,
+também estava ativo na verificação de 02/09/2026.
 
 ## Checklist pré-demo
 
 - [ ] Conta, região, bucket e ARNs correspondem ao ambiente da demo.
 - [ ] SSO válido e `aws sts get-caller-identity` confirmado.
-- [ ] Budget/alerta configurado e plano de limpeza revisado.
-- [ ] Consulta por `trace_id` cronometrada em menos de 60 segundos.
+- [x] Budget de US$ 20 ativo e plano de limpeza revisado.
+- [x] Consulta por `trace_id` cronometrada em menos de 60 segundos.
 - [ ] Logs não contêm segredos ou PII fora do escopo do desafio.
 - [ ] Duas transcrições grounded, duas `nao_sei` e dois handoffs disponíveis.
 - [ ] Rollback do CloudFormation habilitado no deploy final.
