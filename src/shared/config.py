@@ -53,6 +53,7 @@ class Settings:
     bedrock_model_id: str
     retrieve_kb_function: str
     store_handoff_function: str
+    concierge_api_url: str
 
     # Escalonamento (Parte 4) — tool store_handoff
     handoff_table_name: str
@@ -84,6 +85,7 @@ class Settings:
             store_handoff_function=_get(
                 "STORE_HANDOFF_FUNCTION", "concierge-conectatel-store-handoff"
             ),
+            concierge_api_url=_get("CONCIERGE_API_URL"),
             handoff_table_name=_get("HANDOFF_TABLE_NAME", "concierge-handoff"),
             audit_log_group=_get("AUDIT_LOG_GROUP", "/concierge/agent"),
         )

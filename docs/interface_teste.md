@@ -1,8 +1,9 @@
 # Interface local de testes
 
-O painel Streamlit permite demonstrar a base RAG publicada sem expor uma API
-pública adicional. Ele usa o profile AWS da pessoa executora e invoca a Lambda
-`retrieve_kb` diretamente.
+O painel Streamlit permite testar dois fluxos publicados na AWS:
+
+- **Concierge ponta a ponta:** Interface → API Gateway → AgentCore → ferramentas;
+- **Busca RAG direta:** Interface → Lambda `retrieve_kb`, útil para diagnóstico.
 
 ## Executar
 
@@ -25,9 +26,15 @@ Antes de testar, valide a sessão AWS:
 aws sso login --profile AlunoAdmin-699038657189
 ```
 
+Para o fluxo ponta a ponta, informe a URL `ConciergeApiUrl` exibida pelo deploy
+no campo lateral da interface ou defina-a localmente em `.env`:
+
+```dotenv
+CONCIERGE_API_URL=https://<api-id>.execute-api.us-east-1.amazonaws.com/concierge
+```
+
 ## Escopo atual
 
-O painel mostra decisão, latência, limiar, fontes, scores e o `trace_id` da
-tool `retrieve_kb`. Com o AgentCore e API Gateway implantados, a interface deve
-ser ajustada para chamar `/concierge` e exibir a resposta final do agente e o
-handoff quando aplicável.
+O painel mostra decisão, `trace_id`, resposta final e fonte do Concierge, além
+do objeto de handoff quando houver escalonamento. No modo RAG direto, também
+exibe latência, limiar, fontes recuperadas e scores.

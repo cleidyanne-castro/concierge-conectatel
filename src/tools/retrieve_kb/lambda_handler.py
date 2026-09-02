@@ -1,3 +1,4 @@
+import base64
 import json
 import os
 import time
@@ -79,6 +80,37 @@ def _ensure_kb_loaded():
     return _embeddings_data, _chunks_by_id
 
 
+def _request_payload(event):
+    """Normaliza invocações diretas da Lambda e eventos HTTP API v2.
+
+    O AgentCore invoca a tool diretamente, com ``question`` no nível raiz.
+    Já a rota de depuração ``POST /retrieve`` recebe o JSON serializado em
+    ``event["body"]`` pelo API Gateway. Manter os dois formatos evita que a
+    rota HTTP pareça saudável, mas descarte a pergunta do usuário.
+    """
+    event = event or {}
+    if not isinstance(event, dict):
+        return {}
+
+    body = event.get("body")
+    if body is None:
+        return event
+
+    if event.get("isBase64Encoded") and isinstance(body, str):
+        try:
+            body = base64.b64decode(body).decode("utf-8")
+        except (ValueError, UnicodeDecodeError):
+            return {}
+
+    if isinstance(body, str):
+        try:
+            body = json.loads(body)
+        except json.JSONDecodeError:
+            return {}
+
+    return body if isinstance(body, dict) else {}
+
+
 # ============================================================
 # HANDLER
 # ============================================================
@@ -94,8 +126,9 @@ def handler(event, context):
 
     started_at = time.time()
 
-    question = (event or {}).get("question", "").strip()
-    trace_id = (event or {}).get("trace_id") or str(uuid.uuid4())
+    payload = _request_payload(event)
+    question = str(payload.get("question") or "").strip()
+    trace_id = payload.get("trace_id") or str(uuid.uuid4())
 
     if not question:
         return {
