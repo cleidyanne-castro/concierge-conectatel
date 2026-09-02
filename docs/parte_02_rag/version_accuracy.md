@@ -44,8 +44,10 @@ O relatório é salvo em
 Os testes unitários estão em
 [`tests/parte_02_rag/test_version_accuracy.py`](../../tests/parte_02_rag/test_version_accuracy.py).
 
-As evidências visuais da execução estão em [`stretch2.png`](../../artifacts/audit/stretch2.png)
-e do resultado detalhado em [`stretch1.png`](../../artifacts/audit/stretch1.png).
+**Evidências visuais:** `stretch2.png` registra a execução e os testes, enquanto
+`stretch1.png` registra os indicadores detalhados do relatório.
+
+Os arquivos estão em [`artifacts/audit/`](../../artifacts/audit/).
 
 ## Interpretação
 
