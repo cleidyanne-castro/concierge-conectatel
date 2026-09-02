@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="420" viewBox="0 0 1800 420">
+  <rect width="1800" height="420" rx="28" fill="#101820"/>
+  <text x="900" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#F4F7FA">Arquitetura Medallion no Databricks</text>
+  <text x="900" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#B8C5D0">Fluxo reproduzível: ingestão → qualidade → análise → decisão</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="42" y="132" width="250" height="170" rx="18" fill="#26323B" stroke="#7B8794" stroke-width="2"/>
+    <text x="167" y="175" text-anchor="middle" font-size="23" font-weight="700" fill="#FFFFFF">Entradas</text>
+    <text x="167" y="214" text-anchor="middle" font-size="17" fill="#DCE5EB">CSV de chamados</text>
+    <text x="167" y="242" text-anchor="middle" font-size="17" fill="#DCE5EB">Corpus oficial</text>
+    <text x="167" y="274" text-anchor="middle" font-size="15" fill="#A9BAC7">Volume / arquivos</text>
+    <rect x="350" y="132" width="250" height="170" rx="18" fill="#5E3A8A" stroke="#B38BDE" stroke-width="2"/>
+    <text x="475" y="175" text-anchor="middle" font-size="23" font-weight="700" fill="#FFFFFF">Bronze</text>
+    <text x="475" y="214" text-anchor="middle" font-size="17" fill="#FFFFFF">Ingestão e snapshot</text>
+    <text x="475" y="242" text-anchor="middle" font-size="17" fill="#FFFFFF">Inventário e schema</text>
+    <text x="475" y="274" text-anchor="middle" font-size="15" fill="#E7D9F5">Pandas no Databricks</text>
+    <rect x="658" y="132" width="250" height="170" rx="18" fill="#176B87" stroke="#72C4DA" stroke-width="2"/>
+    <text x="783" y="175" text-anchor="middle" font-size="23" font-weight="700" fill="#FFFFFF">Silver</text>
+    <text x="783" y="214" text-anchor="middle" font-size="17" fill="#FFFFFF">Limpeza e tipagem</text>
+    <text x="783" y="242" text-anchor="middle" font-size="17" fill="#FFFFFF">Regras de qualidade</text>
+    <text x="783" y="274" text-anchor="middle" font-size="15" fill="#D4F0F6">Dataset confiável</text>
+    <rect x="966" y="132" width="250" height="170" rx="18" fill="#237A62" stroke="#7ED6B6" stroke-width="2"/>
+    <text x="1091" y="175" text-anchor="middle" font-size="23" font-weight="700" fill="#FFFFFF">Gold</text>
+    <text x="1091" y="214" text-anchor="middle" font-size="17" fill="#FFFFFF">KPIs e agregações</text>
+    <text x="1091" y="242" text-anchor="middle" font-size="17" fill="#FFFFFF">3 análises descritivas</text>
+    <text x="1091" y="274" text-anchor="middle" font-size="15" fill="#D8F5E9">Insights acionáveis</text>
+    <rect x="1274" y="132" width="250" height="170" rx="18" fill="#B06A20" stroke="#F0B66C" stroke-width="2"/>
+    <text x="1399" y="175" text-anchor="middle" font-size="23" font-weight="700" fill="#FFFFFF">Analytics</text>
+    <text x="1399" y="214" text-anchor="middle" font-size="17" fill="#FFFFFF">Dashboard</text>
+    <text x="1399" y="242" text-anchor="middle" font-size="17" fill="#FFFFFF">Storytelling</text>
+    <text x="1399" y="274" text-anchor="middle" font-size="15" fill="#FFF0DC">Decisões do produto</text>
+    <g fill="none" stroke="#DCE5EB" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M292 217 H338"/><path d="M600 217 H646"/><path d="M908 217 H954"/><path d="M1216 217 H1262"/>
+    </g>
+    <g fill="#DCE5EB"><path d="M338 217 l-13 -9 v18 z"/><path d="M646 217 l-13 -9 v18 z"/><path d="M954 217 l-13 -9 v18 z"/><path d="M1262 217 l-13 -9 v18 z"/></g>
+  </g>
+  <text x="900" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#B8C5D0">Workflow Job: Bronze → Silver → Gold | execução encadeada e rastreável</text>
+</svg>

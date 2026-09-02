@@ -60,7 +60,10 @@ O desenho usa Python e Pandas, com CSV, JSON e Markdown como formatos de trabalh
 - [`gold_execution_evidence.md`](../../artifacts/audit/gold_execution_evidence.md) — evidência da execução ponta a ponta e dos resultados da Gold.
 - [`bronze_execution_evidence.md`](../../artifacts/audit/bronze_execution_evidence.md) — evidência da leitura, validação e persistência da Bronze.
 - [`gold_workflow_execution_evidence.png`](../../artifacts/audit/gold_workflow_execution_evidence.png) — evidência visual das dependências entre as camadas.
+- [`medallion_databricks_fluxo.svg`](../../artifacts/audit/medallion_databricks_fluxo.svg) — fluxograma horizontal da arquitetura Medallion no Databricks, das entradas ao Analytics e dashboard.
 - [`databricks_workflow_gold.json`](../../infra/databricks_workflow_gold.json) — definição do Workflow Job com dependências entre as camadas.
+
+Descrição de acessibilidade do fluxograma: entradas de CSV e corpus oficial passam pelas camadas Bronze, Silver e Gold e chegam ao Analytics e dashboard. O Workflow Job encadeia Bronze, Silver e Gold de forma rastreável.
 
 ### Índice de evidências
 
