@@ -51,6 +51,22 @@ Não registrar em logs access keys, tokens, CPF, cartão, anexos ou conteúdo
 sensível fora do necessário para o desafio. Para uso real, a pergunta deve
 passar por mascaramento de PII antes de ser emitida no evento de auditoria.
 
+## Observabilidade operacional
+
+Além da auditoria individual por `trace_id`, o dashboard
+`concierge-conectatel-operacao` acompanha indicadores agregados de saúde:
+
+| Indicador | Fonte | Uso na demonstração |
+|---|---|---|
+| Invocações, erros e duração p95 | Métricas nativas das Lambdas gateway e `retrieve_kb` | Identificar indisponibilidade ou degradação de latência. |
+| Decisões `responder`, `nao_sei` e `escalar` | Três filtros de métrica no log do gateway | Verificar o comportamento seguro do agente em lote sem executar consulta no dashboard. |
+| Handoffs persistidos | `SuccessfulRequestLatency` / `PutItem` da tabela DynamoDB | Confirmar que os escalonamentos chegaram à fila humana. |
+
+Os alarmes de erro da gateway e da tool RAG avaliam janelas de cinco minutos,
+tratam ausência de dados como saudável e não executam ação automática. Isso
+evita custo e ruído operacional durante a demonstração, mantendo uma sinalização
+visível para investigação pelo `trace_id`.
+
 ## Riscos e respostas operacionais
 
 | Risco | Sinal | Mitigação | Responsável |

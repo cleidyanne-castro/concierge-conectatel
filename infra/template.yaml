@@ -107,6 +107,131 @@ Resources:
             Path: /concierge
             Method: OPTIONS
 
+  # -------- Observabilidade operacional (Parte 5) --------
+  GatewayErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: concierge-conectatel-gateway-errors
+      AlarmDescription: Erro na Lambda de borda do Concierge; investigar pelo trace_id.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref GatewayFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+
+  RetrieveKbErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: concierge-conectatel-retrieve-kb-errors
+      AlarmDescription: Erro na tool RAG; investigar pelo trace_id e pelos logs da Lambda.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref RetrieveKbFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+
+  RespondDecisionMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: /aws/lambda/concierge-conectatel-gateway
+      FilterPattern: '{ $.decision = "responder" }'
+      MetricTransformations:
+        - MetricNamespace: ConciergeConectaTel/Operations
+          MetricName: RespondDecisions
+          MetricValue: '1'
+
+  NoAnswerDecisionMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: /aws/lambda/concierge-conectatel-gateway
+      FilterPattern: '{ $.decision = "nao_sei" }'
+      MetricTransformations:
+        - MetricNamespace: ConciergeConectaTel/Operations
+          MetricName: NoAnswerDecisions
+          MetricValue: '1'
+
+  EscalateDecisionMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: /aws/lambda/concierge-conectatel-gateway
+      FilterPattern: '{ $.decision = "escalar" }'
+      MetricTransformations:
+        - MetricNamespace: ConciergeConectaTel/Operations
+          MetricName: EscalateDecisions
+          MetricValue: '1'
+
+  OperationalDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: concierge-conectatel-operacao
+      DashboardBody: !Sub |
+        {
+          "widgets": [
+            {
+              "type": "metric",
+              "x": 0, "y": 0, "width": 12, "height": 6,
+              "properties": {
+                "title": "Gateway - invocações, erros e latência p95",
+                "region": "${AWS::Region}", "view": "timeSeries", "period": 300,
+                "metrics": [
+                  ["AWS/Lambda", "Invocations", "FunctionName", "concierge-conectatel-gateway", {"stat": "Sum", "label": "Invocações"}],
+                  [".", "Errors", ".", ".", {"stat": "Sum", "label": "Erros"}],
+                  [".", "Duration", ".", ".", {"stat": "p95", "label": "Duração p95 (ms)", "yAxis": "right"}]
+                ]
+              }
+            },
+            {
+              "type": "metric",
+              "x": 12, "y": 0, "width": 12, "height": 6,
+              "properties": {
+                "title": "RAG - invocações, erros e latência p95",
+                "region": "${AWS::Region}", "view": "timeSeries", "period": 300,
+                "metrics": [
+                  ["AWS/Lambda", "Invocations", "FunctionName", "concierge-conectatel-retrieve-kb", {"stat": "Sum", "label": "Invocações"}],
+                  [".", "Errors", ".", ".", {"stat": "Sum", "label": "Erros"}],
+                  [".", "Duration", ".", ".", {"stat": "p95", "label": "Duração p95 (ms)", "yAxis": "right"}]
+                ]
+              }
+            },
+            {
+              "type": "metric",
+              "x": 0, "y": 6, "width": 12, "height": 6,
+              "properties": {
+                "title": "Decisões do Concierge",
+                "region": "${AWS::Region}", "view": "timeSeries", "period": 300,
+                "metrics": [
+                  ["ConciergeConectaTel/Operations", "RespondDecisions", {"stat": "Sum", "label": "Responder"}],
+                  [".", "NoAnswerDecisions", {"stat": "Sum", "label": "Não sei"}],
+                  [".", "EscalateDecisions", {"stat": "Sum", "label": "Escalar"}]
+                ]
+              }
+            },
+            {
+              "type": "metric",
+              "x": 12, "y": 6, "width": 12, "height": 6,
+              "properties": {
+                "title": "DynamoDB - handoffs persistidos",
+                "region": "${AWS::Region}", "view": "timeSeries", "period": 300,
+                "metrics": [
+                  ["AWS/DynamoDB", "SuccessfulRequestLatency", "TableName", "concierge-conectatel-escalonamentos", "Operation", "PutItem", {"stat": "SampleCount", "label": "PutItem (handoffs)"}]
+                ]
+              }
+            }
+          ]
+        }
+
 Outputs:
   KnowledgeBaseBucketName:
     Description: Bucket lido pela tool retrieve_kb
@@ -122,3 +247,6 @@ Outputs:
   StoreHandoffFunctionArn:
     Description: 'ARN da Lambda de persistência de Handoff'
     Value: !GetAtt StoreHandoffFunction.Arn
+  OperationalDashboardName:
+    Description: Dashboard CloudWatch para observabilidade operacional.
+    Value: !Ref OperationalDashboard

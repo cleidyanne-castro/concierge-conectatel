@@ -21,3 +21,21 @@ controles operacionais estão em [`operacao_auditoria.md`](operacao_auditoria.md
 
 A matriz de IAM, guardrails, riscos, custos e checklist pré-demo está em
 [`controles_governanca.md`](controles_governanca.md).
+
+## Observabilidade operacional
+
+O deploy cria o dashboard CloudWatch `concierge-conectatel-operacao`. Ele mostra
+invocações, erros e latência p95 do gateway e da tool RAG, distribuição das
+decisões do Concierge e as operações `PutItem` que representam handoffs. As
+três decisões são convertidas em métricas pelo filtro de logs do gateway.
+
+Dois alarmes padrão complementam a visualização:
+
+- `concierge-conectatel-gateway-errors`;
+- `concierge-conectatel-retrieve-kb-errors`.
+
+Cada um entra em estado `ALARM` quando a respectiva Lambda registra ao menos
+um erro em cinco minutos. Os alarmes não possuem ação automática: na
+demonstração, o operador investiga o `trace_id` no CloudWatch antes de qualquer
+ação corretiva. A configuração usa métricas nativas e três métricas customizadas
+de decisão, dentro da cota gratuita de dez métricas customizadas.
