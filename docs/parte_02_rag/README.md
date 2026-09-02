@@ -23,3 +23,10 @@ Chunking e Embeddings.
 
 O contrato de entrada e saída está em [`data_handoff.md`](data_handoff.md).
 Os módulos de implementação estão em `src/parte_02_rag/`.
+
+## Stretch do hackathon
+
+A métrica de acerto de versão verifica se o chunk vigente esperado aparece no
+top-k sem permitir um chunk revogado da mesma família. A definição, o comando
+de reprodução e o local do relatório estão em
+[`version_accuracy.md`](version_accuracy.md).
