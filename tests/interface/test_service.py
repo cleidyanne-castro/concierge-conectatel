@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from src.interface.service import invoke_concierge, invoke_retrieve_kb
+from src.interface.service import ConciergeApiError, invoke_concierge, invoke_retrieve_kb
 
 
 class FakeLambdaClient:
@@ -71,3 +71,20 @@ def test_invoke_concierge_sends_question_and_trace_id():
 def test_invoke_concierge_requires_api_url():
     with pytest.raises(ValueError, match="URL do Concierge"):
         invoke_concierge("pergunta", api_url="", post_json=lambda *_: {})
+
+
+def test_invoke_concierge_preserves_structured_api_error():
+    expected = ConciergeApiError(
+        502,
+        {"trace_id": "ui-falha-001", "reason": "erro_runtime"},
+        "A API do Concierge retornou erro: tente novamente.",
+    )
+
+    def failing_post(*_):
+        raise expected
+
+    with pytest.raises(ConciergeApiError) as captured:
+        invoke_concierge("pergunta", "ui-falha-001", api_url="https://example.com", post_json=failing_post)
+
+    assert captured.value.status_code == 502
+    assert captured.value.payload["trace_id"] == "ui-falha-001"

@@ -4,13 +4,17 @@ from __future__ import annotations
 
 import streamlit as st
 
-from src.interface.service import invoke_concierge, invoke_retrieve_kb
+from src.interface.service import ConciergeApiError, invoke_concierge, invoke_retrieve_kb
 from src.shared.config import get_settings
 
 
 st.set_page_config(page_title="Concierge ConectaTel", page_icon="📡", layout="wide")
 
 settings = get_settings()
+dashboard_url = (
+    f"https://{settings.aws_region}.console.aws.amazon.com/cloudwatch/home"
+    f"?region={settings.aws_region}#dashboards:name=concierge-conectatel-operacao"
+)
 st.title("📡 Concierge ConectaTel")
 st.caption("Painel local para testes funcionais publicados na AWS.")
 
@@ -36,6 +40,7 @@ with st.sidebar:
         st.info("Fluxo: Interface → API Gateway → AgentCore → ferramentas.")
     else:
         st.info("Diagnóstico: Interface → Lambda retrieve_kb.")
+    st.link_button("Abrir dashboard operacional", dashboard_url, use_container_width=True)
 
 question = st.text_area(
     "Pergunta do assinante",
@@ -107,6 +112,20 @@ if st.button(button_label, type="primary", use_container_width=True):
                 st.info("Nenhuma fonte passou pelo limiar de recuperação.")
 
         with st.expander("Resposta técnica (JSON)"):
+            st.json(result)
+    except ConciergeApiError as error:
+        result = error.payload
+        result_trace_id = result.get("trace_id") or trace_id or "-"
+        st.error(f"A API retornou HTTP {error.status_code}: {error}")
+        col1, col2 = st.columns(2)
+        col1.metric("Trace ID para auditoria", result_trace_id)
+        col2.metric("Motivo técnico", result.get("reason", "não informado"))
+        st.info(
+            "Use o Trace ID no procedimento de auditoria e abra o dashboard para "
+            "correlacionar o erro com as métricas operacionais."
+        )
+        st.link_button("Abrir dashboard operacional", dashboard_url)
+        with st.expander("Resposta técnica (JSON)", expanded=True):
             st.json(result)
     except Exception as error:
         st.error(f"Não foi possível concluir o teste: {error}")
