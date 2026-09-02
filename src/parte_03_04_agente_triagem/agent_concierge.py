@@ -244,10 +244,38 @@ def _new_agent() -> Agent:
 # Nova (e outros) as vezes emitem raciocinio em <thinking>...</thinking>;
 # nunca deve vazar pra resposta do assinante.
 _THINK_RE = re.compile(r"<thinking>.*?</thinking>", re.DOTALL | re.IGNORECASE)
+_TOOL_USE_SEQUENCE_ERROR_MARKERS = (
+    "modelStreamErrorException",
+    "invalid sequence as part of ToolUse",
+)
+_MAX_TOOL_USE_ATTEMPTS = 4
 
 
 def _clean_answer(text: str) -> str:
     return _THINK_RE.sub("", text).strip()
+
+
+def _invoke_agent(question: str) -> str:
+    """Invoca o Nova com retry somente para sequência ToolUse inválida."""
+
+    for attempt in range(1, _MAX_TOOL_USE_ATTEMPTS + 1):
+        try:
+            return str(_new_agent()(question))
+        except Exception as error:
+            message = str(error)
+            retryable = any(
+                marker in message for marker in _TOOL_USE_SEQUENCE_ERROR_MARKERS
+            )
+            if not retryable or attempt == _MAX_TOOL_USE_ATTEMPTS:
+                raise
+            print(json.dumps({
+                "trace_id": _ctx_get().get("trace_id"),
+                "level": "WARNING",
+                "event": "agent_tool_use_retry",
+                "attempt": attempt,
+            }))
+
+    raise RuntimeError("agent_tool_use_retry_exhausted")  # pragma: no cover
 
 
 def _build_response(trace_id: str, answer: str, ctx: dict) -> ConciergeResponse:
@@ -313,7 +341,7 @@ def run(payload: dict | None) -> dict:
     if not question:
         return ConciergeResponse("nao_sei", trace_id, "Pergunta vazia.").to_dict()
 
-    answer = _clean_answer(str(_new_agent()(question)))
+    answer = _clean_answer(_invoke_agent(question))
     ctx = _ctx_get()
     resp = _build_response(trace_id, answer, ctx)
     _emit_audit(question, resp, ctx)

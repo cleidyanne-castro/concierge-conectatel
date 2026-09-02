@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from src.parte_03_04_agente_triagem import agent_concierge, lambda_gateway
 from src.shared.security import normalize_trace_id, redact_pii
 
@@ -175,6 +177,55 @@ def test_run_creates_an_isolated_agent_for_each_request(monkeypatch):
     assert created[0] is not created[1]
     assert first["trace_id"] == "isolado-1"
     assert second["trace_id"] == "isolado-2"
+
+
+def test_invalid_tool_use_sequence_retries_with_fresh_agents(monkeypatch):
+    outcomes = [
+        RuntimeError("modelStreamErrorException: invalid sequence as part of ToolUse"),
+        RuntimeError("invalid sequence as part of ToolUse"),
+        "resposta recuperada",
+    ]
+    created = []
+
+    class FakeAgent:
+        def __init__(self, outcome):
+            self.outcome = outcome
+
+        def __call__(self, _question):
+            if isinstance(self.outcome, Exception):
+                raise self.outcome
+            return self.outcome
+
+    def fake_new_agent():
+        instance = FakeAgent(outcomes[len(created)])
+        created.append(instance)
+        return instance
+
+    monkeypatch.setattr(agent_concierge, "_new_agent", fake_new_agent)
+    agent_concierge._ctx.set({"trace_id": "retry-tool-use"})
+
+    assert agent_concierge._invoke_agent("pergunta") == "resposta recuperada"
+    assert len(created) == 3
+
+
+def test_non_tool_use_error_is_not_retried(monkeypatch):
+    calls = 0
+
+    class FailingAgent:
+        def __call__(self, _question):
+            raise RuntimeError("access denied")
+
+    def fake_new_agent():
+        nonlocal calls
+        calls += 1
+        return FailingAgent()
+
+    monkeypatch.setattr(agent_concierge, "_new_agent", fake_new_agent)
+
+    with pytest.raises(RuntimeError, match="access denied"):
+        agent_concierge._invoke_agent("pergunta")
+
+    assert calls == 1
 
 
 def test_audit_event_masks_personal_data(capsys):
