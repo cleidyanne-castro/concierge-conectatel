@@ -8,60 +8,135 @@ from src.interface.service import ConciergeApiError, invoke_concierge, invoke_re
 from src.shared.config import get_settings
 
 
-st.set_page_config(page_title="Concierge ConectaTel", page_icon="📡", layout="wide")
+st.set_page_config(
+    page_title="Concierge ConectaTel",
+    page_icon="◉",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
 settings = get_settings()
 dashboard_url = (
     f"https://{settings.aws_region}.console.aws.amazon.com/cloudwatch/home"
     f"?region={settings.aws_region}#dashboards:name=concierge-conectatel-operacao"
 )
-st.title("📡 Concierge ConectaTel")
-st.caption("Painel local para testes funcionais publicados na AWS.")
+
+st.markdown(
+    """
+    <style>
+      .stApp { background: radial-gradient(circle at 82% -10%, #342b75 0, #11121a 38%, #0d0e14 78%); }
+      .block-container { max-width: 1180px; padding-top: 2.4rem; padding-bottom: 3rem; }
+      [data-testid="stSidebar"] { background: #12131b; border-right: 1px solid #292b39; }
+      [data-testid="stSidebar"] > div:first-child { padding-top: 1.5rem; }
+      .brand-kicker, .eyebrow { color: #a99fff; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+      .brand-name { color: #f8f8ff; font-size: 1.35rem; font-weight: 750; margin: .15rem 0 .25rem; }
+      .brand-copy, .muted { color: #aeb3c7; font-size: .88rem; line-height: 1.55; }
+      .hero { background: linear-gradient(120deg, rgba(109,93,252,.23), rgba(20,21,31,.72) 56%); border: 1px solid rgba(159,149,255,.28); border-radius: 20px; padding: 2rem 2.1rem; margin-bottom: 1.5rem; }
+      .hero h1 { color: #fafaff; font-size: clamp(2rem, 4vw, 3.3rem); letter-spacing: -.045em; margin: .35rem 0 .55rem; }
+      .hero p { color: #c5c8d8; font-size: 1.04rem; line-height: 1.55; margin: 0; max-width: 680px; }
+      .section-title { color: #f5f5fb; font-size: 1.06rem; font-weight: 700; margin: .2rem 0 .25rem; }
+      .section-copy { color: #aeb3c7; font-size: .9rem; margin-bottom: 1rem; }
+      .result-card { background: rgba(24,25,34,.84); border: 1px solid #34364a; border-radius: 16px; padding: 1.25rem; margin-top: 1rem; }
+      .status-dot { color: #6ee7b7; font-size: .72rem; letter-spacing: .05em; }
+      .stButton > button, .stLinkButton > a { border-radius: 10px !important; font-weight: 650 !important; min-height: 2.75rem; }
+      [data-testid="stMetric"] { background: rgba(255,255,255,.035); border: 1px solid #303244; border-radius: 12px; padding: .75rem; }
+      [data-testid="stMetricLabel"] { color: #aeb3c7; }
+      .flow-note { border-left: 3px solid #8b80ff; color: #bfc2d3; font-size: .88rem; line-height: 1.5; margin: .5rem 0 1rem; padding: .2rem 0 .2rem .8rem; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 with st.sidebar:
-    st.subheader("Ambiente")
+    st.markdown('<div class="brand-kicker">AWS · Agentic RAG</div>', unsafe_allow_html=True)
+    st.markdown('<div class="brand-name">ConectaTel</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="brand-copy">Painel de validação do Concierge, com decisões rastreáveis e operação observável.</div>',
+        unsafe_allow_html=True,
+    )
+    st.divider()
+    st.markdown("**Ambiente de demonstração**")
+    st.markdown('<span class="status-dot">● CONECTADO À AWS</span>', unsafe_allow_html=True)
     st.code(
         f"Região: {settings.aws_region}\n"
-        f"Função RAG: {settings.retrieve_kb_function}\n"
+        f"RAG: {settings.retrieve_kb_function}\n"
         f"Limiar: {settings.retrieval_score_threshold}",
         language=None,
     )
-    test_mode = st.radio(
-        "Fluxo de teste",
-        ("Concierge ponta a ponta", "Busca RAG direta"),
-        help="Concierge valida AgentCore e handoff; RAG direta diagnostica a recuperação.",
+    st.link_button("Dashboard operacional ↗", dashboard_url, use_container_width=True)
+    st.divider()
+    st.markdown("**O que cada fluxo valida**")
+    st.markdown(
+        "<div class='brand-copy'><b>Concierge</b><br>API Gateway, AgentCore e ferramentas.<br><br>"
+        "<b>RAG direto</b><br>Recuperação, fontes e limiar.</div>",
+        unsafe_allow_html=True,
     )
-    concierge_api_url = st.text_input(
-        "URL do Concierge",
-        value=settings.concierge_api_url,
-        placeholder="https://<api-id>.execute-api.us-east-1.amazonaws.com/concierge",
+
+st.markdown(
+    """
+    <section class="hero">
+      <div class="eyebrow">Central de testes</div>
+      <h1>Teste o Concierge com confiança.</h1>
+      <p>Envie uma pergunta, acompanhe a decisão e use o mesmo trace para investigar cada etapa no CloudWatch.</p>
+    </section>
+    """,
+    unsafe_allow_html=True,
+)
+
+form_column, guide_column = st.columns([1.65, 0.85], gap="large")
+
+with form_column:
+    st.markdown('<div class="section-title">Nova validação</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="section-copy">Escolha o fluxo e informe uma pergunta como um assinante faria.</div>',
+        unsafe_allow_html=True,
     )
-    if test_mode == "Concierge ponta a ponta":
-        st.info("Fluxo: Interface → API Gateway → AgentCore → ferramentas.")
-    else:
-        st.info("Diagnóstico: Interface → Lambda retrieve_kb.")
-    st.link_button("Abrir dashboard operacional", dashboard_url, use_container_width=True)
+    with st.container(border=True):
+        test_mode = st.radio(
+            "Fluxo de teste",
+            ("Concierge ponta a ponta", "Busca RAG direta"),
+            horizontal=True,
+        )
+        concierge_api_url = st.text_input(
+            "URL do Concierge",
+            value=settings.concierge_api_url,
+            placeholder="https://<api-id>.execute-api.us-east-1.amazonaws.com/concierge",
+            disabled=test_mode != "Concierge ponta a ponta",
+        )
+        flow_text = (
+            "Interface → API Gateway → AgentCore → ferramentas"
+            if test_mode == "Concierge ponta a ponta"
+            else "Interface → Lambda retrieve_kb → base de conhecimento"
+        )
+        st.markdown(f'<div class="flow-note">{flow_text}</div>', unsafe_allow_html=True)
+        question = st.text_area(
+            "Pergunta do assinante",
+            placeholder="Ex.: Como consulto meu consumo de dados?",
+            height=118,
+        )
+        trace_id = st.text_input(
+            "Trace ID (recomendado)",
+            placeholder="teste-consumo-001",
+            help="Use um identificador único para localizar a interação no CloudWatch.",
+        )
+        button_label = "Enviar ao Concierge" if test_mode == "Concierge ponta a ponta" else "Consultar a base"
+        submitted = st.button(button_label, type="primary", use_container_width=True)
 
-question = st.text_area(
-    "Pergunta do assinante",
-    placeholder="Ex.: Como consulto meu consumo de dados?",
-    height=110,
-)
-trace_id = st.text_input(
-    "Trace ID (opcional)",
-    placeholder="teste-interface-001",
-    help="Use um ID para localizar esta interação no CloudWatch após o teste.",
-)
+with guide_column:
+    st.markdown('<div class="section-title">Roteiro rápido</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-copy">Uma boa rodada de demo leva menos de dois minutos.</div>', unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown("**1 · Pergunta com fonte**")
+        st.caption("“Como consulto meu consumo de dados?”")
+        st.markdown("**2 · Pergunta fora da base**")
+        st.caption("“Qual é a previsão do tempo?”")
+        st.markdown("**3 · Caso sensível**")
+        st.caption("Use um trace exclusivo e confira a auditoria.")
+    st.info("Em falhas HTTP, o painel preserva o trace e o motivo técnico para investigação.")
 
-button_label = (
-    "Enviar ao Concierge"
-    if test_mode == "Concierge ponta a ponta"
-    else "Consultar base de conhecimento"
-)
-
-if st.button(button_label, type="primary", use_container_width=True):
+if submitted:
     try:
-        with st.spinner("Processando o teste na AWS..."):
+        with st.spinner("Processando na AWS..."):
             if test_mode == "Concierge ponta a ponta":
                 result = invoke_concierge(question, trace_id or None, api_url=concierge_api_url)
             else:
@@ -69,12 +144,13 @@ if st.button(button_label, type="primary", use_container_width=True):
 
         decision = result.get("decision", "nao_sei")
         if decision == "responder":
-            st.success("Decisão: responder")
+            st.success("Resposta encontrada na base oficial")
         elif decision == "escalar":
-            st.warning("Decisão: escalar para atendimento humano")
+            st.warning("Caso encaminhado para atendimento humano")
         else:
-            st.warning("Decisão: não sei")
+            st.warning("A base não forneceu uma resposta segura")
 
+        st.markdown('<div class="result-card">', unsafe_allow_html=True)
         col1, col2, col3 = st.columns(3)
         col1.metric("Trace ID", result.get("trace_id", "-"))
         col2.metric("Decisão", decision.replace("_", " ").title())
@@ -84,49 +160,43 @@ if st.button(button_label, type="primary", use_container_width=True):
             col3.metric("Fonte", result.get("source_path") or "-")
 
         if test_mode == "Concierge ponta a ponta":
-            st.subheader("Resposta do Concierge")
+            st.markdown("#### Resposta ao assinante")
             st.write(result.get("answer") or "Não houve resposta textual.")
             if result.get("reason"):
                 st.caption(f"Motivo técnico: {result['reason']}")
             if result.get("source_path"):
-                st.caption(f"Fonte informada: `{result['source_path']}`")
+                st.caption(f"Fonte: `{result['source_path']}`")
             if handoff := result.get("handoff"):
-                st.subheader("Handoff registrado")
+                st.markdown("#### Handoff registrado")
                 st.json(handoff)
         else:
             results = result.get("results", [])
             if results:
-                st.subheader("Fontes recuperadas")
+                st.markdown("#### Fontes recuperadas")
                 for index, item in enumerate(results, start=1):
-                    label = (
-                        f"{index}. {item.get('source_path', 'fonte sem caminho')} "
-                        f"— score {item.get('score', 0):.4f}"
-                    )
+                    label = f"{index}. {item.get('source_path', 'fonte sem caminho')} · score {item.get('score', 0):.4f}"
                     with st.expander(label, expanded=index == 1):
-                        st.caption(
-                            f"Status: {item.get('status', '-')} | "
-                            f"Seção: {item.get('section_title', '-')}"
-                        )
+                        st.caption(f"Status: {item.get('status', '-')} · Seção: {item.get('section_title', '-')}")
                         st.markdown(item.get("text") or "Trecho indisponível.")
             else:
                 st.info("Nenhuma fonte passou pelo limiar de recuperação.")
 
         with st.expander("Resposta técnica (JSON)"):
             st.json(result)
+        st.markdown("</div>", unsafe_allow_html=True)
     except ConciergeApiError as error:
         result = error.payload
         result_trace_id = result.get("trace_id") or trace_id or "-"
-        st.error(f"A API retornou HTTP {error.status_code}: {error}")
+        st.error(f"A API retornou HTTP {error.status_code}")
+        st.markdown('<div class="result-card">', unsafe_allow_html=True)
         col1, col2 = st.columns(2)
         col1.metric("Trace ID para auditoria", result_trace_id)
         col2.metric("Motivo técnico", result.get("reason", "não informado"))
-        st.info(
-            "Use o Trace ID no procedimento de auditoria e abra o dashboard para "
-            "correlacionar o erro com as métricas operacionais."
-        )
+        st.write("A API não concluiu a solicitação. Use o trace para correlacionar logs e métricas antes de repetir o teste.")
         st.link_button("Abrir dashboard operacional", dashboard_url)
         with st.expander("Resposta técnica (JSON)", expanded=True):
             st.json(result)
+        st.markdown("</div>", unsafe_allow_html=True)
     except Exception as error:
         st.error(f"Não foi possível concluir o teste: {error}")
         st.caption("Verifique a sessão AWS SSO e as configurações do ambiente.")
