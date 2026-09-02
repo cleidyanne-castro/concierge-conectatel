@@ -27,10 +27,19 @@ em [`artifacts/audit/`](artifacts/audit/).
 
 ### João Vitor Althaus Godoi
 
-Responsável pela Parte 3 (Agente Concierge) e pela integração ponta a ponta com
-a AWS (agente no AgentCore Runtime, Lambda de borda, infraestrutura SAM +
-AgentCore, deploy na conta da squad). Registro consolidado em
- [`docs/registros_joao.md`](docs/registros_joao.md).
+Responsável pela Parte 3 (Agente Concierge) e pela integração ponta a ponta na AWS.
+
+Agente — src/parte_03_04_agente_triagem/agent_concierge.py: agente Strands com duas ferramentas (retrieve_kb, store_handoff) rodando no Amazon Bedrock AgentCore Runtime. Grounding com citação de source_path, resposta "não sei" sem inferência, escalonamento com handoff, e classificação da decisão (responder / nao_sei / escalar) derivada em código.
+
+Borda — lambda_gateway.py: Lambda que traduz o API Gateway (HTTP API) em InvokeAgentRuntime, com origem canônica do trace_id e falha segura.
+
+Contratos compartilhados — src/shared/: get_settings() (configuração única) e os tipos usados pelas Partes 3, 4 e 5.
+
+Infraestrutura — evolução do template.yaml (gateway e wiring das tools), infra/agentcore/ (container do agente e criação do Runtime) e os guias infra/DEPLOY.md e infra/README.md.
+
+Deploy e validação ponta a ponta na AWS, cobrindo os três caminhos de decisão (o de escalonamento persistindo em DynamoDB) e a consulta por trace_id.
+
+Registro consolidado em docs/registros_joao.md.
 
 ### Kaique Silva Sousa
 
