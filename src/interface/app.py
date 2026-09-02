@@ -16,10 +16,6 @@ st.set_page_config(
 )
 
 settings = get_settings()
-dashboard_url = (
-    f"https://{settings.aws_region}.console.aws.amazon.com/cloudwatch/home"
-    f"?region={settings.aws_region}#dashboards:name=concierge-conectatel-operacao"
-)
 
 st.markdown(
     """
@@ -69,7 +65,6 @@ with st.sidebar:
         f"Limiar: {settings.retrieval_score_threshold}",
         language=None,
     )
-    st.link_button("Dashboard operacional ↗", dashboard_url, use_container_width=True)
     st.divider()
     st.markdown("**O que cada fluxo valida**")
     st.markdown(
@@ -199,7 +194,6 @@ if submitted:
         col1.metric("Trace ID para auditoria", result_trace_id)
         col2.metric("Motivo técnico", result.get("reason", "não informado"))
         st.write("A API não concluiu a solicitação. Use o trace para correlacionar logs e métricas antes de repetir o teste.")
-        st.link_button("Abrir dashboard operacional", dashboard_url)
         with st.expander("Resposta técnica (JSON)", expanded=True):
             st.json(result)
         st.markdown("</div>", unsafe_allow_html=True)
