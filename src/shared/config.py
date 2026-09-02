@@ -87,7 +87,9 @@ class Settings:
             ),
             concierge_api_url=_get("CONCIERGE_API_URL"),
             handoff_table_name=_get("HANDOFF_TABLE_NAME", "concierge-handoff"),
-            audit_log_group=_get("AUDIT_LOG_GROUP", "/concierge/agent"),
+            audit_log_group=_get(
+                "AUDIT_LOG_GROUP", "/concierge-conectatel/lambda/gateway"
+            ),
         )
 
 

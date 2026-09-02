@@ -39,3 +39,12 @@ def test_gold_grouped_metrics_publish_denominators(tmp_path, silver_calls):
 def test_gold_rejects_empty_input(silver_calls):
     with pytest.raises(ValueError, match="não possui linhas"):
         validate_silver(silver_calls.iloc[0:0])
+
+
+def test_kpis_do_not_publish_nan_when_duration_is_missing(silver_calls):
+    silver_calls["duracao_minutos"] = pd.NA
+
+    kpis = build_kpis(silver_calls).set_index("kpi")
+
+    assert kpis.loc["duracao_media_minutos", "valor"] == 0.0
+    assert kpis.loc["duracao_media_minutos", "denominador"] == 0

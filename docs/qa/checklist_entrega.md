@@ -16,4 +16,4 @@ documentação e evidência compatíveis.
 | README executado do zero por um membro diferente do autor da configuração | Pendente | Registrar executor, data, ambiente e resultado |
 | Slides para 15 minutos, vídeo plano B de até 3 minutos e transcrições impressas | Pendente | Inserir ou referenciar os materiais finais da banca |
 | Tag `v1.0-entrega` criada antes do prazo e usada na demonstração | Pendente | Criar a tag a partir da `main` validada |
-| AWS Budgets ativos e recursos contínuos desligados ou revisados | Concluído | Budget de US$ 20 ativo; retenção de 14 dias confirmada nos quatro log groups operacionais em 02/09/2026 |
+| AWS Budgets ativos e recursos contínuos desligados ou revisados | Concluído | Budget de US$ 20 ativo; quatro log groups confirmados com retenção de 14 dias após o deploy de 02/09/2026 |

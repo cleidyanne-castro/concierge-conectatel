@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import uuid
 
 import boto3
@@ -25,6 +26,16 @@ _CORS_ORIGIN = os.environ.get("CORS_ALLOW_ORIGIN", "*")
 
 
 _client = None
+_UNSAFE_TRACE_CHARS_RE = re.compile(r"[^A-Za-z0-9]+")
+
+
+def _normalize_trace_id(value: str | None) -> str:
+    """Mantém o trace seguro para headers e para o runtimeSessionId."""
+
+    normalized = _UNSAFE_TRACE_CHARS_RE.sub("-", str(value or "")).strip("-")
+    if not normalized:
+        normalized = str(uuid.uuid4())
+    return normalized[:95].rstrip("-") or str(uuid.uuid4())
 
 
 def _agentcore():
@@ -94,7 +105,7 @@ def handler(event, context):
     body = _parse_body(event)
     question = (body.get("question") or "").strip()
     # Origem canonica do trace_id: se a interface nao mandou, o gateway gera.
-    trace_id = (body.get("trace_id") or str(uuid.uuid4())).strip()
+    trace_id = _normalize_trace_id(body.get("trace_id"))
     client_trace = bool(body.get("trace_id"))
     print(json.dumps({"trace_id": trace_id, "event": "gateway_in",
                       "trace_origin": "client" if client_trace else "gateway"}))
@@ -126,7 +137,6 @@ def handler(event, context):
 
         print(json.dumps({
             "trace_id": trace_id,
-            "question": question,
             "decision": result.get("decision"),
         }))
         return _resp(200, result, trace_id)

@@ -17,7 +17,9 @@ COPY src/__init__.py ./src/__init__.py
 COPY src/shared ./src/shared
 COPY src/parte_03_04_agente_triagem ./src/parte_03_04_agente_triagem
 
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED=1 \
+    OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=NO_CONTENT \
+    OTEL_INSTRUMENTATION_GENAI_EMIT_EVENT=false
 EXPOSE 8080
 
 # opentelemetry-instrument: emite os spans do agente pro collector do Runtime.

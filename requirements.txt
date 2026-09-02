@@ -12,8 +12,8 @@ streamlit>=1.39,<2
 # strands: loop de tool-use sobre o modelo Bedrock.
 # bedrock-agentcore: wrapper do container do Runtime (/invocations, /ping)
 #   e o cliente de dados invoke_agent_runtime usado pela lambda_gateway.
-strands-agents>=0.1
-bedrock-agentcore>=0.1
+strands-agents==1.54.0
+bedrock-agentcore==1.22.0
 
 # --- Testes ---
 pytest>=8,<9

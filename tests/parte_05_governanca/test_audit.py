@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 import pytest
-from botocore.exceptions import NoCredentialsError
+from botocore.exceptions import ClientError, NoCredentialsError
 
 from src.parte_05_governanca.audit import AuditQueryError, find_by_trace_id
 
@@ -86,4 +86,25 @@ def test_find_by_trace_id_explains_credential_failure():
             "trace-001",
             log_group_names="/aws/lambda/concierge-conectatel-retrieve-kb",
             client=CredentialsExpiredClient(),
+        )
+
+
+def test_find_by_trace_id_identifies_missing_log_group():
+    class MissingLogGroupClient:
+        def start_query(self, **kwargs):
+            raise ClientError(
+                {
+                    "Error": {
+                        "Code": "ResourceNotFoundException",
+                        "Message": "missing",
+                    }
+                },
+                "StartQuery",
+            )
+
+    with pytest.raises(AuditQueryError, match="não existem"):
+        find_by_trace_id(
+            "trace-001",
+            log_group_names="/aws/log-group/inexistente",
+            client=MissingLogGroupClient(),
         )

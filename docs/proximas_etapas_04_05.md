@@ -46,7 +46,7 @@ Na rodada integrada, consulte todos os grupos de logs relevantes:
 python -m src.parte_05_governanca.audit \
   --trace-id "teste-final-001" \
   --log-group /aws/bedrock-agentcore/runtimes/<runtime> \
-  --log-group /aws/lambda/concierge-conectatel-gateway \
+  --log-group /concierge-conectatel/lambda/gateway \
   --log-group /aws/lambda/concierge-conectatel-retrieve-kb \
   --log-group /aws/lambda/concierge-conectatel-store-handoff
 ```

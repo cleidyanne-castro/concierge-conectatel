@@ -46,7 +46,7 @@ Parte 3 (Agente Concierge) e integração ponta a ponta com a AWS.
 
 - Stack SAM `concierge-conectatel`: `retrieve_kb` + HTTP API no ar.
 - AgentCore Runtime `concierge_agent-OGCvl4G9Yj` (status READY), imagem em
-  `bedrock-agentcore-concierge_agent`, execution role com invoke das tools.
+  `bedrock-agentcore-concierge-agent`, execution role com invoke das tools.
 - Teste `invoke-agent-runtime`: `statusCode 200`, `decision "responder"` com
   fonte citada.
 - Modelo: `amazon.nova-lite-v1:0` 

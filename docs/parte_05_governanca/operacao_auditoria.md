@@ -42,7 +42,7 @@ No ambiente implantado, consulte todos os grupos da mesma trilha:
 python -m src.parte_05_governanca.audit \
   --trace-id "teste-final-001" \
   --log-group /aws/bedrock-agentcore/runtimes/concierge_conectatel_agent-Sk4fyE6R6C-DEFAULT \
-  --log-group /aws/lambda/concierge-conectatel-gateway \
+  --log-group /concierge-conectatel/lambda/gateway \
   --log-group /aws/lambda/concierge-conectatel-retrieve-kb \
   --log-group /aws/lambda/concierge-conectatel-store-handoff
 ```
@@ -55,10 +55,12 @@ em até 55 segundos. Salve a saída junto às evidências da entrega.
 - **Menor privilégio:** a identidade que executa a consulta precisa apenas de
   `logs:StartQuery` e `logs:GetQueryResults` nos log groups do Concierge.
 - **Dados pessoais:** não registrar credenciais, tokens, CPF, cartão ou anexos.
-  A pergunta é registrada somente para rastreabilidade do desafio; em produção,
-  deve passar por mascaramento de PII antes da emissão do evento.
-- **Retenção:** os quatro log groups operacionais usam retenção explícita de
-  14 dias; a duração deve ser revisada caso a política de dados mude.
+  CPF, cartão, telefone e e-mail são mascarados antes da emissão do evento de
+  auditoria. Apenas os dados necessários ao handoff são persistidos na tabela
+  operacional, protegida por IAM de menor privilégio.
+- **Retenção:** aplique 14 dias aos quatro log groups operacionais após cada
+  criação/recriação de ambiente com `make retention`; revise a duração caso a
+  política de dados mude.
 - **Escalonamento:** o registro DynamoDB usa o mesmo `trace_id`; a consulta
   deve incluir o resultado de `store_handoff` quando houver handoff.
 

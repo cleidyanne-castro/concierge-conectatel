@@ -106,7 +106,7 @@ def build_kpis(df: pd.DataFrame) -> pd.DataFrame:
             {"kpi": "satisfacao_media", "valor": _mean(df["satisfacao_1_a_5"]), "denominador": int(df["satisfacao_1_a_5"].notna().sum())},
             {"kpi": "taxa_primeiro_contato", "valor": _rate(df["resolvido_primeiro_contato"]), "denominador": int(df["resolvido_primeiro_contato"].notna().sum())},
             {"kpi": "taxa_encaminhamento_humano", "valor": _rate(df["encaminhado_humano"]), "denominador": int(df["encaminhado_humano"].notna().sum())},
-            {"kpi": "duracao_media_minutos", "valor": round(float(df["duracao_minutos"].mean()), 2), "denominador": int(df["duracao_minutos"].notna().sum())},
+            {"kpi": "duracao_media_minutos", "valor": _mean(df["duracao_minutos"]), "denominador": int(df["duracao_minutos"].notna().sum())},
         ]
     )
 

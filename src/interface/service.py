@@ -15,6 +15,15 @@ import boto3
 from src.shared.config import get_settings
 
 
+class ConciergeApiError(RuntimeError):
+    """Erro HTTP do Concierge preservando o payload seguro devolvido pela API."""
+
+    def __init__(self, status_code: int, payload: dict[str, Any], message: str) -> None:
+        super().__init__(message)
+        self.status_code = status_code
+        self.payload = payload
+
+
 def _post_json(url: str, payload: dict[str, str]) -> dict[str, Any]:
     """Envia um JSON à API HTTP do Concierge e normaliza erros de transporte."""
 
@@ -33,8 +42,14 @@ def _post_json(url: str, payload: dict[str, str]) -> dict[str, Any]:
             detail = json.loads(raw)
         except json.JSONDecodeError:
             detail = {}
+        if not isinstance(detail, dict):
+            detail = {}
         message = detail.get("answer") or detail.get("message") or f"HTTP {error.code}"
-        raise RuntimeError(f"A API do Concierge retornou erro: {message}") from error
+        raise ConciergeApiError(
+            error.code,
+            detail,
+            f"A API do Concierge retornou erro: {message}",
+        ) from error
     except URLError as error:
         raise RuntimeError("Não foi possível conectar à API do Concierge.") from error
 

@@ -48,8 +48,28 @@ trilha em menos de 60 segundos; uma execução real está registrada em
 [`rodada_auditoria_e2e_20260902.md`](../../artifacts/audit/rodada_auditoria_e2e_20260902.md).
 
 Não registrar em logs access keys, tokens, CPF, cartão, anexos ou conteúdo
-sensível fora do necessário para o desafio. Para uso real, a pergunta deve
-passar por mascaramento de PII antes de ser emitida no evento de auditoria.
+sensível fora do necessário para o desafio. CPF, cartão, telefone e e-mail são
+mascarados antes de a pergunta ser emitida no evento de auditoria. A telemetria
+automática mantém métricas e traces, mas não captura prompts, respostas ou
+argumentos de tools (`NO_CONTENT`), evitando duplicar dados pessoais nos spans.
+
+## Observabilidade operacional
+
+Além da auditoria individual por `trace_id`, o dashboard
+`concierge-conectatel-operacao` acompanha indicadores agregados de saúde:
+
+| Indicador | Fonte | Uso na demonstração |
+|---|---|---|
+| Invocações, erros e duração p95 | Métricas nativas das Lambdas gateway e `retrieve_kb`, mais filtro de erro tratado no gateway | Identificar indisponibilidade ou degradação de latência, inclusive quando a API devolve 502 sem encerrar a Lambda com erro. |
+| Decisões `responder`, `nao_sei` e `escalar` | Três filtros de métrica no log do gateway | Verificar o comportamento seguro do agente em lote sem executar consulta no dashboard. |
+| Handoffs persistidos | `SuccessfulRequestLatency` / `PutItem` da tabela DynamoDB | Confirmar que os escalonamentos chegaram à fila humana. |
+
+Os alarmes de erro da gateway e da tool RAG avaliam janelas de cinco minutos,
+tratam ausência de dados como saudável e não executam ação automática. O alarme
+da gateway usa o evento estruturado de erro, pois uma resposta HTTP 502 tratada
+não incrementa necessariamente a métrica nativa `AWS/Lambda Errors`. Isso
+evita custo e ruído operacional durante a demonstração, mantendo uma sinalização
+visível para investigação pelo `trace_id`.
 
 ## Riscos e respostas operacionais
 
@@ -78,9 +98,15 @@ aws s3 rb s3://<bucket-da-base> --force
 ```
 
 O bucket deve ser removido apenas depois de preservar as evidências que precisam
-ser entregues. Definir retenção explícita para os log groups no template antes
-do deploy final; para a demonstração, a recomendação é 14 dias, salvo exigência
-institucional diferente.
+ser entregues. A retenção dos log groups é reaplicada de forma idempotente após
+o deploy com:
+
+```bash
+make retention
+```
+
+O comando descobre o grupo do AgentCore e configura 14 dias nele e nos três
+grupos Lambda, salvo exigência institucional diferente.
 
 Na conta de demonstração, a retenção de **14 dias** está aplicada aos quatro
 grupos operacionais: `retrieve_kb`, gateway, `store_handoff` e AgentCore. O
@@ -93,6 +119,6 @@ também estava ativo na verificação de 02/09/2026.
 - [ ] SSO válido e `aws sts get-caller-identity` confirmado.
 - [x] Budget de US$ 20 ativo e plano de limpeza revisado.
 - [x] Consulta por `trace_id` cronometrada em menos de 60 segundos.
-- [ ] Logs não contêm segredos ou PII fora do escopo do desafio.
+- [x] Captura de conteúdo sensível desabilitada na telemetria; evento funcional mascara PII.
 - [ ] Duas transcrições grounded, duas `nao_sei` e dois handoffs disponíveis.
 - [ ] Rollback do CloudFormation habilitado no deploy final.
