@@ -46,7 +46,10 @@ def _as_log_groups(value: str | Iterable[str] | None) -> list[str]:
 def _query_for(trace_id: str) -> str:
     """Monta a consulta sem permitir que um trace_id altere a expressão regex."""
 
-    safe_trace_id = re.escape(trace_id)
+    if any(ord(character) < 32 or ord(character) == 127 for character in trace_id):
+        raise ValueError("trace_id não pode conter caracteres de controle.")
+    # ``re.escape`` não protege a barra, delimitador da regex no Logs Insights.
+    safe_trace_id = re.escape(trace_id).replace("/", r"\/")
     return "\n".join(
         [
             "fields @timestamp, @log, @logStream, @message",

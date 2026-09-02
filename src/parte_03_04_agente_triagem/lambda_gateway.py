@@ -27,6 +27,7 @@ _CORS_ORIGIN = os.environ.get("CORS_ALLOW_ORIGIN", "*")
 
 _client = None
 _UNSAFE_TRACE_CHARS_RE = re.compile(r"[^A-Za-z0-9]+")
+MAX_QUESTION_LENGTH = 4_000
 
 
 def _normalize_trace_id(value: str | None) -> str:
@@ -81,16 +82,29 @@ def _session_id(trace_id: str) -> str:
 
 
 def _read_agent_payload(agent_response: dict) -> dict:
-    """Le o corpo (streaming ou nao) e devolve dict; nunca levanta."""
+    """Lê e valida o envelope JSON básico devolvido pelo Runtime."""
     body = agent_response.get("response")
     try:
         raw = body.read() if hasattr(body, "read") else body
         if isinstance(raw, (bytes, bytearray)):
             raw = raw.decode("utf-8")
         parsed = json.loads(raw)
-        return parsed if isinstance(parsed, dict) else {"answer": parsed}
-    except Exception:  # pragma: no cover - resposta inesperada do Runtime
-        return {"answer": "", "raw": str(body)}
+    except (TypeError, ValueError, UnicodeDecodeError) as error:
+        raise ValueError("Runtime retornou JSON inválido.") from error
+
+    if not isinstance(parsed, dict):
+        raise ValueError("Runtime retornou um payload que não é objeto JSON.")
+    if parsed.get("decision") not in {"responder", "nao_sei", "escalar"}:
+        raise ValueError("Runtime retornou uma decisão inválida.")
+    if not isinstance(parsed.get("answer"), str):
+        raise ValueError("Runtime retornou uma resposta textual inválida.")
+    if parsed.get("source_path") is not None and not isinstance(
+        parsed.get("source_path"), str
+    ):
+        raise ValueError("Runtime retornou uma fonte inválida.")
+    if parsed.get("handoff") is not None and not isinstance(parsed.get("handoff"), dict):
+        raise ValueError("Runtime retornou um handoff inválido.")
+    return parsed
 
 
 def handler(event, context):
@@ -103,7 +117,8 @@ def handler(event, context):
         return _resp(200, {"ok": True})
 
     body = _parse_body(event)
-    question = (body.get("question") or "").strip()
+    raw_question = body.get("question")
+    question = raw_question.strip() if isinstance(raw_question, str) else ""
     # Origem canonica do trace_id: se a interface nao mandou, o gateway gera.
     trace_id = _normalize_trace_id(body.get("trace_id"))
     client_trace = bool(body.get("trace_id"))
@@ -111,11 +126,20 @@ def handler(event, context):
                       "trace_origin": "client" if client_trace else "gateway"}))
 
     if not question:
+        invalid_type = raw_question is not None and not isinstance(raw_question, str)
         return _resp(400, {
             "decision": "nao_sei",
             "trace_id": trace_id,
-            "answer": "Pergunta vazia.",
-            "reason": "pergunta_vazia",
+            "answer": "Pergunta inválida." if invalid_type else "Pergunta vazia.",
+            "reason": "pergunta_invalida" if invalid_type else "pergunta_vazia",
+        }, trace_id)
+
+    if len(question) > MAX_QUESTION_LENGTH:
+        return _resp(413, {
+            "decision": "nao_sei",
+            "trace_id": trace_id,
+            "answer": f"A pergunta excede o limite de {MAX_QUESTION_LENGTH} caracteres.",
+            "reason": "pergunta_muito_longa",
         }, trace_id)
 
     if not _AGENT_RUNTIME_ARN:
@@ -133,7 +157,8 @@ def handler(event, context):
             accept="application/json",
         )
         result = _read_agent_payload(agent_response)
-        result.setdefault("trace_id", trace_id)
+        # O identificador da borda é canônico; o Runtime não pode substituí-lo.
+        result["trace_id"] = trace_id
 
         print(json.dumps({
             "trace_id": trace_id,

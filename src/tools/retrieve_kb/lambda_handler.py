@@ -2,12 +2,16 @@ import base64
 import json
 import os
 import time
-import uuid
 from pathlib import Path
 
 import boto3
 
-from tools.retrieve_kb.retrieval import load_kb, retrieve
+try:  # imagem Lambda copia ``src/shared`` como pacote de topo
+    from shared.security import normalize_trace_id
+except ModuleNotFoundError:  # checkout local mantém o pacote sob ``src``
+    from src.shared.security import normalize_trace_id
+
+from .retrieval import load_kb, retrieve
 
 # ============================================================
 # CONFIGURAÇÃO (via variáveis de ambiente da Lambda)
@@ -18,6 +22,7 @@ EMBEDDINGS_KEY = os.environ.get("EMBEDDINGS_KEY", "index/embeddings.json")
 CHUNKS_KEY = os.environ.get("CHUNKS_KEY", "processed/chunks.json")
 RETRIEVAL_SCORE_THRESHOLD = float(os.environ.get("RETRIEVAL_SCORE_THRESHOLD", "0.85"))
 TOP_K = int(os.environ.get("RETRIEVAL_TOP_K", "3"))
+MAX_QUESTION_LENGTH = 4_000
 
 TMP_DIR = Path("/tmp/retrieve_kb")
 EMBEDDINGS_PATH = TMP_DIR / "embeddings.json"
@@ -71,7 +76,7 @@ def _ensure_kb_loaded():
     print(json.dumps({"checkpoint": "load_kb_json", "elapsed_s": round(t3 - t2, 2)}))
 
     # carrega o modelo de embedding já no cold start, não na 1ª pergunta
-    from tools.retrieve_kb.retrieval import get_model
+    from .retrieval import get_model
     get_model()
     t4 = time.time()
     print(json.dumps({"checkpoint": "load_sentence_transformer_model", "elapsed_s": round(t4 - t3, 2)}))
@@ -127,15 +132,27 @@ def handler(event, context):
     started_at = time.time()
 
     payload = _request_payload(event)
-    question = str(payload.get("question") or "").strip()
-    trace_id = payload.get("trace_id") or str(uuid.uuid4())
+    raw_question = payload.get("question")
+    question = raw_question.strip() if isinstance(raw_question, str) else ""
+    trace_id = normalize_trace_id(payload.get("trace_id"))
 
     if not question:
         return {
             "decision": "nao_sei",
             "trace_id": trace_id,
             "results": [],
-            "reason": "pergunta_vazia",
+            "reason": (
+                "pergunta_invalida"
+                if raw_question is not None and not isinstance(raw_question, str)
+                else "pergunta_vazia"
+            ),
+        }
+    if len(question) > MAX_QUESTION_LENGTH:
+        return {
+            "decision": "nao_sei",
+            "trace_id": trace_id,
+            "results": [],
+            "reason": "pergunta_muito_longa",
         }
 
     try:

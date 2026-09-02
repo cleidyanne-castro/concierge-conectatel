@@ -52,7 +52,7 @@ def test_rejects_handoff_with_required_data_missing(monkeypatch):
     assert "resumo_caso" in result["fields"]
 
 
-def test_duplicate_trace_is_idempotent(monkeypatch):
+def test_duplicate_trace_does_not_claim_new_protocol(monkeypatch):
     class DuplicateTable:
         def put_item(self, **kwargs) -> None:
             raise ClientError(
@@ -65,9 +65,9 @@ def test_duplicate_trace_is_idempotent(monkeypatch):
     result = store_handoff_lambda.handler(valid_event(), None)
 
     assert result == {
-        "stored": True,
-        "protocolo": "CONCTL-20260901-ABC123",
+        "stored": False,
         "duplicate": True,
+        "reason": "trace_id_duplicado",
     }
 
 

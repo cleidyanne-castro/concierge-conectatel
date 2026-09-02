@@ -19,14 +19,18 @@
 
 ## Verificação pós-deploy
 
-O CloudFormation confirmou o dashboard e os três filtros de métrica com estado
+O CloudFormation confirmou o dashboard e os quatro filtros de métrica com estado
 `CREATE_COMPLETE`; os dois alarmes também foram publicados na mesma stack.
 Na checagem inicial, o alarme da gateway estava em `OK`. O alarme RAG estava em
 `INSUFFICIENT_DATA`, comportamento esperado até a primeira métrica após sua
 criação; a propriedade `TreatMissingData: notBreaching` impede que ausência de
 tráfego seja interpretada como incidente.
 
-## Uso durante a banca
+## Roteiro histórico de demonstração
+
+> O roteiro abaixo descreve a demonstração feita quando o dashboard ainda
+> existia. No estado atual, use os logs estruturados, métricas, alarmes e a
+> consulta por `trace_id`; não há dashboard operacional para abrir.
 
 1. Abrir o dashboard no CloudWatch.
 2. Executar um caso grounded, um `nao_sei` e um handoff pela interface.

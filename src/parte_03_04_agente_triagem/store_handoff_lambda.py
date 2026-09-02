@@ -87,9 +87,12 @@ def handler(event, context):
             print(json.dumps({
                 "trace_id": item["trace_id"],
                 "event": "handoff_duplicate",
-                "protocolo": item["protocolo_atendimento"],
             }))
-            return _response(stored=True, protocolo=item["protocolo_atendimento"], duplicate=True)
+            return _response(
+                stored=False,
+                duplicate=True,
+                reason="trace_id_duplicado",
+            )
         print(json.dumps({
             "trace_id": item["trace_id"],
             "level": "ERROR",

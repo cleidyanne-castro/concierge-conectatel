@@ -109,6 +109,15 @@ def test_clean_calls_keeps_invalid_dates_as_null(raw_calls):
     assert pd.isna(cleaned.loc[0, "data_abertura"])
 
 
+def test_clean_calls_normalizes_timezone_aware_dates_to_utc(raw_calls):
+    raw_calls.loc[0, "data_abertura"] = "2026-01-01T09:00:00-03:00"
+
+    cleaned = clean_calls(raw_calls)
+
+    assert str(cleaned.loc[0, "data_abertura"]) == "2026-01-01 12:00:00+00:00"
+    assert bool(cleaned.loc[0, "is_valid_date"]) is True
+
+
 def test_clean_calls_keeps_out_of_range_satisfaction_as_missing(raw_calls):
     raw_calls.loc[0, "satisfacao_1_a_5"] = "6"
 

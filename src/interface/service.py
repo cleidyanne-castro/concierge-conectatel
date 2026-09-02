@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 from typing import Any
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
 import boto3
@@ -27,6 +28,10 @@ class ConciergeApiError(RuntimeError):
 def _post_json(url: str, payload: dict[str, str]) -> dict[str, Any]:
     """Envia um JSON à API HTTP do Concierge e normaliza erros de transporte."""
 
+    parsed_url = urlparse(url)
+    if parsed_url.scheme not in {"http", "https"} or not parsed_url.netloc:
+        raise ValueError("A URL do Concierge deve usar HTTP ou HTTPS.")
+
     request = Request(
         url,
         data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
@@ -40,7 +45,7 @@ def _post_json(url: str, payload: dict[str, str]) -> dict[str, Any]:
         raw = error.read() or b"{}"
         try:
             detail = json.loads(raw)
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError):
             detail = {}
         if not isinstance(detail, dict):
             detail = {}
@@ -50,12 +55,12 @@ def _post_json(url: str, payload: dict[str, str]) -> dict[str, Any]:
             detail,
             f"A API do Concierge retornou erro: {message}",
         ) from error
-    except URLError as error:
+    except (URLError, TimeoutError) as error:
         raise RuntimeError("Não foi possível conectar à API do Concierge.") from error
 
     try:
         body = json.loads(raw)
-    except json.JSONDecodeError as error:
+    except (json.JSONDecodeError, UnicodeDecodeError) as error:
         raise RuntimeError("A API do Concierge retornou um JSON inválido.") from error
     if not isinstance(body, dict):
         raise RuntimeError("A API do Concierge retornou um payload inesperado.")
@@ -93,7 +98,10 @@ def invoke_retrieve_kb(
         Payload=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
     )
     raw = response["Payload"].read() or b"{}"
-    body = json.loads(raw)
+    try:
+        body = json.loads(raw)
+    except (json.JSONDecodeError, UnicodeDecodeError) as error:
+        raise RuntimeError("A Lambda retornou um JSON inválido.") from error
     if response.get("FunctionError"):
         raise RuntimeError(body.get("errorMessage", "A Lambda retornou um erro."))
     if not isinstance(body, dict):

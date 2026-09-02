@@ -36,6 +36,7 @@ MODEL_ID = settings.bedrock_model_id or os.environ.get("MODEL_ID", "")
 AWS_REGION = settings.aws_region
 RETRIEVE_KB_FUNCTION = settings.retrieve_kb_function
 STORE_HANDOFF_FUNCTION = settings.store_handoff_function
+MAX_QUESTION_LENGTH = 4_000
 
 app = BedrockAgentCoreApp()
 bedrock_model = BedrockModel(
@@ -150,6 +151,18 @@ def store_handoff(
     """
     ctx = _ctx_get()
     ctx["handoff_guardrail"] = categoria_motivo
+
+    # Uma tentativa anterior do mesmo ciclo do agente pode ter persistido o
+    # handoff antes de o modelo encerrar o stream com uma sequência ToolUse
+    # inválida. Nesse caso, o retry deve reutilizar o protocolo confirmado em
+    # memória, nunca criar outro registro para o mesmo trace.
+    existing_handoff = ctx.get("handoff")
+    if isinstance(existing_handoff, HandoffRecord):
+        return {
+            "stored": True,
+            "protocolo": existing_handoff.protocolo_atendimento,
+        }
+
     contact = dados_contato_retorno.strip()
     if not contact:
         reason = "dados_contato_retorno_ausente"
@@ -243,7 +256,10 @@ def _new_agent() -> Agent:
 
 # Nova (e outros) as vezes emitem raciocinio em <thinking>...</thinking>;
 # nunca deve vazar pra resposta do assinante.
-_THINK_RE = re.compile(r"<thinking>.*?</thinking>", re.DOTALL | re.IGNORECASE)
+_THINK_RE = re.compile(
+    r"<thinking>.*?(?:</thinking>|$)",
+    re.DOTALL | re.IGNORECASE,
+)
 _TOOL_USE_SEQUENCE_ERROR_MARKERS = (
     "modelStreamErrorException",
     "invalid sequence as part of ToolUse",
@@ -259,6 +275,11 @@ def _invoke_agent(question: str) -> str:
     """Invoca o Nova com retry somente para sequência ToolUse inválida."""
 
     for attempt in range(1, _MAX_TOOL_USE_ATTEMPTS + 1):
+        if attempt > 1:
+            # Resultados de busca pertencem à tentativa que os produziu. Se o
+            # stream falhou depois da tool, uma nova resposta só pode ser
+            # classificada como fundamentada se o agente repetir a consulta.
+            _ctx_get()["last_retrieve"] = None
         try:
             return str(_new_agent()(question))
         except Exception as error:
@@ -280,7 +301,14 @@ def _invoke_agent(question: str) -> str:
 
 def _build_response(trace_id: str, answer: str, ctx: dict) -> ConciergeResponse:
     if ctx.get("handoff") is not None:
-        return ConciergeResponse("escalar", trace_id, answer, handoff=ctx["handoff"])
+        handoff = ctx["handoff"]
+        return ConciergeResponse(
+            "escalar",
+            trace_id,
+            "Encaminhamento registrado para atendimento humano. "
+            f"Protocolo: {handoff.protocolo_atendimento}.",
+            handoff=handoff,
+        )
     if ctx.get("handoff_failure"):
         return ConciergeResponse(
             "nao_sei",
@@ -292,11 +320,20 @@ def _build_response(trace_id: str, answer: str, ctx: dict) -> ConciergeResponse:
 
     last = ctx.get("last_retrieve") or {}
     results = last.get("results") or []
-    if last.get("decision") == "responder" and results:
+    answer = answer.strip()
+    if last.get("decision") == "responder" and results and answer:
+        source_path = results[0].get("source_path")
+        if source_path and source_path not in answer:
+            answer = f"{answer}\n\nFonte: {source_path}"
         return ConciergeResponse(
-            "responder", trace_id, answer, source_path=results[0].get("source_path")
+            "responder", trace_id, answer, source_path=source_path
         )
-    return ConciergeResponse("nao_sei", trace_id, answer)
+    return ConciergeResponse(
+        "nao_sei",
+        trace_id,
+        "Não encontrei informação suficiente na base oficial para responder com "
+        "segurança.",
+    )
 
 
 def _emit_audit(question: str, resp: ConciergeResponse, ctx: dict) -> None:
@@ -327,8 +364,9 @@ def run(payload: dict | None) -> dict:
     Chamado pelo entrypoint do Runtime (`invoke`) e pela entrada local
     (`src/cli.py`) — sem depender do servidor HTTP do AgentCore.
     """
-    payload = payload or {}
-    question = (payload.get("question") or "").strip()
+    payload = payload if isinstance(payload, dict) else {}
+    raw_question = payload.get("question")
+    question = raw_question.strip() if isinstance(raw_question, str) else ""
     trace_id = normalize_trace_id(payload.get("trace_id"))
     _ctx.set({
         "trace_id": trace_id,
@@ -339,7 +377,14 @@ def run(payload: dict | None) -> dict:
     })
 
     if not question:
-        return ConciergeResponse("nao_sei", trace_id, "Pergunta vazia.").to_dict()
+        message = "Pergunta vazia." if raw_question in (None, "") else "Pergunta inválida."
+        return ConciergeResponse("nao_sei", trace_id, message).to_dict()
+    if len(question) > MAX_QUESTION_LENGTH:
+        return ConciergeResponse(
+            "nao_sei",
+            trace_id,
+            f"A pergunta excede o limite de {MAX_QUESTION_LENGTH} caracteres.",
+        ).to_dict()
 
     answer = _clean_answer(_invoke_agent(question))
     ctx = _ctx_get()

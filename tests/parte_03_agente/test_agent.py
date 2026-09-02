@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import io
 import json
 from pathlib import Path
 
@@ -48,6 +49,35 @@ def test_handoff_contract_still_persists_complete_record(monkeypatch):
     assert captured["produto_servico_envolvido"]
     assert captured["documento_fonte_consultado"]
     assert agent_concierge._ctx_get()["handoff"] is not None
+
+
+def test_handoff_retry_reuses_protocol_persisted_in_same_request(monkeypatch):
+    calls = []
+
+    def fake_invoke(_function_name, payload):
+        calls.append(payload)
+        return {"stored": True}
+
+    monkeypatch.setattr(agent_concierge, "_invoke_lambda", fake_invoke)
+    agent_concierge._ctx.set(
+        {"trace_id": "handoff-retry", "last_retrieve": None, "handoff": None}
+    )
+
+    first = agent_concierge.store_handoff(
+        categoria_motivo="Suspeita de fraude",
+        resumo_caso="Cliente não reconhece a troca de chip.",
+        urgencia="alta",
+        dados_contato_retorno="Retorno pelo chat",
+    )
+    second = agent_concierge.store_handoff(
+        categoria_motivo="Suspeita de fraude",
+        resumo_caso="Cliente não reconhece a troca de chip.",
+        urgencia="alta",
+        dados_contato_retorno="Retorno pelo chat",
+    )
+
+    assert second == first
+    assert len(calls) == 1
 
 
 def test_handoff_without_contact_is_not_published(monkeypatch):
@@ -208,6 +238,136 @@ def test_invalid_tool_use_sequence_retries_with_fresh_agents(monkeypatch):
     assert len(created) == 3
 
 
+def test_tool_use_retry_discards_retrieval_from_failed_attempt(monkeypatch):
+    calls = 0
+
+    class FakeAgent:
+        def __call__(self, _question):
+            nonlocal calls
+            calls += 1
+            if calls == 1:
+                agent_concierge._ctx_get()["last_retrieve"] = {
+                    "decision": "responder",
+                    "results": [{"source_path": "fonte-da-tentativa-falha.md"}],
+                }
+                raise RuntimeError(
+                    "modelStreamErrorException: invalid sequence as part of ToolUse"
+                )
+            return "resposta sem nova consulta"
+
+    monkeypatch.setattr(agent_concierge, "_new_agent", FakeAgent)
+    agent_concierge._ctx.set({"trace_id": "retry-sem-fonte", "last_retrieve": None})
+
+    assert agent_concierge._invoke_agent("pergunta") == "resposta sem nova consulta"
+    assert agent_concierge._ctx_get()["last_retrieve"] is None
+
+
+def test_run_rejects_non_text_question_without_invoking_model(monkeypatch):
+    monkeypatch.setattr(
+        agent_concierge,
+        "_invoke_agent",
+        lambda _question: pytest.fail("o modelo não deveria ser invocado"),
+    )
+
+    result = agent_concierge.run({"question": 123, "trace_id": "tipo-invalido"})
+
+    assert result["decision"] == "nao_sei"
+    assert result["answer"] == "Pergunta inválida."
+
+
+def test_run_rejects_oversized_question_without_invoking_model(monkeypatch):
+    monkeypatch.setattr(
+        agent_concierge,
+        "_invoke_agent",
+        lambda _question: pytest.fail("o modelo não deveria ser invocado"),
+    )
+
+    result = agent_concierge.run({
+        "question": "x" * (agent_concierge.MAX_QUESTION_LENGTH + 1),
+        "trace_id": "pergunta-grande",
+    })
+
+    assert result["decision"] == "nao_sei"
+    assert "excede o limite" in result["answer"]
+
+
+class _FakeAgentCoreClient:
+    def __init__(self, payload: bytes):
+        self.payload = payload
+        self.calls = 0
+
+    def invoke_agent_runtime(self, **_kwargs):
+        self.calls += 1
+        return {"response": io.BytesIO(self.payload)}
+
+
+def test_gateway_rejects_non_text_question(monkeypatch):
+    client = _FakeAgentCoreClient(b"{}")
+    monkeypatch.setattr(lambda_gateway, "_client", client)
+    monkeypatch.setattr(lambda_gateway, "_AGENT_RUNTIME_ARN", "arn:test")
+
+    response = lambda_gateway.handler(
+        {"body": json.dumps({"question": 123, "trace_id": "tipo-invalido"})},
+        None,
+    )
+
+    assert response["statusCode"] == 400
+    assert json.loads(response["body"])["reason"] == "pergunta_invalida"
+    assert client.calls == 0
+
+
+def test_gateway_rejects_oversized_question(monkeypatch):
+    client = _FakeAgentCoreClient(b"{}")
+    monkeypatch.setattr(lambda_gateway, "_client", client)
+    monkeypatch.setattr(lambda_gateway, "_AGENT_RUNTIME_ARN", "arn:test")
+
+    response = lambda_gateway.handler(
+        {"body": json.dumps({
+            "question": "x" * (lambda_gateway.MAX_QUESTION_LENGTH + 1),
+            "trace_id": "pergunta-grande",
+        })},
+        None,
+    )
+
+    assert response["statusCode"] == 413
+    assert json.loads(response["body"])["reason"] == "pergunta_muito_longa"
+    assert client.calls == 0
+
+
+def test_gateway_rejects_malformed_runtime_payload(monkeypatch):
+    monkeypatch.setattr(lambda_gateway, "_client", _FakeAgentCoreClient(b"not-json"))
+    monkeypatch.setattr(lambda_gateway, "_AGENT_RUNTIME_ARN", "arn:test")
+
+    response = lambda_gateway.handler(
+        {"body": json.dumps({"question": "teste", "trace_id": "runtime-invalido"})},
+        None,
+    )
+
+    assert response["statusCode"] == 502
+    assert json.loads(response["body"])["reason"] == "erro_runtime"
+
+
+def test_gateway_keeps_canonical_trace_id(monkeypatch):
+    runtime_payload = json.dumps({
+        "decision": "nao_sei",
+        "trace_id": "trace-trocado-pelo-runtime",
+        "answer": "Não encontrei.",
+        "source_path": None,
+    }).encode("utf-8")
+    monkeypatch.setattr(
+        lambda_gateway, "_client", _FakeAgentCoreClient(runtime_payload)
+    )
+    monkeypatch.setattr(lambda_gateway, "_AGENT_RUNTIME_ARN", "arn:test")
+
+    response = lambda_gateway.handler(
+        {"body": json.dumps({"question": "teste", "trace_id": "trace-borda"})},
+        None,
+    )
+
+    assert response["statusCode"] == 200
+    assert json.loads(response["body"])["trace_id"] == "trace-borda"
+
+
 def test_non_tool_use_error_is_not_retried(monkeypatch):
     calls = 0
 
@@ -226,6 +386,43 @@ def test_non_tool_use_error_is_not_retried(monkeypatch):
         agent_concierge._invoke_agent("pergunta")
 
     assert calls == 1
+
+
+def test_unclosed_thinking_block_is_not_exposed():
+    assert agent_concierge._clean_answer(
+        "<thinking>raciocínio interno que foi truncado"
+    ) == ""
+
+
+def test_ungrounded_model_text_is_replaced_by_safe_answer():
+    response = agent_concierge._build_response(
+        "sem-fonte",
+        "A resposta inventada seria 42.",
+        {"last_retrieve": {"decision": "nao_sei", "results": []}},
+    )
+
+    assert response.decision == "nao_sei"
+    assert "42" not in response.answer
+    assert "base oficial" in response.answer
+
+
+def test_grounded_answer_includes_source_and_requires_text():
+    context = {
+        "last_retrieve": {
+            "decision": "responder",
+            "results": [{"source_path": "data/corpus/faq/faq_geral.md"}],
+        }
+    }
+
+    grounded = agent_concierge._build_response(
+        "com-fonte", "Resposta fundamentada.", context
+    )
+    empty = agent_concierge._build_response("sem-texto", "   ", context)
+
+    assert grounded.decision == "responder"
+    assert grounded.source_path == "data/corpus/faq/faq_geral.md"
+    assert "data/corpus/faq/faq_geral.md" in grounded.answer
+    assert empty.decision == "nao_sei"
 
 
 def test_audit_event_masks_personal_data(capsys):
